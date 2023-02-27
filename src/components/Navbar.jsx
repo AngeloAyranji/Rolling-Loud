@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
@@ -8,8 +8,10 @@ import {
 } from "@heroicons/react/24/outline";
 import Cart from "./Cart";
 import Logo from "../assets/Images/LogoSky.png";
+import { Link } from "react-router-dom";
+
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
+  { name: "Dashboard", href: "/", current: true },
   { name: "Team", href: "#", current: false },
   { name: "Projects", href: "#", current: false },
   { name: "Calendar", href: "#", current: false },
@@ -25,6 +27,12 @@ export default function Navbar() {
   const handleOpen = () => {
     setOpena(!opena);
   };
+
+  const handleLogOut = () => {
+    sessionStorage.removeItem('jwt');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('email');
+  }
 
   return (
     <Disclosure as="nav" className="bg-[#121212]">
@@ -45,16 +53,18 @@ export default function Navbar() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="block h-8 w-auto lg:hidden"
-                    src={Logo}
-                    alt="Your Company"
-                  />
-                  <img
-                    className="hidden h-8 w-auto lg:block "
-                    src={Logo}
-                    alt="Your Company"
-                  />
+                  <Link to="/">
+                    <img
+                      className="block h-8 w-auto lg:hidden"
+                      src={Logo}
+                      alt="Your Company"
+                    />
+                    <img
+                      className="hidden h-8 w-auto lg:block "
+                      src={Logo}
+                      alt="Your Company"
+                    />
+                  </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
@@ -144,13 +154,13 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            href="/login"
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Sign out
+                            Sign in
                           </a>
                         )}
                       </Menu.Item>

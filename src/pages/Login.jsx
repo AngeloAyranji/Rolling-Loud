@@ -1,10 +1,45 @@
-import React from "react";
-import Navbar from "../components/Navbar";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
+  const navigate = useNavigate();
+
+  const [error, setError] = useState(false);
+
+  // handling login flow
+  const handleLogin = async () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (email != "" && password != "") {
+      setError(false);
+      try {
+        const res = await axios.post(
+          process.env.REACT_APP_BACKEND_URL + "api/auth/local",
+          {
+            identifier: email,
+            password,
+          }
+        );
+
+        if (res) {
+          sessionStorage.setItem("jwt", res.data.jwt);
+          sessionStorage.setItem("username", res.data.user.username);
+          sessionStorage.setItem("email", res.data.user.email);
+
+          navigate("/");
+        }
+      } catch (err) {
+        console.log("error", err);
+      }
+    }
+
+    setError(true);
+  };
+
   return (
     <div className="h-screen">
-      <Navbar />
       <div className="w-full h-full flex items-center">
         <div className="w-full md:min-w-[600px] lg:min-w-[600px] h-full flex flex-col my-auto bg-[#121212] items-center justify-center p-4 md:p-14 ">
           <div className="w-full max-w-[600px] bg-white flex flex-col p-8 rounded-lg">
@@ -23,6 +58,7 @@ function Login() {
                 </span>
               </label>
               <input
+                id="email"
                 type="text"
                 placeholder="Type here"
                 className="input input-bordered w-full input-primary bg-white"
@@ -39,12 +75,16 @@ function Login() {
                 </span>
               </label>
               <input
+                id="password"
                 type="text"
                 placeholder="Type here"
                 className="input input-bordered w-full input-primary bg-white"
               />
             </div>
-            <button className="btn btn-primary">LOGIN</button>
+            {error && <div>Invalid Email or Password</div>}
+            <button onClick={handleLogin} className="btn btn-primary">
+              LOGIN
+            </button>
           </div>
         </div>
         <div className="hidden md:block w-full h-full">

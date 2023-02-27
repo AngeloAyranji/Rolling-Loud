@@ -1,5 +1,6 @@
 import React from "react";
 import bgVid from "../assets/Videos/pexels-mikhail-nilov-6981411.mp4";
+import { Link } from "react-router-dom";
 
 function Hero() {
   const images = [
@@ -62,12 +63,16 @@ function Hero() {
           <span className="text-primary">SKY</span>SHOP
         </h1>
         <div className="flex flex-row space-x-4">
-          <button className="btn btn-primary btn-outline text-secondary-content lg:btn-lg">
-            Explore
-          </button>
-          <button className="btn btn-primary btn-outline text-white lg:btn-lg">
-            Explore
-          </button>
+          <Link to="/products">
+            <button className="btn btn-primary btn-outline text-secondary-content lg:btn-lg">
+              Explore
+            </button>
+          </Link>
+          <Link to="/products">
+            <button className="btn btn-primary btn-outline text-white lg:btn-lg">
+              Explore
+            </button>
+          </Link>
         </div>
       </div>
     </div>
