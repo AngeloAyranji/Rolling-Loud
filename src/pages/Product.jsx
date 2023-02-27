@@ -55,8 +55,8 @@ function Product() {
     setMainImg(e.target.src);
   };
   return (
-    <div className="flex w-full mx-auto">
-      <div className="flex flex-col space-y-4 p-4 pt-8 md:p-8 w-full mx-auto max-w-[1400px]">
+    <div className="flex w-full mx-auto p-4 pt-8 md:p-8">
+      <div className="flex flex-col space-y-8 w-full mx-auto max-w-[1400px]">
         <Breadcrumbs />
         <div className=" flex flex-col lg:flex-row lg:justify-start justify-center lg:items-start items-center mt-8 lg:mt-12 lg:space-x-8 xl:space-x-14">
           {/*image div*/}
@@ -142,6 +142,64 @@ function Product() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* extra infos and related products */}
+        <div className="w-full mx-auto p-4 border-2 border-primary rounded-lg flex flex-col space-y-4 pt-8">
+          <h3 className="text-secondary-content text-lg text-semibold tracking-wide uppercase">
+            Technical Characteristics
+          </h3>
+          <div className="w-full h-1 rounded-full bg-secondary-content/[0.5]"></div>
+          <p className="text-secondary-content">
+            Pellentesque in ipsum id orci porta dapibus. Cras ultricies ligula
+            sed magna dictum porta. Mauris blandit aliquet elit, eget tincidunt
+            nibh pulvinar a. Vivamus magna justo, lacinia eget consectetur sed,
+            convallis at tellus. Vestibulum ac diam sit amet quam vehicula
+            elementum sed sit amet dui. Mauris blandit aliquet elit, eget
+            tincidunt nibh pulvinar a. Proin eget tortor risus. Donec rutrum
+            congue leo eget malesuada. Pellentesque in ipsum id orci porta
+            dapibus. Curabitur arcu erat, accumsan id imperdiet et, porttitor at
+            sem. Curabitur non nulla sit amet nisl tempus convallis quis ac
+            lectus. Vivamus magna justo, lacinia eget consectetur sed, convallis
+            at tellus. Curabitur aliquet quam id dui posuere blandit. Curabitur
+            aliquet quam id dui posuere blandit. Vestibulum ante ipsum primis in
+            faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit
+            neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
+            Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Quisque
+            velit nisi, pretium ut lacinia in, elementum id enim. Quisque velit
+            nisi, pretium ut lacinia in, elementum id enim. Vivamus suscipit
+            tortor eget felis porttitor volutpat. Curabitur aliquet quam id dui
+            posuere blandit. Curabitur arcu erat, accumsan id imperdiet et,
+            porttitor at sem. Sed porttitor lectus nibh. Curabitur non nulla sit
+            amet nisl tempus convallis quis ac lectus. Lorem ipsum dolor sit
+            amet, consectetur adipiscing elit. Donec rutrum congue leo eget
+            malesuada. Proin eget tortor risus. Mauris blandit aliquet elit,
+            eget tincidunt nibh pulvinar a. Quisque velit nisi, pretium ut
+            lacinia in, elementum id enim. Donec sollicitudin molestie
+            malesuada. Curabitur arcu erat, accumsan id imperdiet et, porttitor
+            at sem. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Donec rutrum congue leo eget malesuada. Mauris blandit aliquet elit,
+            eget tincidunt nibh pulvinar a. Quisque velit nisi, pretium ut
+            lacinia in, elementum id enim. Vivamus suscipit tortor eget felis
+            porttitor volutpat. Curabitur non nulla sit amet nisl tempus
+            convallis quis ac lectus. Pellentesque in ipsum id orci porta
+            dapibus. Vivamus magna justo, lacinia eget consectetur sed,
+            convallis at tellus. Sed porttitor lectus nibh. Donec sollicitudin
+            molestie malesuada. Vestibulum ac diam sit amet quam vehicula
+            elementum sed sit amet dui. Nulla porttitor accumsan tincidunt. Sed
+            porttitor lectus nibh. Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit. Curabitur aliquet quam id dui posuere blandit.
+            Nulla quis lorem ut libero malesuada feugiat. Pellentesque in ipsum
+            id orci porta dapibus. Donec sollicitudin molestie malesuada.
+            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+            posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam
+            vel, ullamcorper sit amet ligula. Sed porttitor lectus nibh.
+            Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
+            arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
+            sapien massa, convallis a pellentesque nec, egestas non nisi. Mauris
+            blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec rutrum
+          </p>
         </div>
       </div>
     </div>
