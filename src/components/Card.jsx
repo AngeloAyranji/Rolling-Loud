@@ -36,7 +36,7 @@ function Card({ item }) {
             </div>
           )}
         </div>
-        <div className="h-4">
+        {/* <div className="h-4">
           {item.isInStock === true ? (
             <p className="text-green-500 text-xs lg:text-sm">In Stock</p>
           ) : (
@@ -44,12 +44,12 @@ function Card({ item }) {
               Out Of Stock
             </p>
           )}
-        </div>
+        </div> */}
         <p className="group-hover:text-black text-base-100 ease-in-out duration-150 text-xs lg:text-base line-clamp-2 lg:line-clamp-6 mb-4 lg:mb-8">
           {item.description}
         </p>
         {item.promotion !== 1 ? (
-          <div className="card-actions justify-end">
+          <div className="card-actions justify-start">
             <div className="badge badge-xs lg:badge-md line-through text-gray-400">
               $ {item.price.toFixed(2)}
             </div>
@@ -58,7 +58,7 @@ function Card({ item }) {
             </div>
           </div>
         ) : (
-          <div className="card-actions justify-end">
+          <div className="card-actions justify-start">
             <div className="badge badge-xs lg:badge-md text-secondary-content">
               ${finalPrice}
             </div>
