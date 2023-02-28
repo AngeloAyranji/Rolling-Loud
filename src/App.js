@@ -6,6 +6,9 @@ import Product from "./pages/Product";
 import Footerlogo from "./components/Footerlogo";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Banner from "./components/Banner";
+import ForgotEmail from "./pages/ForgotEmail";
+import ForgotPassword from "./pages/ForgotPassword";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -24,6 +27,7 @@ function App() {
       </Routes>
       {(location.pathname !== "/login" && location.pathname !== "/register") && (
         <>
+          <Banner />
           <Footerlogo />
           <Footer />
         </>
