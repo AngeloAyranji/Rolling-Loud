@@ -9,6 +9,8 @@ import {
 import Cart from "./Cart";
 import Logo from "../assets/Images/LogoSky.png";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 const navigation = [
   { name: "Dashboard", href: "/", current: true },
@@ -22,17 +24,25 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const navigate = useNavigate();
+
   const [opena, setOpena] = useState(false);
 
   const handleOpen = () => {
     setOpena(!opena);
   };
 
+  useEffect(() => {
+    console.log(1);
+  }, []);
+
   const handleLogOut = () => {
-    sessionStorage.removeItem('jwt');
-    sessionStorage.removeItem('username');
-    sessionStorage.removeItem('email');
-  }
+    sessionStorage.removeItem("jwt");
+    sessionStorage.removeItem("username");
+    sessionStorage.removeItem("email");
+
+    navigate("/");
+  };
 
   return (
     <Disclosure as="nav" className="bg-[#121212]">
@@ -153,15 +163,31 @@ export default function Navbar() {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="/login"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                          <>
+                            {/* isLoggedIn condition */}
+                            {sessionStorage.getItem("jwt") === null ? (
+                              <a
+                                href="/login"
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700"
+                                )}
+                              >
+                                Sign in
+                              </a>
+                            ) : (
+                              <div
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                )}
+                                onClick={handleLogOut}
+                              >
+                                {" "}
+                                Sign out
+                              </div>
                             )}
-                          >
-                            Sign in
-                          </a>
+                          </>
                         )}
                       </Menu.Item>
                     </Menu.Items>
