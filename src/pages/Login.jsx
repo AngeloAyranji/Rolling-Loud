@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import bgVid from "../assets/Videos/pexels-mikhail-nilov-6981411.mp4";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 function Login() {
@@ -68,7 +68,7 @@ function Login() {
             </h1>
             <p className="mb-14">
               Don't have an account?{" "}
-              <a className="link hover:text-base-100">Sign Up here</a>
+              <Link to="/register" className="link hover:text-base-100">Sign Up here</Link>
             </p>
 
             <div className="form-control w-full mb-4">

@@ -1,7 +1,14 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import bgVid from "../assets/Videos/pexels-mikhail-nilov-6981411.mp4";
+
+
 function Register() {
+  const navigate = useNavigate();
+
+  const [error, setError] = useState(false);
   const [logHeight, setLogHeight] = useState(window.innerHeight);
 
   useEffect(() => {
@@ -11,6 +18,38 @@ function Register() {
   const setDimension = () => {
     setLogHeight(window.innerHeight - 64);
   };
+
+  const handleRegister = async () => {
+    const email = document.getElementById("registerEmail").value;
+    const password = document.getElementById("registerPassword").value;
+    const confirmPassword = document.getElementById("registerConfirmPassword").value;
+
+    if (email !== '' && password !== '' && confirmPassword !== '' && password === confirmPassword) {
+      setError(false);
+
+      try {
+        const res = await axios.post(process.env.REACT_APP_BACKEND_URL + 'api/auth/local/register',
+          {
+            username: 'ramy',
+            email: email,
+            password: password,
+          });
+
+        if (res) {
+          sessionStorage.setItem("jwt", res.data.jwt);
+          sessionStorage.setItem("username", res.data.user.username);
+          sessionStorage.setItem("email", res.data.user.email);
+
+          navigate("/");
+        }
+      } catch (err) {
+        console.log("error", err);
+      }
+    }
+
+    setError(true);
+  }
+
   return (
     <div className="w-full h-full relative" style={{ height: logHeight - 64 }}>
       <div className="absolute w-full h-full left-0 top-0 overflow-hidden z-0">
@@ -31,7 +70,7 @@ function Register() {
             </h1>
             <p className="mb-14">
               Already have an account?{" "}
-              <a className="link hover:text-base-100">Log in here</a>
+              <Link to="/login" className="link hover:text-base-100">Log in here</Link>
             </p>
 
             <div className="form-control w-full mb-4">
@@ -41,6 +80,7 @@ function Register() {
                 </span>
               </label>
               <input
+                id="registerEmail"
                 type="text"
                 placeholder="Type here"
                 className="input input-bordered w-full input-primary bg-white"
@@ -54,6 +94,7 @@ function Register() {
                 </span>
               </label>
               <input
+                id="registerPassword"
                 type="password"
                 placeholder="Type here"
                 className="input input-bordered w-full input-primary bg-white bg-transparent"
@@ -67,12 +108,14 @@ function Register() {
                 </span>
               </label>
               <input
+                id="registerConfirmPassword"
                 type="password"
                 placeholder="Type here"
                 className="input input-bordered w-full input-primary bg-white bg-transparent"
               />
             </div>
-            <button className="btn btn-primary">SIGN UP</button>
+            {error && <div>Invalid Email or Password</div>}
+            <button onClick={handleRegister} className="btn btn-primary">SIGN UP</button>
           </div>
         </div>
       </div>

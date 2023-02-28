@@ -1,6 +1,7 @@
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Product from "./pages/Product";
 import Footerlogo from "./components/Footerlogo";
 import Navbar from "./components/Navbar";
@@ -17,10 +18,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/product" element={<Product />} />
         <Route path="/products" element={<Products />} />
       </Routes>
-      {location.pathname !== "/login" && (
+      {(location.pathname !== "/login" && location.pathname !== "/register") && (
         <>
           <Footerlogo />
           <Footer />
