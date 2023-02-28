@@ -4,7 +4,8 @@ import { FiHeart } from "react-icons/fi";
 import { CiDeliveryTruck, CiLock } from "react-icons/ci";
 
 const product = {
-  name: "drone",
+  manufacturer: "MANUFACTURER : CAMERA BUTTER / RÉFÉRENCE : AVATA-4-8-16-32",
+  name: "SET DE FILTRES ND 4/8/16/32 POUR DJI AVATA - CAMERA BUTTER",
   price: "150.08 EUR",
   img: [
     {
@@ -45,6 +46,12 @@ const product = {
   ],
   description:
     "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque ex ipsum, minus eum, optio non ut natus ea deserunt, facilis assumenda! Ex unde suscipit beatae natus. Quo accusamus facere quae.",
+  technicalDescription: [
+    "ND4 (ND 0,6) 25% de transmission (nuageux, couvert)",
+    "ND8 (ND 0,9) 12,5% de transmission (un peu de lumière)",
+    "ND16 (ND 1,2) 6,25% de transmission (lumière intense)",
+    "ND32 (ND 1,5) 3.125% de transmission (lumière très brillante)",
+  ],
 };
 
 function Product() {
@@ -91,10 +98,10 @@ function Product() {
 
           <div className="flex flex-col space-y-4 mt-12 lg:mt-0 max-w-[520px] lg:max-w-none">
             <p className="uppercase font-bold text-xs">
-              MANUFACTURER : CAMERA BUTTER / RÉFÉRENCE : AVATA-4-8-16-32
+              {product.manufacturer}
             </p>
             <h2 className="text-xl text-secondary-content font-bold">
-              SET DE FILTRES ND 4/8/16/32 POUR DJI AVATA - CAMERA BUTTER
+              {product.name}
             </h2>
             <p className="line-through text-xs lg:text-sm">Out Of Stock</p>
             <div className="w-full h-1 rounded-full bg-base-100"></div>
@@ -145,12 +152,12 @@ function Product() {
         </div>
 
         {/* extra infos and related products */}
-        <div className="w-full mx-auto p-4 border-2 border-primary rounded-lg flex flex-col space-y-4 pt-8">
+        <div className="w-full mx-auto p-4 md:p-8 border-2 border-primary rounded-lg flex flex-col space-y-4 pt-8">
           <h3 className="text-secondary-content text-lg text-semibold tracking-wide uppercase">
             Technical Characteristics
           </h3>
           <div className="w-full h-1 rounded-full bg-secondary-content/[0.5]"></div>
-          <p className="text-secondary-content">
+          <p className="text-secondary-content leading-relaxed">
             Pellentesque in ipsum id orci porta dapibus. Cras ultricies ligula
             sed magna dictum porta. Mauris blandit aliquet elit, eget tincidunt
             nibh pulvinar a. Vivamus magna justo, lacinia eget consectetur sed,
@@ -170,36 +177,13 @@ function Product() {
             nisi, pretium ut lacinia in, elementum id enim. Vivamus suscipit
             tortor eget felis porttitor volutpat. Curabitur aliquet quam id dui
             posuere blandit. Curabitur arcu erat, accumsan id imperdiet et,
-            porttitor at sem. Sed porttitor lectus nibh. Curabitur non nulla sit
-            amet nisl tempus convallis quis ac lectus. Lorem ipsum dolor sit
-            amet, consectetur adipiscing elit. Donec rutrum congue leo eget
-            malesuada. Proin eget tortor risus. Mauris blandit aliquet elit,
-            eget tincidunt nibh pulvinar a. Quisque velit nisi, pretium ut
-            lacinia in, elementum id enim. Donec sollicitudin molestie
-            malesuada. Curabitur arcu erat, accumsan id imperdiet et, porttitor
-            at sem. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Donec rutrum congue leo eget malesuada. Mauris blandit aliquet elit,
-            eget tincidunt nibh pulvinar a. Quisque velit nisi, pretium ut
-            lacinia in, elementum id enim. Vivamus suscipit tortor eget felis
-            porttitor volutpat. Curabitur non nulla sit amet nisl tempus
-            convallis quis ac lectus. Pellentesque in ipsum id orci porta
-            dapibus. Vivamus magna justo, lacinia eget consectetur sed,
-            convallis at tellus. Sed porttitor lectus nibh. Donec sollicitudin
-            molestie malesuada. Vestibulum ac diam sit amet quam vehicula
-            elementum sed sit amet dui. Nulla porttitor accumsan tincidunt. Sed
-            porttitor lectus nibh. Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit. Curabitur aliquet quam id dui posuere blandit.
-            Nulla quis lorem ut libero malesuada feugiat. Pellentesque in ipsum
-            id orci porta dapibus. Donec sollicitudin molestie malesuada.
-            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-            posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam
-            vel, ullamcorper sit amet ligula. Sed porttitor lectus nibh.
-            Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-            arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
-            sapien massa, convallis a pellentesque nec, egestas non nisi. Mauris
-            blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec rutrum
           </p>
+          <ul className="list-disc text-secondary-content list-inside">
+            {product.technicalDescription.map((text) => (
+              <li className="text-sm tracking-wide font-semibold">{text}</li>
+            ))}
+          </ul>
+          <p className="link">Cick here for the whole product info</p>
         </div>
       </div>
     </div>

@@ -10,9 +10,7 @@ function Banner() {
           <h3 className="uppercase text-white font-bold text-lg">Delivery</h3>
           <p className="text-center text-sm text-gray-400 pb-4">
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid
-            sed, iure sequi, reprehenderit, a obcaecati nostrum atque vel ipsam
-            et cumque iusto commodi sit amet velit assumenda quam doloribus
-            placeat?
+            sed, iure sequi, reprehenderit
           </p>
         </div>
         <div className="flex flex-col items-center justify-center w-full h-full space-y-4 p-4 mb-2">
@@ -20,9 +18,7 @@ function Banner() {
           <h3 className="uppercase text-white font-bold text-lg">Delivery</h3>
           <p className="text-center text-sm text-gray-400 pb-4 ">
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid
-            sed, iure sequi, reprehenderit, a obcaecati nostrum atque vel ipsam
-            et cumque iusto commodi sit amet velit assumenda quam doloribus
-            placeat?
+            sed, iure sequi, reprehenderit
           </p>
         </div>
         <div className="flex flex-col items-center justify-center w-full h-full space-y-4 p-4 mb-2">
@@ -30,9 +26,7 @@ function Banner() {
           <h3 className="uppercase text-white font-bold text-lg">Delivery</h3>
           <p className="text-center text-sm text-gray-400 pb-4">
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid
-            sed, iure sequi, reprehenderit, a obcaecati nostrum atque vel ipsam
-            et cumque iusto commodi sit amet velit assumenda quam doloribus
-            placeat?
+            sed, iure sequi, reprehenderit
           </p>
         </div>
         <div className="flex flex-col items-center justify-center w-full h-full space-y-4 p-4 mb-2">
@@ -40,9 +34,7 @@ function Banner() {
           <h3 className="uppercase text-white font-bold text-lg">Delivery</h3>
           <p className="text-center text-sm text-gray-400 pb-4">
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid
-            sed, iure sequi, reprehenderit, a obcaecati nostrum atque vel ipsam
-            et cumque iusto commodi sit amet velit assumenda quam doloribus
-            placeat?
+            sed, iure sequi, reprehenderit
           </p>
         </div>
       </div>

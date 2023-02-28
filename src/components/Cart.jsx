@@ -5,13 +5,13 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 const products = [
   {
     id: 1,
-    name: "Throwback Hip Bag",
+    name: "SET DE FILTRES ND 4/8/16/32 POUR DJI AVATA - CAMERA BUTTER",
     href: "#",
     color: "Salmon",
     price: "$90.00",
     quantity: 1,
     imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
+      "https://images.unsplash.com/photo-1597353361282-e3d3af9f4ab7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
     imageAlt:
       "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
   },
@@ -23,7 +23,67 @@ const products = [
     price: "$32.00",
     quantity: 1,
     imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+      "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+  {
+    id: 3,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    price: "$32.00",
+    quantity: 1,
+    imageSrc:
+      "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+  {
+    id: 4,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    price: "$32.00",
+    quantity: 1,
+    imageSrc:
+      "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+  {
+    id: 5,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    price: "$32.00",
+    quantity: 1,
+    imageSrc:
+      "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+  {
+    id: 6,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    price: "$32.00",
+    quantity: 1,
+    imageSrc:
+      "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+  {
+    id: 7,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    price: "$32.00",
+    quantity: 1,
+    imageSrc:
+      "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
     imageAlt:
       "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
   },
@@ -97,7 +157,7 @@ export default function Example({ handleOpen }) {
 
                                 <div className="ml-4 flex flex-1 flex-col">
                                   <div>
-                                    <div className="flex justify-between text-base font-medium text-white">
+                                    <div className="flex justify-between text-sm lg:text-base font-medium text-white">
                                       <h3>
                                         <a href={product.href}>
                                           {product.name}

@@ -13,7 +13,7 @@ function Products() {
     setIsSidebar(!isSidebar);
   };
   return (
-    <div className="w-full">
+    <div className="w-full md:mb-[200px] mb-20">
       <div className="flex flex-col justify-center items-start p-4 lg:p-8 2xl:pl-14 space-y-8">
         <Breadcrumbs className="z-0" />
         <h2 className="text-xl xl:text-3xl font-bold text-white">HELLO</h2>
