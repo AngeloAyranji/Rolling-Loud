@@ -6,10 +6,11 @@ import Footerlogo from "./components/Footerlogo";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
-import { Routes, Route } from "react-router-dom";
-
+import { Routes, Route, useLocation } from "react-router-dom";
 
 function App() {
+  const location = useLocation();
+
   return (
     <div className="bg-[#121212]">
       <Navbar />
@@ -19,8 +20,12 @@ function App() {
         <Route path="/product" element={<Product />} />
         <Route path="/products" element={<Products />} />
       </Routes>
-      <Footerlogo />
-      <Footer />
+      {location.pathname !== "/login" && (
+        <>
+          <Footerlogo />
+          <Footer />
+        </>
+      )}
     </div>
   );
 }
