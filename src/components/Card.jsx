@@ -12,7 +12,7 @@ function Card({ item }) {
           className="lg:h-[220px] h-[115px] object-cover object-center w-full rounded-t-xl"
         />
       </figure>
-      <div className="absolute flex lg:hidden h-8 w-8 md:h-12 md:w-12  rounded-full bg-primary transition-opacity right-4 top-4 lg:group-hover:flex text-secondary-content items-center justify-center">
+      <div className="absolute flex lg:hidden h-8 w-8 md:h-12 md:w-12  rounded-full bg-primary transition-opacity right-4 top-4 lg:group-hover:flex text-secondary-content items-center justify-center hover:scale-105">
         <MdAddShoppingCart />
       </div>
       <div className="flex flex-col flex-1 justify-between lg:w-[320px] w-[150px] md:w-[190px] lg:h-[350px] h-[180px] p-4 lg:p-8">

@@ -8,7 +8,7 @@ function ParallaxCard() {
   const rotateX = useTransform(y, [-100, 100], [30, -30]);
   const rotateY = useTransform(x, [-100, 100], [30, -30]);
   return (
-    <div className="w-full mx-auto flex items-center justify-center max-w-[1400px] p-14">
+    <div className="w-full mx-auto flex items-center justify-center max-w-[1400px] p-14 mb-12">
       <div style={{ perspective: 2000 }}>
         <motion.div
           style={{ x, y, rotateX, rotateY, z: 100 }}

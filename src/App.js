@@ -7,11 +7,12 @@ import Footerlogo from "./components/Footerlogo";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Banner from "./components/Banner";
+import Register from "./pages/Register";
 function App() {
   return (
     <div className="bg-[#121212]">
       <Navbar />
-      <Home />
+      <Products />
       <Banner />
       <Footerlogo />
       <Footer />

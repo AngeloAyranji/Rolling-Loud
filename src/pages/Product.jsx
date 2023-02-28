@@ -152,7 +152,7 @@ function Product() {
         </div>
 
         {/* extra infos and related products */}
-        <div className="w-full mx-auto p-4 border-2 border-primary rounded-lg flex flex-col space-y-4 pt-8">
+        <div className="w-full mx-auto p-4 md:p-8 border-2 border-primary rounded-lg flex flex-col space-y-4 pt-8">
           <h3 className="text-secondary-content text-lg text-semibold tracking-wide uppercase">
             Technical Characteristics
           </h3>
