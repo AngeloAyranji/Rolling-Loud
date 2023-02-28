@@ -23,21 +23,20 @@ function Register() {
     const email = document.getElementById("registerEmail").value;
     const password = document.getElementById("registerPassword").value;
     const confirmPassword = document.getElementById("registerConfirmPassword").value;
-
+    console.log(email, password)
     if (email !== '' && password !== '' && confirmPassword !== '' && password === confirmPassword) {
       setError(false);
 
       try {
         const res = await axios.post(process.env.REACT_APP_BACKEND_URL + 'api/auth/local/register',
           {
-            username: 'ramy',
+            username: email,
             email: email,
             password: password,
           });
 
         if (res) {
           sessionStorage.setItem("jwt", res.data.jwt);
-          sessionStorage.setItem("username", res.data.user.username);
           sessionStorage.setItem("email", res.data.user.email);
 
           navigate("/");

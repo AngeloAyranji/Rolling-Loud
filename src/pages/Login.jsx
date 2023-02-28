@@ -35,7 +35,6 @@ function Login() {
 
         if (res) {
           sessionStorage.setItem("jwt", res.data.jwt);
-          sessionStorage.setItem("username", res.data.user.username);
           sessionStorage.setItem("email", res.data.user.email);
 
           navigate("/");
