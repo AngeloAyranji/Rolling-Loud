@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="bg-[#121212]">
       <Navbar />
-      <Product />
+      <Home />
       <Banner />
       <Footerlogo />
       <Footer />

@@ -6,10 +6,6 @@
 @tailwind utilities;
 
 @layer base {
-  * {
-    /* @apply bg-green-400/[0.2]; */
-    box-sizing: border-box;
-  }
 }
 
 @font-face {
