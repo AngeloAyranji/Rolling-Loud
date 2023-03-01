@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { BsWhatsapp } from "react-icons/bs";
 import { BsMessenger } from "react-icons/bs";
+import { TfiHeadphoneAlt } from "react-icons/tfi";
 
 function SocialsMenu() {
   const [open, setOpen] = useState(false);
@@ -10,33 +11,31 @@ function SocialsMenu() {
     setOpen(!open);
   };
   return (
-    <div
-      className={
-        open
-          ? "fixed bottom-0 right-4 md:h-[88px] h-[130px]  bg-black flex flex-col jusitfy-center items-center rounded-t-md transition-transform duration-300 z-50"
-          : "fixed bottom-0 right-4 md:h-[88px] h-[130px] bg-black flex flex-col jusitfy-center items-center md:translate-y-[56px] translate-y-[103px]  rounded-t-md transition-transform duration-300 z-50"
-      }
-    >
-      <div
-        className="h-[32px] md:h-[50px] flex justify-center items-center px-2 pl-3 cursor-pointer"
+    <div className="fixed bottom-4 right-4 rounded-full bg-secondary flex flex-col items-center justify-center space-y-4 p-4 transition-transform">
+      <TfiHeadphoneAlt
+        className="text-secondary-content w-6 h-6 cursor-pointer"
         onClick={handleOpen}
+      />
+      <a
+        href=""
+        className={
+          open
+            ? "text-secondary-content w-6 h-6 cursor-pointer hover:text-blue-500"
+            : "hidden"
+        }
       >
-        <p className="text-xs uppercase font-semibold">Chat&nbsp; </p>
-        <p className="hidden md:inline-block text-xs uppercase font-semibold">
-          directly with us
-        </p>
-        <FiChevronDown
-          className={
-            open
-              ? " h-5 w-5  rotate-180 ease-in-out duration-300 ml-4"
-              : " h-5 w-5  ease-in-out duration-300 ml-4"
-          }
-        />
-      </div>
-      <div className="w-full h-full bg-black flex flex-col md:flex-row justify-between md:justify-center items-center md:space-x-10 md:space-y-0  px-4 md:py-2 py-4">
-        <BsWhatsapp className="w-6 h-6 text-secondary-content hover:text-green-500 ease-in duration-150 cursor-pointer" />
-        <BsMessenger className="w-6 h-6 text-secondary-content hover:text-blue-500 ease-in duration-150 cursor-pointer" />
-      </div>
+        <BsMessenger className="w-full h-full" />
+      </a>
+      <a
+        href=""
+        className={
+          open
+            ? "text-secondary-content w-6 h-6 cursor-pointer hover:text-green-400"
+            : "hidden"
+        }
+      >
+        <BsWhatsapp className="w-full h-full" />
+      </a>
     </div>
   );
 }

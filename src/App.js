@@ -11,11 +11,12 @@ import Register from "./pages/Register";
 import ForgotEmail from "./pages/ForgotEmail";
 import ForgotPassword from "./pages/ForgotPassword";
 import SocialsMenu from "./components/SocialsMenu";
+import Order from "./pages/Order";
 function App() {
   return (
     <div className="bg-[#121212]">
       <Navbar />
-      <Product />
+      <Order />
       <SocialsMenu />
       <Banner />
       <Footerlogo />
