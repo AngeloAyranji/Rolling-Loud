@@ -48,7 +48,9 @@ function Products() {
       </div>
       <div className="flex flex-row w-full relative mb-8">
         <Sidebar open={isSidebar} handleSidebar={handleSidebar} />
-        <ListProduct />
+        <div className="w-full mx-auto flex items-center justify-center">
+          <ListProduct />
+        </div>
       </div>
     </div>
   );

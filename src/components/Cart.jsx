@@ -1,97 +1,106 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useDispatch, useSelector } from "react-redux";
+import { removeItem } from "../redux/cartReducer";
 
-const products = [
-  {
-    id: 1,
-    name: "SET DE FILTRES ND 4/8/16/32 POUR DJI AVATA - CAMERA BUTTER",
-    href: "#",
-    color: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc:
-      "https://images.unsplash.com/photo-1597353361282-e3d3af9f4ab7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 2,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  {
-    id: 3,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  {
-    id: 4,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  {
-    id: 5,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  {
-    id: 6,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  {
-    id: 7,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  // More products...
-];
+// const products = [
+//   {
+//     id: 1,
+//     name: "SET DE FILTRES ND 4/8/16/32 POUR DJI AVATA - CAMERA BUTTER",
+//     href: "#",
+//     color: "Salmon",
+//     price: "$90.00",
+//     quantity: 1,
+//     imageSrc:
+//       "https://images.unsplash.com/photo-1597353361282-e3d3af9f4ab7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
+//     imageAlt:
+//       "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
+//   },
+//   {
+//     id: 2,
+//     name: "Medium Stuff Satchel",
+//     href: "#",
+//     color: "Blue",
+//     price: "$32.00",
+//     quantity: 1,
+//     imageSrc:
+//       "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
+//     imageAlt:
+//       "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+//   },
+//   {
+//     id: 3,
+//     name: "Medium Stuff Satchel",
+//     href: "#",
+//     color: "Blue",
+//     price: "$32.00",
+//     quantity: 1,
+//     imageSrc:
+//       "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
+//     imageAlt:
+//       "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+//   },
+//   {
+//     id: 4,
+//     name: "Medium Stuff Satchel",
+//     href: "#",
+//     color: "Blue",
+//     price: "$32.00",
+//     quantity: 1,
+//     imageSrc:
+//       "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
+//     imageAlt:
+//       "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+//   },
+//   {
+//     id: 5,
+//     name: "Medium Stuff Satchel",
+//     href: "#",
+//     color: "Blue",
+//     price: "$32.00",
+//     quantity: 1,
+//     imageSrc:
+//       "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
+//     imageAlt:
+//       "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+//   },
+//   {
+//     id: 6,
+//     name: "Medium Stuff Satchel",
+//     href: "#",
+//     color: "Blue",
+//     price: "$32.00",
+//     quantity: 1,
+//     imageSrc:
+//       "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
+//     imageAlt:
+//       "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+//   },
+//   {
+//     id: 7,
+//     name: "Medium Stuff Satchel",
+//     href: "#",
+//     color: "Blue",
+//     price: "$32.00",
+//     quantity: 1,
+//     imageSrc:
+//       "https://media.istockphoto.com/id/680040480/photo/quadrocopter-drone-isolated-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=Z1VhGbumvRzlCaBt8aKp7eShzX90RU6Axvjw-PIYvUs=",
+//     imageAlt:
+//       "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+//   },
+//   // More products...
+// ];
 
 export default function Example({ handleOpen }) {
   const [open, setOpen] = useState(true);
+  const products = useSelector((state) => state.cart.products);
+  const dispatch = useDispatch();
+  const totalPrice = () => {
+    let total = 0;
+    products.forEach((item) => (total += item.price * item.quantity));
+    return total.toFixed(2);
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -149,7 +158,7 @@ export default function Example({ handleOpen }) {
                               <li key={product.id} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
-                                    src={product.imageSrc}
+                                    src={product.img}
                                     alt={product.imageAlt}
                                     className="h-full w-full object-cover object-center"
                                   />
@@ -163,7 +172,9 @@ export default function Example({ handleOpen }) {
                                           {product.name}
                                         </a>
                                       </h3>
-                                      <p className="ml-4">{product.price}</p>
+                                      <p className="ml-4">
+                                        {product.price * product.quantity} $
+                                      </p>
                                     </div>
                                     <p className="mt-1 text-sm text-gray-500">
                                       {product.color}
@@ -176,6 +187,9 @@ export default function Example({ handleOpen }) {
 
                                     <div className="flex">
                                       <button
+                                        onClick={() =>
+                                          dispatch(removeItem(product.id))
+                                        }
                                         type="button"
                                         className="font-medium text-secondary hover:text-secondary-focus"
                                       >
@@ -194,7 +208,7 @@ export default function Example({ handleOpen }) {
                     <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                       <div className="flex justify-between text-base font-medium text-white">
                         <p>Subtotal</p>
-                        <p>$262.00</p>
+                        <p>{totalPrice()} $</p>
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">
                         Shipping and taxes calculated at checkout.

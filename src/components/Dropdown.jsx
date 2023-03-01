@@ -57,7 +57,7 @@ function Dropdown() {
               id={item.id}
               value={item.id}
               onChange={handleChange}
-              className=""
+              className="checked:bg-primary rounded-sm"
             />
             <label htmlFor={item.id}>{item.title}</label>
           </div>

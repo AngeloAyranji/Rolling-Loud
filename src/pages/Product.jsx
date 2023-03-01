@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import Breadcrumbs from "../components/Breadcrumbs";
 import { FiHeart } from "react-icons/fi";
 import { CiDeliveryTruck, CiLock } from "react-icons/ci";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/cartReducer";
 
 const product = {
+  id: 1,
   manufacturer: "MANUFACTURER : CAMERA BUTTER / RÉFÉRENCE : AVATA-4-8-16-32",
   name: "SET DE FILTRES ND 4/8/16/32 POUR DJI AVATA - CAMERA BUTTER",
-  price: "150.08 EUR",
+  price: 150,
   img: [
     {
       key: 0,
@@ -57,6 +60,7 @@ const product = {
 function Product() {
   const [mainImg, setMainImg] = useState(product.img[0].source);
   const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch();
 
   const handleImg = (e) => {
     setMainImg(e.target.src);
@@ -123,7 +127,20 @@ function Product() {
                   +
                 </button>
               </div>
-              <button className="btn btn-primary w-full max-w-[250px]">
+              <button
+                className="btn btn-primary w-full max-w-[250px]"
+                onClick={() =>
+                  dispatch(
+                    addToCart({
+                      id: product.id,
+                      name: product.name,
+                      img: product.img[0].source,
+                      price: product.price,
+                      quantity,
+                    })
+                  )
+                }
+              >
                 Add to Cart
               </button>
             </div>

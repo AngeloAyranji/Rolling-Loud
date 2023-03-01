@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Fragment } from "react";
+import { useSelector } from "react-redux";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BsPerson } from "react-icons/bs";
 import { FiHeart } from "react-icons/fi";
@@ -27,14 +28,15 @@ export default function Navbar() {
   const handleOpen = () => {
     setOpena(!opena);
   };
+  const products = useSelector((state) => state.cart.products);
 
   return (
     <Disclosure as="nav" className="bg-[#121212]">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-[1400px] px-2 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-[1400px] px-2 md:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+              <div className="absolute inset-y-0 left-0 flex items-center md:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
@@ -45,7 +47,7 @@ export default function Navbar() {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="block h-8 w-auto lg:hidden"
@@ -58,7 +60,7 @@ export default function Navbar() {
                     alt="Your Company"
                   />
                 </div>
-                <div className="hidden sm:ml-6 sm:block">
+                <div className="hidden md:ml-6 md:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <a
@@ -78,7 +80,7 @@ export default function Navbar() {
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+              <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
                 <button
                   type="button"
                   className="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -99,8 +101,8 @@ export default function Navbar() {
                 >
                   <span className="sr-only">View cart</span>
                   <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                  <div className="absolute flex top-[-3px] right-[-2px] h-4 w-3 rounded-full bg-primary align-center justify-center text-center items-center">
-                    <p className=" text-white text-sm">0</p>
+                  <div className="absolute flex top-[-3px] right-[-2px] h-4 w-3 rounded-full bg-primary  justify-center text-center items-center">
+                    <p className=" text-white text-sm">{products.length}</p>
                   </div>
                 </button>
 
@@ -170,7 +172,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
+          <Disclosure.Panel className="md:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item) => (
                 <Disclosure.Button

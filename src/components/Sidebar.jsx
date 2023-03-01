@@ -52,7 +52,7 @@ function Sidebar({ open, handleSidebar }) {
               id="new"
               value="new"
               onChange={handleChange}
-              className=""
+              className="checked:bg-primary rounded-sm"
             />
             <label htmlFor="new">New</label>
           </div>
@@ -62,7 +62,7 @@ function Sidebar({ open, handleSidebar }) {
               id="featured"
               value="featured"
               onChange={handleChange}
-              className=""
+              className="checked:bg-primary rounded-sm"
             />
             <label htmlFor="featured">Featured</label>
           </div>
@@ -72,7 +72,7 @@ function Sidebar({ open, handleSidebar }) {
               id="Promotion"
               value="Promotion"
               onChange={handleChange}
-              className=""
+              className="checked:bg-primary rounded-sm"
             />
             <label htmlFor="Promotion">Promotion</label>
           </div>
@@ -86,7 +86,7 @@ function Sidebar({ open, handleSidebar }) {
               id="inStock"
               value="inStock"
               onChange={handleChange}
-              className=""
+              className="checked:bg-primary rounded-sm"
             />
             <label htmlFor="inStock">In Stock</label>
           </div>
@@ -96,7 +96,7 @@ function Sidebar({ open, handleSidebar }) {
               id="outOfStock"
               value="outOfStock"
               onChange={handleChange}
-              className=""
+              className="checked:bg-primary rounded-sm"
             />
             <label htmlFor="outOfStock">Out Of Stock</label>
           </div>
