@@ -10,11 +10,13 @@ import Banner from "./components/Banner";
 import Register from "./pages/Register";
 import ForgotEmail from "./pages/ForgotEmail";
 import ForgotPassword from "./pages/ForgotPassword";
+import SocialsMenu from "./components/SocialsMenu";
 function App() {
   return (
     <div className="bg-[#121212]">
       <Navbar />
       <Product />
+      <SocialsMenu />
       <Banner />
       <Footerlogo />
       <Footer />
