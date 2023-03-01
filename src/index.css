@@ -13,11 +13,11 @@
   src: url("./assets/Fonts/planet_kosmos/PLANK___.TTF");
 }
 
-/* @layer utilities {
-  .line-clamp-2 {
+@layer utilities {
+  .line-clamp-4 {
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-} */
+}

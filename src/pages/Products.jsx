@@ -14,7 +14,7 @@ function Products() {
   };
   return (
     <div className="w-full md:mb-[200px] mb-20">
-      <div className="flex flex-col justify-center items-start p-4 lg:p-8 2xl:pl-14 space-y-8">
+      <div className="flex flex-col justify-center items-start p-4 md:p-6 lg:p-8 2xl:pl-14 space-y-8">
         <Breadcrumbs className="z-0" />
         <h2 className="text-xl xl:text-3xl font-bold text-white">HELLO</h2>
         <p className="max-w-[700px]">
@@ -23,12 +23,12 @@ function Products() {
           dolor, excepturi eius, nihil quisquam. Debitis reprehenderit atque,
           suscipit quaerat impedit minima!
         </p>
-        <div className="flex flex-row justify-between lg:justify-start items-center w-full border-t-2 border-t-base-100 pt-6 space-x-8">
+        <div className="flex flex-row justify-between md:justify-start items-center w-full border-t-2 border-t-base-100 pt-6 space-x-8 md:space-x-0">
           <BsSliders
-            className="w-6 h-6 font-thin text-[#A6ADBB] lg:hidden"
+            className="w-6 h-6 font-thin text-[#A6ADBB] md:hidden"
             onClick={handleSidebar}
           />
-          <div className="">
+          <div className="pl-0">
             <Select
               color="cyan"
               label="Sort By"

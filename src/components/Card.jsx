@@ -16,27 +16,28 @@ function Card({ item }) {
         <MdAddShoppingCart />
       </div>
       <div className="flex flex-col flex-1 justify-between lg:w-[320px] w-[150px] md:w-[190px] lg:h-[350px] h-[180px] p-4 lg:p-8">
-        <div className="flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:space-x-2 lg:items-center">
-          <h2 className="card-title uppercase text-neutral group-hover:text-black ease-in-out duration-150 text-sm lg:text-lg">
-            {item.name}
-          </h2>
-          {item.isNew && (
-            <div className="badge badge-secondary badge-xs lg:badge-md">
-              NEW
-            </div>
-          )}
-          {item.isFeatured && (
-            <div className="badge badge-secondary badge-xs lg:badge-md">
-              FEATURED
-            </div>
-          )}
-          {item.promotion !== 1 && (
-            <div className="badge badge-secondary badge-xs lg:badge-md">
-              PROMOTION
-            </div>
-          )}
-        </div>
-        {/* <div className="h-4">
+        <div>
+          <div className="flex flex-col space-y-2  mb-4">
+            <h2 className="card-title uppercase text-neutral group-hover:text-black ease-in-out duration-150 text-xs lg:text-base">
+              {item.name}
+            </h2>
+            {item.isNew && (
+              <div className="badge badge-secondary badge-xs lg:badge-md">
+                NEW
+              </div>
+            )}
+            {item.isFeatured && (
+              <div className="badge badge-secondary badge-xs lg:badge-md">
+                FEATURED
+              </div>
+            )}
+            {item.promotion !== 1 && (
+              <div className="badge badge-secondary badge-xs lg:badge-md">
+                PROMOTION
+              </div>
+            )}
+          </div>
+          {/* <div className="h-4">
           {item.isInStock === true ? (
             <p className="text-green-500 text-xs lg:text-sm">In Stock</p>
           ) : (
@@ -45,9 +46,10 @@ function Card({ item }) {
             </p>
           )}
         </div> */}
-        <p className="group-hover:text-black text-base-100 ease-in-out duration-150 text-xs lg:text-base line-clamp-2 lg:line-clamp-6 mb-4 lg:mb-8">
-          {item.description}
-        </p>
+          <p className="hidden group-hover:text-black text-base-100 ease-in-out duration-150 text-sm line-clamp-0 lg:line-clamp-4 mb-4 lg:mb-8 lg:inline-block">
+            {item.description}
+          </p>
+        </div>
         {item.promotion !== 1 ? (
           <div className="card-actions justify-start">
             <div className="badge badge-xs lg:badge-md line-through text-gray-400">

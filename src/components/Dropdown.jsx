@@ -29,7 +29,7 @@ function Dropdown() {
   };
   return (
     <div className="w-full flex flex-col space-y-4 mt-8 z-10">
-      <div className="flex flex-row justify-between items-center w-[200px]">
+      <div className="flex flex-row justify-between items-center w-[180px]">
         <h3 className="text-white text-md ">Engine</h3>
         <FiChevronDown
           className={
@@ -49,7 +49,7 @@ function Dropdown() {
       >
         {filters?.map((item) => (
           <div
-            className="flex flex-row justify-start space-x-4 pl-2"
+            className="flex flex-row justify-start space-x-4 items-center pl-2"
             key={item.id}
           >
             <input

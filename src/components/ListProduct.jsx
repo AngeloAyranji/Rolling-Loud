@@ -4,7 +4,7 @@ import Card from "./Card";
 function ListProduct() {
   const data = [
     {
-      name: "drone",
+      name: "SET DE FILTRES ND 4/8/16/32 POUR DJI AVATA - CAMERA BUTTER",
       image:
         "https://images.unsplash.com/photo-1597353361282-e3d3af9f4ab7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
       description:
@@ -18,7 +18,7 @@ function ListProduct() {
       id: 1,
     },
     {
-      name: "drone",
+      name: "MOTEUR LETHAL CONCEPTION 2207.5 - 1866KV",
       image:
         "https://images.unsplash.com/photo-1597353361282-e3d3af9f4ab7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
       description:
@@ -32,7 +32,7 @@ function ListProduct() {
       id: 2,
     },
     {
-      name: "drone",
+      name: "GPS GOKU GM10 NANO V3 - FLYWOO",
       image:
         "https://images.unsplash.com/photo-1597353361282-e3d3af9f4ab7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
       description:

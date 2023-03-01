@@ -177,7 +177,7 @@ export default function Example({ handleOpen }) {
                                     <div className="flex">
                                       <button
                                         type="button"
-                                        className="font-medium text-primary hover:text-primary-focus"
+                                        className="font-medium text-secondary hover:text-secondary-focus"
                                       >
                                         Remove
                                       </button>
