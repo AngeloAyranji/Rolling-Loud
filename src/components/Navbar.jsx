@@ -32,10 +32,6 @@ export default function Navbar() {
     setOpena(!opena);
   };
 
-  useEffect(() => {
-    console.log(1);
-  }, []);
-
   const handleLogOut = () => {
     sessionStorage.removeItem("jwt");
     sessionStorage.removeItem("email");
