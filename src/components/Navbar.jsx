@@ -68,9 +68,9 @@ export default function Navbar() {
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "px-3 py-2 rounded-md text-sm font-medium"
+                            ? "text-primary border-b-2 border-primary"
+                            : " hover:text-primary hover:border-b-2 border-primary",
+                          "px-3 py-2 text-sm font-medium"
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
@@ -180,10 +180,8 @@ export default function Navbar() {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block px-3 py-2 rounded-md text-base font-medium"
+                    item.current ? "text-primary" : " hover:text-primary",
+                    "block px-3 py-2 text-base font-medium"
                   )}
                   aria-current={item.current ? "page" : undefined}
                 >
