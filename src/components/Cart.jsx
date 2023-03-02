@@ -118,7 +118,22 @@ export default function Example({ handleOpen }) {
                     </div>
 
                     <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
-                      <div className="flex justify-between text-base font-medium text-white">
+                      <div className="form-control w-full">
+                        <label className="label">
+                          <span className="label-text">Enter PROMO Code</span>
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="CODE"
+                            className="input input-bordered w-full pr-16"
+                          />
+                          <button className="btn btn-primary absolute top-0 right-0 rounded-l-none">
+                            ADD
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex justify-between text-base font-medium text-white mt-4">
                         <p>Subtotal</p>
                         <p>{totalPrice()} $</p>
                       </div>
@@ -135,7 +150,7 @@ export default function Example({ handleOpen }) {
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
-                          or
+                          or{" "}
                           <button
                             type="button"
                             className="font-medium text-primary hover:text-primary-focus"
