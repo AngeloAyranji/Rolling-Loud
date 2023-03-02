@@ -18,7 +18,7 @@ function Order() {
             order id: 320581431
           </h2>
           <p className="max-w-[700px]">Order Date : Feb 16 , 2023</p>
-          <div className="h-[2px] w-full bg-base-100"></div>
+          <div className="h-[2px] w-full bg-primary"></div>
 
           <div className="mt-8 w-full border-b-[2px] pb-8 border-b-base-100">
             <div className="flow-root">
@@ -43,9 +43,6 @@ function Order() {
                             {product.price * product.quantity} $
                           </p>
                         </div>
-                        <p className="mt-1 text-sm text-gray-500">
-                          {product.color}
-                        </p>
                       </div>
                       <div className="flex flex-1 items-end justify-between text-sm">
                         <p className="">Qty : {product.quantity}</p>
