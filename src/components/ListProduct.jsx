@@ -131,7 +131,7 @@ function ListProduct() {
     },
   ];
   return (
-    <div className="grid gap-4 grid-cols-2 md:gap-8 xl:gap-14 2xl:gap-8 2xl:grid-cols-3 gap-4 p-4 justify-start">
+    <div className="grid grid-cols-2 md:gap-8 xl:gap-14 2xl:gap-8 2xl:grid-cols-3 gap-4 p-4 justify-start">
       {data?.map((item) => (
         <Card item={item} key={item.id} />
       ))}

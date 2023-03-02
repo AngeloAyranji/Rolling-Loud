@@ -38,11 +38,7 @@ function ParallaxCard() {
                 style={{ x, y, rotateX, rotateY, z: 1000 }}
                 className="absolute md:right-[-20px] md:top-[-20px] top-10"
               >
-                <img
-                  src={drone}
-                  className="drop-shadow-[0_35px_35px_rgba(0,0,0,0.77)]"
-                  draggable={false}
-                ></img>
+                <img src={drone} className="" draggable={false}></img>
               </motion.div>
             </div>
           </div>

@@ -4,7 +4,7 @@ import Card from "./Card";
 function List() {
   const data = [
     {
-      name: "drone",
+      name: "GPS GOKU GM10 NANO V3 - FLYWOO",
       image:
         "https://images.unsplash.com/photo-1597353361282-e3d3af9f4ab7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
       description:
