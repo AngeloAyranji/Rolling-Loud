@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import List from "./List";
+
 function Tabs() {
-  const [active, setActive] = useState(1);
-  const toggleTab = (index) => {
-    setActive(index);
-  };
+  const [active, setActive] = useState('new');
+
   return (
     <div className="flex w-full bg-[#121212] justify-center mb-20 pl-8 pr-8">
       <div className="flex flex-col space-y-10 overflow-hidden">
@@ -12,47 +11,47 @@ function Tabs() {
           <div className="tabs w-full flex items-center justify-center md:block">
             <a
               className={
-                active === 1
+                active === 'new'
                   ? "tab tab-bordered tab-active"
                   : "tab tab-bordered"
               }
-              onClick={() => toggleTab(1)}
+              onClick={() => setActive('new')}
             >
               NEW
             </a>
             <a
               className={
-                active === 2
+                active === 'featured'
                   ? "tab tab-bordered tab-active"
                   : "tab tab-bordered"
               }
-              onClick={() => toggleTab(2)}
+              onClick={() => setActive('featured')}
             >
               FEATURED
             </a>
             <a
               className={
-                active === 3
+                active === 'promotion'
                   ? "tab tab-bordered tab-active"
                   : "tab tab-bordered"
               }
-              onClick={() => toggleTab(3)}
+              onClick={() => setActive('promotion')}
             >
               PROMOTION
             </a>
           </div>
-          {active === 1 && (
+          {active === 'new' && (
             <button className="btn btn-primary">SEE ALL IN NEW</button>
           )}
-          {active === 2 && (
+          {active === 'featured' && (
             <button className="btn btn-primary">SEE ALL IN FEATURED</button>
           )}
-          {active === 3 && (
+          {active === 'promotion' && (
             <button className="btn btn-primary">SEE ALL IN PROMOTION</button>
           )}
         </div>
         <div className="max-w-[1400px]">
-          <List />
+          <List type={active} />
         </div>
       </div>
     </div>

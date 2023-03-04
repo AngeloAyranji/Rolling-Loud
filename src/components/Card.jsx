@@ -6,7 +6,7 @@ function Card({ item }) {
   const [imgUrl, setImgUrl] = useState('');
 
   useEffect(() => {
-    setTimeout(() => setImgUrl(process.env.REACT_APP_BACKEND_URL + (item.image.data[0].attributes.url).substring(1)), 500)
+    setTimeout(() => setImgUrl(process.env.REACT_APP_BACKEND_URL + (item.image.data[0].attributes.url).substring(1)), 100)
   }, [])
 
   return (
@@ -52,12 +52,12 @@ function Card({ item }) {
           )}
         </div> 
         <p className="group-hover:text-black text-base-100 ease-in-out duration-150 text-xs lg:text-base line-clamp-2 lg:line-clamp-6 mb-4 lg:mb-8">
-          {item.description}
+          {item.shortDescription}
         </p>
-        {item.type !== 'promotion' ? (
+        {item.type == 'promotion' ? (
           <div className="card-actions justify-end">
             <div className="badge badge-xs lg:badge-md line-through text-gray-400">
-              $ {item.price}
+              $ {item.oldPrice}
             </div>
             <div className="badge badge-xs lg:badge-md text-secondary-content">
               $ {item.price}

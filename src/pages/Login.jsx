@@ -85,7 +85,7 @@ function Login() {
                   Password
                 </span>
                 <span>
-                  <a className="link text-primary">Forgot Password?</a>
+                  <Link to="/forgetEmail" className="link text-primary">Forgot Password?</Link>
                 </span>
               </label>
               <input

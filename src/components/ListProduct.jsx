@@ -1,27 +1,14 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import Card from "./Card";
+import { Link } from "react-router-dom";
 
-function ListProduct() {
-
-  const [products, setProducts] = useState([]);
-
-  const fetchProducts = async () => {
-    const res = await axios.get(process.env.REACT_APP_BACKEND_URL + "api/products/?populate=*");
-
-    console.log(res.data.data)
-    setProducts(res.data.data)
-  }
-
-  useEffect(() => {
-    fetchProducts()
-  }, [])
-
-
+function ListProduct({ products }) {
   return (
     <div className="w-full flex flex-wrap gap-4 p-4 justify-center">
-      {products.map((item) => (
-        <Card item={item.attributes} key={item.id} />
+      {products?.map((item) => (
+        <Link to={"/product"} state={{product: item.attributes}}>
+          <Card item={item.attributes} key={item.id} />
+        </Link>
       ))}
     </div>
   );

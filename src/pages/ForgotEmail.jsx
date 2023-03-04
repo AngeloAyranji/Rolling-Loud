@@ -1,7 +1,10 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import bgVid from "../assets/Videos/pexels-mikhail-nilov-6981411.mp4";
+
 function ForgotEmail() {
+  const [error, setError] = useState(false)
   const [logHeight, setLogHeight] = useState(window.innerHeight);
 
   useEffect(() => {
@@ -11,6 +14,31 @@ function ForgotEmail() {
   const setDimension = () => {
     setLogHeight(window.innerHeight - 64);
   };
+
+  const handleReset = async () => {
+    const email = document.getElementById("forgotEmail").value;
+
+    if (email != "") {
+      setError(false);
+      try {
+        const res = await axios.post(
+          process.env.REACT_APP_BACKEND_URL + "api/auth/forgot-password",
+          {
+            email
+          }
+        );
+
+        if (res) {
+          console.log(res)
+        }
+      } catch (err) {
+        console.log("error", err);
+      }
+    }
+
+    setError(true);
+  };
+
   return (
     <div className="w-full h-full relative" style={{ height: logHeight - 64 }}>
       <div className="absolute w-full h-full left-0 top-0 overflow-hidden z-0">
@@ -39,13 +67,14 @@ function ForgotEmail() {
                 </span>
               </label>
               <input
+                id="forgotEmail"
                 type="text"
                 placeholder="Type here"
                 className="input input-bordered w-full input-primary bg-white"
               />
             </div>
-
-            <button className="btn btn-primary">SEND EMAIL</button>
+            {error && <div>Invalid Email</div>}
+            <button onClick={handleReset} className="btn btn-primary">SEND EMAIL</button>
           </div>
         </div>
       </div>
