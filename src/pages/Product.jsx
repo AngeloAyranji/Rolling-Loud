@@ -92,7 +92,7 @@ function Product() {
                     addToCart({
                       id: product?.product_id,
                       name: product?.product.title,
-                      img: product?product.image.data[0].attributes.url,
+                      img: product?.product.image.data[0].attributes.url,
                       price: product?.product.price,
                       quantity,
                     })
