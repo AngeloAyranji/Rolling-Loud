@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MdAddShoppingCart } from "react-icons/md";
 
+
 function Card({ item }) {
-  const finalPrice = (item.price * item.promotion).toFixed(2);
+  const [imgUrl, setImgUrl] = useState('');
+
+  useEffect(() => {
+    setTimeout(() => setImgUrl(process.env.REACT_APP_BACKEND_URL + (item.image.data[0].attributes.url).substring(1)), 100)
+  }, [])
+
   return (
     <div className="rounded-xl w-[150px] md:w-[190px] shadow-xl h-[296px] lg:w-[320px] lg:h-[570px] cursor-pointer group relative bg-secondary-content">
       <figure>
         <img
-          src={item.image}
+          src={imgUrl}
           alt="Shoes"
           className="lg:h-[220px] h-[115px] object-cover object-center w-full rounded-t-xl"
         />
@@ -19,26 +25,26 @@ function Card({ item }) {
         <div>
           <div className="flex flex-col space-y-2  mb-4">
             <h2 className="card-title uppercase text-neutral group-hover:text-black ease-in-out duration-150 text-xs lg:text-base">
-              {item.name}
+              {item.title}
             </h2>
-            {item.isNew && (
+            {item.type === 'new' && (
               <div className="badge badge-secondary badge-xs lg:badge-md">
                 NEW
               </div>
             )}
-            {item.isFeatured && (
+            {item.type === 'featured' && (
               <div className="badge badge-secondary badge-xs lg:badge-md">
                 FEATURED
               </div>
             )}
-            {item.promotion !== 1 && (
+            {item.type === "promotion" && (
               <div className="badge badge-secondary badge-xs lg:badge-md">
                 PROMOTION
               </div>
             )}
           </div>
           {/* <div className="h-4">
-          {item.isInStock === true ? (
+          {item.quantity > 0 ? (
             <p className="text-green-500 text-xs lg:text-sm">In Stock</p>
           ) : (
             <p className="text-gray-600 line-through text-xs lg:text-sm">
@@ -47,22 +53,23 @@ function Card({ item }) {
           )}
         </div> */}
           <p className="hidden group-hover:text-black text-base-100 ease-in-out duration-150 text-sm line-clamp-0 lg:line-clamp-4 mb-4 lg:mb-8 lg:inline-block">
-            {item.description}
+            {item.shortDescription}
           </p>
         </div>
-        {item.promotion !== 1 ? (
+        {item.type == 'promotion' ? (
           <div className="card-actions justify-start">
+
             <div className="badge badge-xs lg:badge-md line-through text-gray-400">
-              $ {item.price.toFixed(2)}
+              $ {item.oldPrice}
             </div>
             <div className="badge badge-xs lg:badge-md text-secondary-content">
-              $ {finalPrice}
+              $ {item.price}
             </div>
           </div>
         ) : (
           <div className="card-actions justify-start">
             <div className="badge badge-xs lg:badge-md text-secondary-content">
-              ${finalPrice}
+              ${item.price}
             </div>
           </div>
         )}

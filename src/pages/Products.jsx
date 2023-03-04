@@ -1,17 +1,17 @@
-import React from "react";
+import React, {useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Breadcrumbs from "../components/Breadcrumbs";
 import ListProduct from "../components/ListProduct";
 import { BsSliders } from "react-icons/bs";
 import { Select, Option } from "@material-tailwind/react";
-import { useState } from "react";
+import useFetch from "../hooks/useFetch";
 
 function Products() {
+
+  const {data: products, loading, error} = useFetch("api/products/?populate=*")
+
   const [isSidebar, setIsSidebar] = useState(false);
 
-  const handleSidebar = () => {
-    setIsSidebar(!isSidebar);
-  };
   return (
     <div className="w-full md:mb-[200px] mb-20">
       <div className="flex flex-col justify-center items-start p-4 md:p-6 lg:p-8 2xl:pl-14 space-y-8">
@@ -26,7 +26,7 @@ function Products() {
         <div className="flex flex-row justify-between md:justify-start items-center w-full border-t-2 border-t-base-100 pt-6 space-x-8 md:space-x-0">
           <BsSliders
             className="w-6 h-6 font-thin text-[#A6ADBB] md:hidden"
-            onClick={handleSidebar}
+            onClick={() => setIsSidebar(!isSidebar)}
           />
           <div className="pl-0">
             <Select
@@ -47,9 +47,9 @@ function Products() {
         </div>
       </div>
       <div className="flex flex-row w-full relative mb-8">
-        <Sidebar open={isSidebar} handleSidebar={handleSidebar} />
+        <Sidebar open={isSidebar} handleSidebar={() => setIsSidebar(!isSidebar)} />
         <div className="w-full mx-auto flex items-center justify-center">
-          <ListProduct />
+        <ListProduct products={products} />
         </div>
       </div>
     </div>
