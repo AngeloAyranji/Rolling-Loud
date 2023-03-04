@@ -5,11 +5,15 @@ import { CiDeliveryTruck, CiLock } from "react-icons/ci";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartReducer";
 import { useLocation } from "react-router-dom";
+import ReactMakrdown from "react-markdown";
 
 function Product() {
   const { state: product } = useLocation();
 
-  const [mainImg, setMainImg] = useState(process.env.REACT_APP_BACKEND_URL + (product.product.image.data[0].attributes.url).substring(1));
+  const [mainImg, setMainImg] = useState(
+    process.env.REACT_APP_BACKEND_URL +
+      product?.product.image.data[0].attributes.url.substring(1)
+  );
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
 
@@ -17,7 +21,7 @@ function Product() {
     setMainImg(e.target.src);
   };
 
-  const [imgUrl, setImgUrl] = useState('');
+  const [imgUrl, setImgUrl] = useState("");
 
   return (
     <div className="flex w-full mx-auto p-4 pt-8 md:p-8">
@@ -44,7 +48,10 @@ function Product() {
                   key={index}
                 >
                   <img
-                    src={process.env.REACT_APP_BACKEND_URL + (item.attributes.url).substring(1)}
+                    src={
+                      process.env.REACT_APP_BACKEND_URL +
+                      item.attributes.url.substring(1)
+                    }
                     alt=""
                     className="object-cover object-center w-full h-full rounded-lg"
                     onClick={handleImg}
@@ -61,8 +68,12 @@ function Product() {
             <h2 className="text-xl text-secondary-content font-bold">
               {product.product.title}
             </h2>
-            {product.product.quantity === 0 ? <p className="line-through text-xs lg:text-sm">Out Of Stock</p> : <p className="text-green-500 text-xs lg:text-sm">In Stock</p>}
-            
+            {product.product.quantity === 0 ? (
+              <p className="line-through text-xs lg:text-sm">Out Of Stock</p>
+            ) : (
+              <p className="text-green-500 text-xs lg:text-sm">In Stock</p>
+            )}
+
             <div className="w-full h-1 rounded-full bg-base-100"></div>
             <p className="text-xl text-primary font-semibold tracking-wide">
               {product.product.price}
@@ -81,18 +92,30 @@ function Product() {
                   -
                 </button>
                 {product.product.quantity === 0 ? 0 : quantity}
-                <button onClick={() => setQuantity((prev) => prev == product.product.quantity ? prev : prev + 1)}>
+                <button
+                  onClick={() =>
+                    setQuantity((prev) =>
+                      prev == product.product.quantity ? prev : prev + 1
+                    )
+                  }
+                >
                   +
                 </button>
               </div>
               <button
-                className={product.product.quantity === 0 ? "btn btn-disabled btn-primary w-full max-w-[250px]" : "btn btn-primary w-full max-w-[250px]"}
+                className={
+                  product.product.quantity === 0
+                    ? "btn btn-disabled btn-primary w-full max-w-[250px]"
+                    : "btn btn-primary w-full max-w-[250px]"
+                }
                 onClick={() =>
                   dispatch(
                     addToCart({
                       id: product?.product_id,
                       name: product?.product.title,
-                      img: product?.product.image.data[0].attributes.url,
+                      img: product?.product.image.data[0].attributes.url.substring(
+                        1
+                      ),
                       price: product?.product.price,
                       quantity,
                     })
@@ -131,15 +154,10 @@ function Product() {
           <h3 className="text-secondary-content text-lg text-semibold tracking-wide uppercase">
             Technical Characteristics
           </h3>
-          <div className="w-full h-1 rounded-full bg-secondary-content/[0.5]"></div>
-          <p className="text-secondary-content leading-relaxed">
-            <pre>{product.product.longDescription}</pre>
-          </p>
-          <ul className="list-disc text-secondary-content list-inside">
-            {/* {product.technicalDescription.map((text) => (
-              <li className="text-sm tracking-wide font-semibold">{text}</li>
-            ))} */}
-          </ul>
+          <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
+          <ReactMakrdown className="">
+            {product.product.longDescription}
+          </ReactMakrdown>
           <p className="link">Cick here for the whole product info</p>
         </div>
       </div>
