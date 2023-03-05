@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Breadcrumbs from "../components/Breadcrumbs";
 import ListProduct from "../components/ListProduct";
@@ -7,10 +7,31 @@ import { Select, Option } from "@material-tailwind/react";
 import useFetch from "../hooks/useFetch";
 
 function Products() {
-
-  const {data: products, loading, error} = useFetch("api/products/?populate=*")
-
   const [isSidebar, setIsSidebar] = useState(false);
+  const [isNew, setIsNew] = useState(false);
+  const [isPromotion, setIsPromotion] = useState(false);
+  const [isFeatured, setIsFeatured] = useState(false);
+  const [isInStock, setIsInStock] = useState(false);
+  const [isOutStock, setIsOutStock] = useState(false);
+  const [price, setPrice] = useState([0, 2000]);
+  const [categories, setCategories] = useState([]);
+  const [url, setUrl] = useState("");
+
+  const {
+    data: products,
+    loading,
+    error,
+  } = useFetch(`api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*${url}&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}`);
+
+  useEffect(() => {
+    let filter = "";
+    if (isNew) filter += "&filters[type][$eq]=new";
+    if (isPromotion) filter += "&filters[type][$eq]=promotion";
+    if (isFeatured) filter += "&filters[type][$eq]=featured";
+    if (isInStock) filter += "&filters[quantity][$gt]=0";
+    if(categories.length > 0) categories.map((cat) => filter += `&filters[categories][id][&eq]=${cat}`)
+    setUrl(filter);
+  }, [isNew, isFeatured, isPromotion, isInStock, categories]);
 
   return (
     <div className="w-full md:mb-[200px] mb-20">
@@ -47,9 +68,19 @@ function Products() {
         </div>
       </div>
       <div className="flex flex-row w-full relative mb-8">
-        <Sidebar open={isSidebar} handleSidebar={() => setIsSidebar(!isSidebar)} />
+        <Sidebar
+          open={isSidebar}
+          handleSidebar={() => setIsSidebar(!isSidebar)}
+          setIsNew={setIsNew}
+          setIsFeatured={setIsFeatured}
+          setIsPromotion={setIsPromotion}
+          setIsInStock={setIsInStock}
+          setPrice={setPrice}
+          categories={categories}
+          setCategories={setCategories}
+        />
         <div className="w-full mx-auto flex items-center justify-center">
-        <ListProduct products={products} />
+          <ListProduct products={products} />
         </div>
       </div>
     </div>

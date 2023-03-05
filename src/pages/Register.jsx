@@ -23,7 +23,6 @@ function Register() {
     const email = document.getElementById("registerEmail").value;
     const password = document.getElementById("registerPassword").value;
     const confirmPassword = document.getElementById("registerConfirmPassword").value;
-    console.log(email, password)
     if (email !== '' && password !== '' && confirmPassword !== '' && password === confirmPassword) {
       setError(false);
 

@@ -17,8 +17,6 @@ function Product() {
     setMainImg(e.target.src);
   };
 
-  const [imgUrl, setImgUrl] = useState('');
-
   return (
     <div className="flex w-full mx-auto p-4 pt-8 md:p-8">
       <div className="flex flex-col space-y-8 w-full mx-auto max-w-[1400px]">

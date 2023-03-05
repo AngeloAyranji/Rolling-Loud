@@ -13,7 +13,6 @@ const useFetch = (url, authentication = false) => {
                 let res;
                 if(authentication) res = await makeAuthRequest.get(url)
                 else res = await makeRequest.get(url)
-                console.log(res.data)
                 setData(res.data.data)
             } catch(err) {
                 console.log("error: ", err)

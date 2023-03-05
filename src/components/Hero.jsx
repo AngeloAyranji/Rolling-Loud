@@ -1,24 +1,23 @@
 import React from "react";
-import bgVid from "../assets/Videos/pexels-mikhail-nilov-6981411.mp4";
 import { Link } from "react-router-dom";
+import useFetch from "../hooks/useFetch"
 
 function Hero() {
-  const images = [
-    "https://cdn.pixabay.com/photo/2021/03/25/09/10/fog-6122490_960_720.jpg",
-    "https://cdn.pixabay.com/photo/2019/11/06/05/15/uav-4605203__340.jpg",
-    "https://cdn.pixabay.com/photo/2018/04/01/19/36/body-of-water-3281906__340.jpg",
-  ];
+
+  const {data: videoUrl} = useFetch("api/hero-video?populate=*");
+  const {data: imagesUrl} = useFetch("api/hero-image?populate=*");
+  
   return (
     <div className="w-full h-screen flex justify-center items-center relative">
       <div className="carousel w-full h-full absolute left-0 top-0">
         <div id="slide1" className="carousel-item relative w-full">
-          <video
-            src={bgVid}
-            autoPlay
-            loop
-            muted
-            className="w-full object-cover object-center brightness-[0.4]"
-          />
+            <video
+              src={(process.env.REACT_APP_BACKEND_URL).slice(0, -1) + videoUrl?.attributes.video.data.attributes.url}
+              autoPlay
+              loop
+              muted
+              className="w-full object-cover object-center brightness-[0.4]"
+            />
           <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
             <a href="#slide3" className="btn btn-circle hidden md:flex">
               ❮
@@ -30,7 +29,7 @@ function Hero() {
         </div>
         <div id="slide2" className="carousel-item relative w-full">
           <img
-            src={images[1]}
+            src={(process.env.REACT_APP_BACKEND_URL).slice(0, -1) + imagesUrl?.attributes.image.data[1].attributes.url}
             className="w-full object-cover object-center brightness-[0.4]"
           />
           <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
@@ -44,7 +43,7 @@ function Hero() {
         </div>
         <div id="slide3" className="carousel-item relative w-full">
           <img
-            src={images[2]}
+            src={(process.env.REACT_APP_BACKEND_URL).slice(0, -1) + imagesUrl?.attributes.image.data[2].attributes.url}
             className="w-full object-cover object-center brightness-[0.4]"
           />
           <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
