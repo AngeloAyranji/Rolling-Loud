@@ -26,7 +26,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgetPassword" element={<ForgotPassword />} />
         <Route path="/forgetEmail" element={<ForgotEmail />} />
-        <Route path="/product" element={<Product />} />
+        <Route path="/:product" element={<Product />} />
         <Route path="/products" element={<Products />} />
       </Routes>
       {(location.pathname !== "/login" && location.pathname !== "/register") && (

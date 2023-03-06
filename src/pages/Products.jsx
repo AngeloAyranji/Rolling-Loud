@@ -24,6 +24,7 @@ function Products() {
   } = useFetch(`api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*${url}&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}`);
 
   useEffect(() => {
+    console.log(categories)
     let filter = "";
     if (isNew) filter += "&filters[type][$eq]=new";
     if (isPromotion) filter += "&filters[type][$eq]=promotion";

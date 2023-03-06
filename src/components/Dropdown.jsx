@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 
-function Dropdown({ categoriesDB, categories, setCategories }) {
+function Dropdown({ categoriesDB, categories, setCategories, name }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCategories = (checked, id) => {
     let x = categories;
     if(checked) x.push(id);
-    else x = x.filter((item) => item != id)
+    else x = x.filter((item) => item != id);
+    console.log("x", x, checked)
     setCategories(x)
   };
 
@@ -17,7 +18,7 @@ function Dropdown({ categoriesDB, categories, setCategories }) {
   return (
     <div className="w-full flex flex-col space-y-4 mt-8 z-10">
       <div className="flex flex-row justify-between items-center w-[180px]">
-        <h3 className="text-white text-md ">Engine</h3>
+        <h3 className="text-white text-md ">{name}</h3>
         <FiChevronDown
           className={
             isOpen

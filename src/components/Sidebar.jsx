@@ -131,7 +131,7 @@ function Sidebar({
           </div>
         </div>
 
-        <Dropdown categoriesDB={categoriesDB} categories={categories} setCategories={setCategories} />
+        <Dropdown categoriesDB={categoriesDB} categories={categories} setCategories={setCategories} name={"Categories"} />
       </div>
     </div>
   );
