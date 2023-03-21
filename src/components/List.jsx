@@ -20,7 +20,7 @@ function List({ type }) {
       ) : (
         products?.map((item, index) => (
           <Link
-            to={`/${item.attributes.title}`}
+            to={`/product/${item.attributes.title}`}
             state={{ product: item.attributes, product_id: item.id }}
             key={index}
           >

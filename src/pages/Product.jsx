@@ -1,26 +1,47 @@
 import React, { useState } from "react";
-import Breadcrumbs from "../components/Breadcrumbs";
 import { FiHeart } from "react-icons/fi";
 import { CiDeliveryTruck, CiLock } from "react-icons/ci";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartReducer";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 function Product() {
   const { state: product } = useLocation();
 
-  const [mainImg, setMainImg] = useState(process.env.REACT_APP_BACKEND_URL + (product.product.image.data[0].attributes.url).substring(1));
+  const [mainImg, setMainImg] = useState(
+    process.env.REACT_APP_BACKEND_URL +
+      product.product.image.data[0].attributes.url.substring(1)
+  );
   const [quantity, setQuantity] = useState(1);
+
   const dispatch = useDispatch();
 
   const handleImg = (e) => {
     setMainImg(e.target.src);
   };
-
+  
   return (
     <div className="flex w-full mx-auto p-4 pt-8 md:p-8">
       <div className="flex flex-col space-y-8 w-full mx-auto max-w-[1400px]">
-        <Breadcrumbs />
+        <Breadcrumbs
+          separator="›"
+          aria-label="breadcrumb"
+          className="!text-white !text-sm !breadcrumbs !scrollbar-thumb-rounded-full !scrollbar-thumb-base-100 !pb-4 !scrollbar-thumb-sm"
+        >
+          <Link to="/">Home</Link>
+          <Link
+            to={`/products/${product.product.categories.data[0].attributes.title}`}
+          >
+            {product.product.categories.data[0].attributes.title}
+          </Link>
+          <Link
+            to={`/product/${product.product.title}`}
+            state={{ product: product.product, product_id: product.product_id }}
+          >
+            {product.product.title}
+          </Link>
+        </Breadcrumbs>
         <div className=" flex flex-col lg:flex-row lg:justify-start justify-center lg:items-start items-center mt-8 lg:mt-12 lg:space-x-8 xl:space-x-14">
           {/*image div*/}
           <div className="flex flex-col space-y-4 md:items-start justify-center items-center w-full max-w-[520px] lg:max-w-[440px]">
@@ -42,7 +63,10 @@ function Product() {
                   key={index}
                 >
                   <img
-                    src={process.env.REACT_APP_BACKEND_URL + (item.attributes.url).substring(1)}
+                    src={
+                      process.env.REACT_APP_BACKEND_URL +
+                      item.attributes.url.substring(1)
+                    }
                     alt=""
                     className="object-cover object-center w-full h-full rounded-lg"
                     onClick={handleImg}
@@ -59,8 +83,12 @@ function Product() {
             <h2 className="text-xl text-secondary-content font-bold">
               {product.product.title}
             </h2>
-            {product.product.quantity === 0 ? <p className="line-through text-xs lg:text-sm">Out Of Stock</p> : <p className="text-green-500 text-xs lg:text-sm">In Stock</p>}
-            
+            {product.product.quantity === 0 ? (
+              <p className="line-through text-xs lg:text-sm">Out Of Stock</p>
+            ) : (
+              <p className="text-green-500 text-xs lg:text-sm">In Stock</p>
+            )}
+
             <div className="w-full h-1 rounded-full bg-base-100"></div>
             <p className="text-xl text-primary font-semibold tracking-wide">
               {product.product.price}
@@ -79,12 +107,22 @@ function Product() {
                   -
                 </button>
                 {product.product.quantity === 0 ? 0 : quantity}
-                <button onClick={() => setQuantity((prev) => prev == product.product.quantity ? prev : prev + 1)}>
+                <button
+                  onClick={() =>
+                    setQuantity((prev) =>
+                      prev == product.product.quantity ? prev : prev + 1
+                    )
+                  }
+                >
                   +
                 </button>
               </div>
               <button
-                className={product.product.quantity === 0 ? "btn btn-disabled btn-primary w-full max-w-[250px]" : "btn btn-primary w-full max-w-[250px]"}
+                className={
+                  product.product.quantity === 0
+                    ? "btn btn-disabled btn-primary w-full max-w-[250px]"
+                    : "btn btn-primary w-full max-w-[250px]"
+                }
                 onClick={() =>
                   dispatch(
                     addToCart({

@@ -27,9 +27,10 @@ function Sidebar({
   setIsInStock,
   setPrice,
   categories,
-  setCategories
+  setCategories,
+  productQuantity
 }) {
-  const {data: categoriesDB, loading, error} = useFetch("api/categories?populate=*");
+  
   function valuetext(value) {
     return `${value} $`;
   }
@@ -50,7 +51,7 @@ function Sidebar({
       <div className="w-full h-full flex flex-col space-y-4 p-4 lg:pl-8 2xl:pl-14">
         <div className="w-full flex flex-row justify-between items-center mb-8 border-b-2 border-b-base-100 h-20">
           <h2 className="text-white font-bold text-md uppercase">
-            144 products
+            {productQuantity} products
           </h2>
           <div className="text-white md:hidden">
             <AiOutlineClose className="w-6 h-6" onClick={handleSidebar} />
@@ -131,7 +132,6 @@ function Sidebar({
           </div>
         </div>
 
-        <Dropdown categoriesDB={categoriesDB} categories={categories} setCategories={setCategories} name={"Categories"} />
       </div>
     </div>
   );
