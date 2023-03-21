@@ -21,8 +21,6 @@ function Products() {
   const [categories, setCategories] = useState([]);
   const [url, setUrl] = useState("");
 
-  const { data: categoriesDB } = useFetch("api/categories?populate=*");
-
   const {
     data: products,
     loading,
