@@ -5,6 +5,7 @@ import ListProduct from "../components/ListProduct";
 import { BsSliders } from "react-icons/bs";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { Select, Option } from "@material-tailwind/react";
+// import { Select, MenuItem } from "@mui/material";
 import useFetch from "../hooks/useFetch";
 import { useParams, Link } from "react-router-dom";
 
@@ -20,6 +21,7 @@ function Products() {
   const [price, setPrice] = useState([0, 2000]);
   const [categories, setCategories] = useState([]);
   const [url, setUrl] = useState("");
+  const [sortBy, setSortBy] = useState(null)
 
   const {
     data: products,
@@ -32,6 +34,11 @@ function Products() {
     &filters[price][$lte]=${price[1]}
     ${category ? `&filters[categories][title][$eq]=${category}` : ``}`
   );
+
+  useEffect(() => {
+    if(sortBy === 2) products?.sort((a, b) => { return b.attributes.price - a.attributes.price})
+    if(sortBy === 1) products?.sort((a, b) => { return a.attributes.price - b.attributes.price})
+  }, [sortBy])
 
   useEffect(() => {
     let filter = "";
@@ -84,10 +91,11 @@ function Products() {
                 mount: { y: 0 },
                 unmount: { y: 25 },
               }}
-              className="ml-0"
+              className="!ml-0"
+              onChange={setSortBy}
             >
-              <Option>Highest Price First</Option>
-              <Option>Lowest Price First</Option>
+              <Option value={1}>Highest Price First</Option>
+              <Option value={2}>Lowest Price First</Option>
             </Select>
           </div>
         </div>
