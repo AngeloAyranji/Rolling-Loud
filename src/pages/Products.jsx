@@ -88,8 +88,6 @@ function Products() {
             >
               <Option>Highest Price First</Option>
               <Option>Lowest Price First</Option>
-              <Option>From A to Z</Option>
-              <Option>From Z to A</Option>
             </Select>
           </div>
         </div>
