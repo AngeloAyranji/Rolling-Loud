@@ -6,6 +6,7 @@ function Tabs() {
 
   return (
     <div className="flex w-full bg-[#121212] justify-center mb-20 pl-8 pr-8">
+
       <div className="w-full mx-auto flex items-center justify-center">
         <div className="flex flex-col space-y-10 overflow-hidden w-full max-w-[1328px]">
           <div className=" flex flex-col md:flex-row mb-4 mt-4 justify-between items-center space-y-8 md:space-y-0 ">

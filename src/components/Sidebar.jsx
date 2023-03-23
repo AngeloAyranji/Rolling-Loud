@@ -3,6 +3,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import Dropdown from "./Dropdown";
 import Slider from "@mui/material/Slider";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import useFetch from "../hooks/useFetch";
 
 const theme = createTheme({
   palette: {
@@ -17,16 +18,28 @@ const theme = createTheme({
   },
 });
 
-function Sidebar({ open, handleSidebar }) {
+function Sidebar({
+  open,
+  handleSidebar,
+  setIsNew,
+  setIsPromotion,
+  setIsFeatured,
+  setIsInStock,
+  setPrice,
+  categories,
+  setCategories,
+  productQuantity
+}) {
+  
   function valuetext(value) {
     return `${value} $`;
   }
-  const [value, setValue] = useState([0, 100]);
+  const [value, setValue] = useState([0, 2000]);
 
   const handleChangeSlider = (event, newValue) => {
     setValue(newValue);
   };
-  const handleChange = () => {};
+
   return (
     <div
       className={
@@ -38,7 +51,7 @@ function Sidebar({ open, handleSidebar }) {
       <div className="w-full h-full flex flex-col space-y-4 p-4 lg:pl-8 2xl:pl-14">
         <div className="w-full flex flex-row justify-between items-center mb-8 border-b-2 border-b-base-100 h-20">
           <h2 className="text-white font-bold text-md uppercase">
-            144 products
+            {productQuantity} products
           </h2>
           <div className="text-white md:hidden">
             <AiOutlineClose className="w-6 h-6" onClick={handleSidebar} />
@@ -51,7 +64,7 @@ function Sidebar({ open, handleSidebar }) {
               type="checkbox"
               id="new"
               value="new"
-              onChange={handleChange}
+              onChange={(e) => setIsNew(e.target.checked)}
               className="checked:bg-primary rounded-sm"
             />
             <label htmlFor="new">New</label>
@@ -61,7 +74,7 @@ function Sidebar({ open, handleSidebar }) {
               type="checkbox"
               id="featured"
               value="featured"
-              onChange={handleChange}
+              onChange={(e) => setIsFeatured(e.target.checked)}
               className="checked:bg-primary rounded-sm"
             />
             <label htmlFor="featured">Featured</label>
@@ -71,7 +84,7 @@ function Sidebar({ open, handleSidebar }) {
               type="checkbox"
               id="Promotion"
               value="Promotion"
-              onChange={handleChange}
+              onChange={(e) => setIsPromotion(e.target.checked)}
               className="checked:bg-primary rounded-sm"
             />
             <label htmlFor="Promotion">Promotion</label>
@@ -85,7 +98,7 @@ function Sidebar({ open, handleSidebar }) {
               type="checkbox"
               id="inStock"
               value="inStock"
-              onChange={handleChange}
+              onChange={(e) => setIsInStock(e.target.checked)}
               className="checked:bg-primary rounded-sm"
             />
             <label htmlFor="inStock">In Stock</label>
@@ -95,7 +108,6 @@ function Sidebar({ open, handleSidebar }) {
               type="checkbox"
               id="outOfStock"
               value="outOfStock"
-              onChange={handleChange}
               className="checked:bg-primary rounded-sm"
             />
             <label htmlFor="outOfStock">Out Of Stock</label>
@@ -110,19 +122,16 @@ function Sidebar({ open, handleSidebar }) {
                 getAriaLabel={() => "Temperature range"}
                 value={value}
                 onChange={handleChangeSlider}
+                onChangeCommitted={(e, p) => setPrice(p)}
                 valueLabelDisplay="auto"
                 getAriaValueText={valuetext}
-                max={100}
+                max={2000}
                 min={0}
               />
             </ThemeProvider>
           </div>
         </div>
 
-        <Dropdown />
-        <Dropdown />
-        <Dropdown />
-        <Dropdown />
       </div>
     </div>
   );

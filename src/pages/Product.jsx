@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import Breadcrumbs from "../components/Breadcrumbs";
 import { FiHeart } from "react-icons/fi";
 import { CiDeliveryTruck, CiLock } from "react-icons/ci";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartReducer";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import ReactMakrdown from "react-markdown";
+
 
 function Product() {
   const { state: product } = useLocation();
@@ -15,18 +16,34 @@ function Product() {
       product?.product.image.data[0].attributes.url.substring(1)
   );
   const [quantity, setQuantity] = useState(1);
+
   const dispatch = useDispatch();
 
   const handleImg = (e) => {
     setMainImg(e.target.src);
   };
 
-  const [imgUrl, setImgUrl] = useState("");
-
   return (
     <div className="flex w-full mx-auto p-4 pt-8 md:p-8">
       <div className="flex flex-col space-y-8 w-full mx-auto max-w-[1400px]">
-        <Breadcrumbs />
+        <Breadcrumbs
+          separator="›"
+          aria-label="breadcrumb"
+          className="!text-white !text-sm !breadcrumbs !scrollbar-thumb-rounded-full !scrollbar-thumb-base-100 !pb-4 !scrollbar-thumb-sm"
+        >
+          <Link to="/">Home</Link>
+          <Link
+            to={`/products/${product.product.categories.data[0].attributes.title}`}
+          >
+            {product.product.categories.data[0].attributes.title}
+          </Link>
+          <Link
+            to={`/product/${product.product.title}`}
+            state={{ product: product.product, product_id: product.product_id }}
+          >
+            {product.product.title}
+          </Link>
+        </Breadcrumbs>
         <div className=" flex flex-col lg:flex-row lg:justify-start justify-center lg:items-start items-center mt-8 lg:mt-12 lg:space-x-8 xl:space-x-14">
           {/*image div*/}
           <div className="flex flex-col space-y-4 md:items-start justify-center items-center w-full max-w-[520px] lg:max-w-[440px]">

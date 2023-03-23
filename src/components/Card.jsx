@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { MdAddShoppingCart } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartReducer";
@@ -11,14 +11,12 @@ function Card({ item, id }) {
   return (
     <div className="flex flex-col rounded-xl w-[150px] md:w-[190px] shadow-xl h-[296px] lg:w-[320px] md:h-[370px] lg:h-[570px] cursor-pointer group relative bg-secondary-content">
       <figure>
-        <img
-          src={
-            process.env.REACT_APP_BACKEND_URL.slice(0, -1) +
-            item?.image?.data[0]?.attributes?.url
-          }
+
+        {item && <img
+          src={(process.env.REACT_APP_BACKEND_URL).slice(0, -1) + item?.image.data[0].attributes.url}
           alt="Shoes"
           className="object-cover object-center w-full rounded-t-xl aspect-square"
-        />
+        />}
       </figure>
       <div
         className="absolute flex lg:hidden h-8 w-8 md:h-12 md:w-12  rounded-full bg-primary transition-opacity right-4 top-4 lg:group-hover:flex text-secondary-content items-center justify-center hover:scale-105"
@@ -58,7 +56,7 @@ function Card({ item, id }) {
               </div>
             )}
           </div>
-          {/* <div className="h-4">
+          {* <div className="h-4">
           {item.quantity > 0 ? (
             <p className="text-green-500 text-xs lg:text-sm">In Stock</p>
           ) : (
@@ -66,6 +64,7 @@ function Card({ item, id }) {
               Out Of Stock
             </p>
           )}
+
         </div> */}
           <p className="hidden group-hover:text-black text-base-100 ease-in-out duration-150 text-sm line-clamp-0 lg:line-clamp-3 mb-4 lg:mb-8 lg:inline-block">
             {item.shortDescription}

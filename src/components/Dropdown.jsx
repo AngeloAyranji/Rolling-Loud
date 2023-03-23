@@ -1,28 +1,16 @@
 import React, { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 
-function Dropdown() {
-  const filters = [
-    {
-      id: 1,
-      title: "dropdown",
-    },
-    {
-      id: 2,
-      title: "dropdown",
-    },
-    {
-      id: 3,
-      title: "dropdown",
-    },
-    {
-      id: 4,
-      title: "dropdown",
-    },
-  ];
+function Dropdown({ categoriesDB, categories, setCategories, name }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleChange = () => {};
+  const handleCategories = (checked, id) => {
+    let x = categories;
+    if(checked) x.push(id);
+    else x = x.filter((item) => item != id);
+    console.log("x", x, checked)
+    setCategories(x)
+  };
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
@@ -30,7 +18,7 @@ function Dropdown() {
   return (
     <div className="w-full flex flex-col space-y-4 mt-8 z-10">
       <div className="flex flex-row justify-between items-center w-[180px]">
-        <h3 className="text-white text-md ">Engine</h3>
+        <h3 className="text-white text-md ">{name}</h3>
         <FiChevronDown
           className={
             isOpen
@@ -47,19 +35,19 @@ function Dropdown() {
             : "w-full mb-4 flex flex-col space-y-4 justify-start h-0 overflow-y-hidden ease-in-out duration-300"
         }
       >
-        {filters?.map((item) => (
+        {categoriesDB?.map((item, index) => (
           <div
             className="flex flex-row justify-start space-x-4 items-center pl-2"
-            key={item.id}
+            key={index}
           >
             <input
               type="checkbox"
-              id={item.id}
-              value={item.id}
-              onChange={handleChange}
+              id={item.attributes.title}
+              value={item.attributes.title}
+              onChange={(e) => handleCategories(e.target.checked, item.id)}
               className="checked:bg-primary rounded-sm"
             />
-            <label htmlFor={item.id}>{item.title}</label>
+            <label htmlFor={item.id}>{item.attributes.title}</label>
           </div>
         ))}
       </div>
