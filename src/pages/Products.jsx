@@ -23,6 +23,8 @@ function Products() {
   const [url, setUrl] = useState("");
   const [sortBy, setSortBy] = useState(null)
 
+  const { data: categoryDB } = useFetch(`api/categories/?filters[title][$eq]=${category}`)
+  
   const {
     data: products,
     loading,
@@ -36,6 +38,7 @@ function Products() {
   );
 
   useEffect(() => {
+    console.log(sortBy)
     if(sortBy === 2) products?.sort((a, b) => { return b.attributes.price - a.attributes.price})
     if(sortBy === 1) products?.sort((a, b) => { return a.attributes.price - b.attributes.price})
   }, [sortBy])
@@ -69,10 +72,8 @@ function Products() {
           {!category ? "All Products" : category}
         </h2>
         <p className="max-w-[700px]">
-          {category
-            ? products
-              ? products[0].attributes.categories.data[0].attributes.description
-              : ``
+          {categoryDB
+            ? categoryDB[0]?.attributes.description
             : `ALL PRODUCTS Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia
           veritatis placeat id soluta incidunt provident nostrum quibusdam amet
           dolor, excepturi eius, nihil quisquam. Debitis reprehenderit atque,
