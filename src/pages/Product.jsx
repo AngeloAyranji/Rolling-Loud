@@ -5,13 +5,15 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartReducer";
 import { useLocation, Link } from "react-router-dom";
+import ReactMakrdown from "react-markdown";
+
 
 function Product() {
   const { state: product } = useLocation();
 
   const [mainImg, setMainImg] = useState(
     process.env.REACT_APP_BACKEND_URL +
-      product.product.image.data[0].attributes.url.substring(1)
+      product?.product.image.data[0].attributes.url.substring(1)
   );
   const [quantity, setQuantity] = useState(1);
 
@@ -20,7 +22,7 @@ function Product() {
   const handleImg = (e) => {
     setMainImg(e.target.src);
   };
-  
+
   return (
     <div className="flex w-full mx-auto p-4 pt-8 md:p-8">
       <div className="flex flex-col space-y-8 w-full mx-auto max-w-[1400px]">
@@ -128,7 +130,9 @@ function Product() {
                     addToCart({
                       id: product?.product_id,
                       name: product?.product.title,
-                      img: product?.product.image.data[0].attributes.url,
+                      img: product?.product.image.data[0].attributes.url.substring(
+                        1
+                      ),
                       price: product?.product.price,
                       quantity,
                     })
@@ -167,15 +171,10 @@ function Product() {
           <h3 className="text-secondary-content text-lg text-semibold tracking-wide uppercase">
             Technical Characteristics
           </h3>
-          <div className="w-full h-1 rounded-full bg-secondary-content/[0.5]"></div>
-          <p className="text-secondary-content leading-relaxed">
-            <pre>{product.product.longDescription}</pre>
-          </p>
-          <ul className="list-disc text-secondary-content list-inside">
-            {/* {product.technicalDescription.map((text) => (
-              <li className="text-sm tracking-wide font-semibold">{text}</li>
-            ))} */}
-          </ul>
+          <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
+          <ReactMakrdown className="">
+            {product.product.longDescription}
+          </ReactMakrdown>
           <p className="link">Cick here for the whole product info</p>
         </div>
       </div>
