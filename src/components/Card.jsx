@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdAddShoppingCart } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartReducer";
@@ -56,7 +56,7 @@ function Card({ item, id }) {
               </div>
             )}
           </div>
-          {* <div className="h-4">
+          {/* <div className="h-4">
           {item.quantity > 0 ? (
             <p className="text-green-500 text-xs lg:text-sm">In Stock</p>
           ) : (

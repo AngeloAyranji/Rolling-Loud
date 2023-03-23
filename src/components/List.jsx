@@ -18,7 +18,7 @@ function List({ type }) {
     <div className="gap-4 flex flex-row overflow-x-scroll items-center justify-start scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-full pb-8">
       {loading ? (
         <Loading />
-      ) : 
+      ) : (
         <Fragment>
           { products?.map((item, index) => (
           <Link
