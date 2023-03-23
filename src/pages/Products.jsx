@@ -21,7 +21,7 @@ function Products() {
   const [price, setPrice] = useState([0, 2000]);
   const [categories, setCategories] = useState([]);
   const [url, setUrl] = useState("");
-  const [sortBy, setSortBy] = useState(null)
+  const [sortBy, setSortBy] = useState(null);
 
   const { data: categoryDB } = useFetch(`api/categories/?filters[title][$eq]=${category}`)
   
@@ -42,6 +42,7 @@ function Products() {
     if(sortBy === 2) products?.sort((a, b) => { return b.attributes.price - a.attributes.price})
     if(sortBy === 1) products?.sort((a, b) => { return a.attributes.price - b.attributes.price})
   }, [sortBy])
+
 
   useEffect(() => {
     let filter = "";
@@ -115,7 +116,7 @@ function Products() {
           productQuantity={products?.length}
         />
         <div className="w-full mx-auto flex items-center justify-center">
-          <ListProduct products={products} />
+          <ListProduct products={products} loading={loading} error={error} />
         </div>
       </div>
     </div>
