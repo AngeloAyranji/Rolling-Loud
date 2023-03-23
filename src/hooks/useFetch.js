@@ -18,10 +18,11 @@ const useFetch = (url, authentication = false) => {
                 console.log("error: ", err)
                 setError(true)
             }
+            setLoading(false)
         }
         
         fetch()
-        setLoading(false)
+        
     }, [url, authentication])
 
     return { data, loading, error }

@@ -16,7 +16,7 @@ function ListProduct({ products, loading, error }) {
               state={{ product: item.attributes, product_id: item.id }}
               key={index}
             >
-              <Card item={item.attributes} />
+              <Card item={item.attributes} id={item.id} />
             </Link>
           ))}
         </Fragment>
