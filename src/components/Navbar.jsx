@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
@@ -11,8 +11,12 @@ import {
 } from "@heroicons/react/24/outline";
 import Cart from "./Cart";
 import Logo from "../assets/Images/LogoSky.png";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
+  { name: "Dashboard", href: "/", current: true },
   { name: "Team", href: "#", current: false },
   { name: "Projects", href: "#", current: false },
   { name: "Calendar", href: "#", current: false },
@@ -23,12 +27,21 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const navigate = useNavigate();
+
   const [opena, setOpena] = useState(false);
 
   const handleOpen = () => {
     setOpena(!opena);
   };
   const products = useSelector((state) => state.cart.products);
+
+  const handleLogOut = () => {
+    sessionStorage.removeItem("jwt");
+    sessionStorage.removeItem("email");
+
+    navigate("/");
+  };
 
   return (
     <Disclosure as="nav" className="bg-[#121212]">
@@ -49,16 +62,18 @@ export default function Navbar() {
               </div>
               <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="block h-8 w-auto lg:hidden"
-                    src={Logo}
-                    alt="Your Company"
-                  />
-                  <img
-                    className="hidden h-8 w-auto lg:block "
-                    src={Logo}
-                    alt="Your Company"
-                  />
+                  <Link to="/">
+                    <img
+                      className="block h-8 w-auto lg:hidden"
+                      src={Logo}
+                      alt="Your Company"
+                    />
+                    <img
+                      className="hidden h-8 w-auto lg:block "
+                      src={Logo}
+                      alt="Your Company"
+                    />
+                  </Link>
                 </div>
                 <div className="hidden md:ml-6 md:block">
                   <div className="flex space-x-4">
@@ -125,7 +140,7 @@ export default function Navbar() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-[100] mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
                           <a
@@ -154,15 +169,31 @@ export default function Navbar() {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                          <>
+                            {/* isLoggedIn condition */}
+                            {sessionStorage.getItem("jwt") === null ? (
+                              <a
+                                href="/login"
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700"
+                                )}
+                              >
+                                Sign in
+                              </a>
+                            ) : (
+                              <div
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                )}
+                                onClick={handleLogOut}
+                              >
+                                {" "}
+                                Sign out
+                              </div>
                             )}
-                          >
-                            Sign out
-                          </a>
+                          </>
                         )}
                       </Menu.Item>
                     </Menu.Items>
