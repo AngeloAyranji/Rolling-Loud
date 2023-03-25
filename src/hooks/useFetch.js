@@ -9,11 +9,13 @@ const useFetch = (url, authentication = false) => {
     useEffect(() => {
         const fetch = async () => {
             try{
-                setLoading(true)
-                let res;
-                if(authentication) res = await makeAuthRequest.get(url)
-                else res = await makeRequest.get(url)
-                setData(res.data.data)
+                if(url !== ""){
+                    setLoading(true)
+                    let res;
+                    if(authentication) res = await makeAuthRequest.get(url)
+                    else res = await makeRequest.get(url)
+                    setData(res.data.data)
+                }
             } catch(err) {
                 console.log("error: ", err)
                 setError(true)
