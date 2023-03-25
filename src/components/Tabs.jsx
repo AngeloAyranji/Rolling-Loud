@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import List from "./List";
 
 function Tabs() {
@@ -6,7 +7,6 @@ function Tabs() {
 
   return (
     <div className="flex w-full bg-[#121212] justify-center mb-20 pl-8 pr-8">
-
       <div className="w-full mx-auto flex items-center justify-center">
         <div className="flex flex-col space-y-10 overflow-hidden w-full max-w-[1328px]">
           <div className=" flex flex-col md:flex-row mb-4 mt-4 justify-between items-center space-y-8 md:space-y-0 ">
@@ -43,13 +43,19 @@ function Tabs() {
               </a>
             </div>
             {active === "new" && (
-              <button className="btn btn-primary">SEE ALL IN NEW</button>
+              <Link to={"/products?filter=new"}>
+                <button className="btn btn-primary">SEE ALL IN NEW</button>
+              </Link>
             )}
             {active === "featured" && (
-              <button className="btn btn-primary">SEE ALL IN FEATURED</button>
+              <Link to={"/products?filter=featured"}>
+                <button className="btn btn-primary">SEE ALL IN FEATURED</button>
+              </Link>
             )}
             {active === "promotion" && (
-              <button className="btn btn-primary">SEE ALL IN PROMOTION</button>
+              <Link to={"/products?filter=promotion"}>
+                <button className="btn btn-primary">SEE ALL IN PROMOTION</button>
+              </Link>
             )}
           </div>
           <div className="max-w-[1400px]">

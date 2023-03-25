@@ -46,10 +46,16 @@ function Product() {
               <Link
                 to={`/products/${product[0].attributes.categories.data[0].attributes.title}`}
               >
-                {product[0].attributes.categories.data[0].attributes.title}
+                {product[0].attributes.categories.data[0].attributes.title
+                  .charAt(0)
+                  .toUpperCase() +
+                  product[0].attributes.categories.data[0].attributes.title.slice(
+                    1
+                  )}
               </Link>
               <Link to={`/product/${product[0].attributes.title}`}>
-                {product[0]?.attributes.title}
+                {product[0]?.attributes.title.charAt(0).toUpperCase() +
+                  product[0]?.attributes.title.slice(1)}
               </Link>
             </Breadcrumbs>
             <div className=" flex flex-col lg:flex-row lg:justify-start justify-center lg:items-start items-center mt-8 lg:mt-12 lg:space-x-8 xl:space-x-14">

@@ -5,44 +5,55 @@ import { BsSliders } from "react-icons/bs";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { Select, Option } from "@material-tailwind/react";
 import useFetch from "../hooks/useFetch";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 
 function Products() {
   const { category } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const queryFilter = queryParams.get("filter");
 
   const [isSidebar, setIsSidebar] = useState(false);
-  const [isNew, setIsNew] = useState(false);
-  const [isPromotion, setIsPromotion] = useState(false);
-  const [isFeatured, setIsFeatured] = useState(false);
+  const [isNew, setIsNew] = useState(queryFilter === "new" ? true : false);
+  const [isPromotion, setIsPromotion] = useState(queryFilter === "promotion" ? true : false);
+  const [isFeatured, setIsFeatured] = useState(queryFilter === "featured" ? true : false);
   const [isInStock, setIsInStock] = useState(false);
-  const [isOutStock, setIsOutStock] = useState(false);
   const [price, setPrice] = useState([0, 2000]);
-  const [categories, setCategories] = useState([]);
   const [url, setUrl] = useState("");
-  const [sortBy, setSortBy] = useState(null)
+  const [sortBy, setSortBy] = useState(null);
 
-  const { data: categoryDB } = useFetch(`api/categories/?filters[title][$eq]=${category}`)
-  
+  const { data: categoryDB } = useFetch(`api/categories/?filters[title][$eq]=${category}`);
+
   const {
     data: products,
     loading,
     error,
   } = useFetch(
-    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*${url}&filters[price][$gte]=${price[0]}
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*${url}&filters[price][$gte]=${
+      price[0]
+    }
     &filters[price][$lte]=${price[1]}
     ${category ? `&filters[categories][title][$eq]=${category}` : ``}`
   );
 
   useEffect(() => {
+    handleFilters();
+  }, []);
+
+  useEffect(() => {
+    handleFilters();
+  }, [isNew, isFeatured, isPromotion, isInStock, sortBy]);
+
+  const handleFilters = () => {
     let filter = "";
     if (isNew) filter += "&filters[type][$eq]=new";
     if (isPromotion) filter += "&filters[type][$eq]=promotion";
     if (isFeatured) filter += "&filters[type][$eq]=featured";
     if (isInStock) filter += "&filters[quantity][$gt]=0";
-    if(sortBy === 2) filter += "&sort[0]=price:asc";
-    if(sortBy === 1) filter += "&sort[0]=price:desc";
+    if (sortBy == 2) filter += "&sort[0]=price:asc";
+    if (sortBy == 1) filter += "&sort[0]=price:desc";
     setUrl(filter);
-  }, [isNew, isFeatured, isPromotion, isInStock, categories, sortBy]);
+  };
 
   return (
     <div className="w-full md:mb-[200px] mb-20">
@@ -55,7 +66,8 @@ function Products() {
           <Link to="/">Home</Link>
           <Link to="/products">Products</Link>
           {category ? (
-            <Link to={`/products/${category}`}>{category}</Link>
+            <Link to={`/products/${category}`}>{category.charAt(0).toUpperCase() +
+              category.slice(1)}</Link>
           ) : (
             <Link to={`/products`}>All Products</Link>
           )}
@@ -64,8 +76,10 @@ function Products() {
           {!category ? "All Products" : category}
         </h2>
         <p className="max-w-[700px]">
-          {categoryDB
-            ? categoryDB[0]?.attributes.description
+          {category
+            ? categoryDB
+              ? categoryDB[0]?.attributes.description
+              : ""
             : `ALL PRODUCTS Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia
           veritatis placeat id soluta incidunt provident nostrum quibusdam amet
           dolor, excepturi eius, nihil quisquam. Debitis reprehenderit atque,
@@ -87,8 +101,8 @@ function Products() {
               className="!ml-0"
               onChange={setSortBy}
             >
-              <Option value={1}>Highest Price First</Option>
-              <Option value={2}>Lowest Price First</Option>
+              <Option value={"1"}>Highest Price First</Option>
+              <Option value={"2"}>Lowest Price First</Option>
             </Select>
           </div>
         </div>
@@ -98,12 +112,13 @@ function Products() {
           open={isSidebar}
           handleSidebar={() => setIsSidebar(!isSidebar)}
           setIsNew={setIsNew}
+          isNew={isNew}
           setIsFeatured={setIsFeatured}
+          isFeatured={isFeatured}
           setIsPromotion={setIsPromotion}
+          isPromotion={isPromotion}
           setIsInStock={setIsInStock}
           setPrice={setPrice}
-          categories={categories}
-          setCategories={setCategories}
           productQuantity={products?.length}
         />
         <div className="w-full mx-auto flex items-center justify-center">

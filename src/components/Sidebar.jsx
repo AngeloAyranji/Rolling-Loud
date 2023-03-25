@@ -22,12 +22,13 @@ function Sidebar({
   open,
   handleSidebar,
   setIsNew,
+  isNew,
   setIsPromotion,
+  isPromotion,
   setIsFeatured,
+  isFeatured,
   setIsInStock,
   setPrice,
-  categories,
-  setCategories,
   productQuantity
 }) {
   
@@ -64,6 +65,7 @@ function Sidebar({
               type="checkbox"
               id="new"
               value="new"
+              checked={isNew}
               onChange={(e) => setIsNew(e.target.checked)}
               className="checked:bg-primary rounded-sm"
             />
@@ -74,6 +76,7 @@ function Sidebar({
               type="checkbox"
               id="featured"
               value="featured"
+              checked={isFeatured}
               onChange={(e) => setIsFeatured(e.target.checked)}
               className="checked:bg-primary rounded-sm"
             />
@@ -84,6 +87,7 @@ function Sidebar({
               type="checkbox"
               id="Promotion"
               value="Promotion"
+              checked={isPromotion}
               onChange={(e) => setIsPromotion(e.target.checked)}
               className="checked:bg-primary rounded-sm"
             />

@@ -14,7 +14,7 @@ function Card({ item, id }) {
 
         {item && <img
           src={(process.env.REACT_APP_BACKEND_URL).slice(0, -1) + item?.image.data[0].attributes.url}
-          alt="Shoes"
+          alt="Product Image"
           className="object-cover object-center w-full rounded-t-xl aspect-square"
         />}
       </figure>

@@ -8,7 +8,6 @@ function Dropdown({ categoriesDB, categories, setCategories, name }) {
     let x = categories;
     if(checked) x.push(id);
     else x = x.filter((item) => item != id);
-    console.log("x", x, checked)
     setCategories(x)
   };
 

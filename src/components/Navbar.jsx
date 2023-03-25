@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BsPerson } from "react-icons/bs";
@@ -11,26 +10,17 @@ import {
 } from "@heroicons/react/24/outline";
 import Cart from "./Cart";
 import Logo from "../assets/Images/LogoSky.png";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-
-
-const navigation = [
-  { name: "Dashboard", href: "/", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-];
+import { Link, useNavigate } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar() {
+export default function Navbar({ navigation }) {
   const navigate = useNavigate();
 
   const [opena, setOpena] = useState(false);
-
+  
   const handleOpen = () => {
     setOpena(!opena);
   };
