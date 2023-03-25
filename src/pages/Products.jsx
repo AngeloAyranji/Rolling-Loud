@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
-// import Breadcrumbs from "../components/Breadcrumbs";
 import ListProduct from "../components/ListProduct";
 import { BsSliders } from "react-icons/bs";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { Select, Option } from "@material-tailwind/react";
-// import { Select, MenuItem } from "@mui/material";
 import useFetch from "../hooks/useFetch";
 import { useParams, Link } from "react-router-dom";
 
