@@ -28,18 +28,10 @@ function Products() {
     loading,
     error,
   } = useFetch(
-    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*${url}&filters[price][$gte]=${
-      price[0]
-    }
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*${url}&filters[price][$gte]=${price[0]}
     &filters[price][$lte]=${price[1]}
     ${category ? `&filters[categories][title][$eq]=${category}` : ``}`
   );
-
-  useEffect(() => {
-    console.log(sortBy)
-    if(sortBy === 2) products?.sort((a, b) => { return b.attributes.price - a.attributes.price})
-    if(sortBy === 1) products?.sort((a, b) => { return a.attributes.price - b.attributes.price})
-  }, [sortBy])
 
   useEffect(() => {
     let filter = "";
@@ -47,8 +39,10 @@ function Products() {
     if (isPromotion) filter += "&filters[type][$eq]=promotion";
     if (isFeatured) filter += "&filters[type][$eq]=featured";
     if (isInStock) filter += "&filters[quantity][$gt]=0";
+    if(sortBy === 2) filter += "&sort[0]=price:asc";
+    if(sortBy === 1) filter += "&sort[0]=price:desc";
     setUrl(filter);
-  }, [isNew, isFeatured, isPromotion, isInStock, categories]);
+  }, [isNew, isFeatured, isPromotion, isInStock, categories, sortBy]);
 
   return (
     <div className="w-full md:mb-[200px] mb-20">
