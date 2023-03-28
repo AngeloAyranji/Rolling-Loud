@@ -6,13 +6,13 @@ function Hero() {
 
   const {data: videoUrl} = useFetch("api/hero-video?populate=*");
   const {data: imagesUrl} = useFetch("api/hero-image?populate=*");
-  
+
   return (
     <div className="w-full h-screen flex justify-center items-center relative">
       <div className="carousel w-full h-full absolute left-0 top-0">
         <div id="slide1" className="carousel-item relative w-full">
             <video
-              src={(process.env.REACT_APP_BACKEND_URL).slice(0, -1) + videoUrl?.attributes.video.data.attributes.url}
+              src={videoUrl?.attributes.video.data.attributes.url}
               autoPlay
               loop
               muted
@@ -29,7 +29,7 @@ function Hero() {
         </div>
         <div id="slide2" className="carousel-item relative w-full">
           <img
-            src={(process.env.REACT_APP_BACKEND_URL).slice(0, -1) + imagesUrl?.attributes.image.data[1].attributes.url}
+            src={imagesUrl?.attributes.image.data[1].attributes.url}
             className="w-full object-cover object-center brightness-[0.4]"
           />
           <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
@@ -43,7 +43,7 @@ function Hero() {
         </div>
         <div id="slide3" className="carousel-item relative w-full">
           <img
-            src={(process.env.REACT_APP_BACKEND_URL).slice(0, -1) + imagesUrl?.attributes.image.data[2].attributes.url}
+            src={imagesUrl?.attributes.image.data[2].attributes.url}
             className="w-full object-cover object-center brightness-[0.4]"
           />
           <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">

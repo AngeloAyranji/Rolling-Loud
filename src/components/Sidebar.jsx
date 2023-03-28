@@ -22,12 +22,13 @@ function Sidebar({
   open,
   handleSidebar,
   setIsNew,
+  isNew,
   setIsPromotion,
+  isPromotion,
   setIsFeatured,
+  isFeatured,
   setIsInStock,
   setPrice,
-  categories,
-  setCategories,
   productQuantity
 }) {
   
@@ -64,6 +65,7 @@ function Sidebar({
               type="checkbox"
               id="new"
               value="new"
+              checked={isNew}
               onChange={(e) => setIsNew(e.target.checked)}
               className="checked:bg-primary rounded-sm"
             />
@@ -74,6 +76,7 @@ function Sidebar({
               type="checkbox"
               id="featured"
               value="featured"
+              checked={isFeatured}
               onChange={(e) => setIsFeatured(e.target.checked)}
               className="checked:bg-primary rounded-sm"
             />
@@ -84,6 +87,7 @@ function Sidebar({
               type="checkbox"
               id="Promotion"
               value="Promotion"
+              checked={isPromotion}
               onChange={(e) => setIsPromotion(e.target.checked)}
               className="checked:bg-primary rounded-sm"
             />
@@ -103,7 +107,7 @@ function Sidebar({
             />
             <label htmlFor="inStock">In Stock</label>
           </div>
-          <div className="flex flex-row justify-start items-center space-x-4 pl-2">
+          {/* <div className="flex flex-row justify-start items-center space-x-4 pl-2">
             <input
               type="checkbox"
               id="outOfStock"
@@ -111,7 +115,7 @@ function Sidebar({
               className="checked:bg-primary rounded-sm"
             />
             <label htmlFor="outOfStock">Out Of Stock</label>
-          </div>
+          </div> */}
         </div>
 
         <div className="w-full flex flex-col space-y-4 mt-8">

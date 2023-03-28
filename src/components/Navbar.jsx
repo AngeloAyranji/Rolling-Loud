@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BsPerson } from "react-icons/bs";
@@ -11,22 +10,13 @@ import {
 } from "@heroicons/react/24/outline";
 import Cart from "./Cart";
 import Logo from "../assets/Images/LogoSky.png";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-
-
-const navigation = [
-  { name: "Dashboard", href: "/", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-];
+import { Link, useNavigate } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar() {
+export default function Navbar({ navigation, setNavigation }) {
   const navigate = useNavigate();
 
   const [opena, setOpena] = useState(false);
@@ -41,6 +31,10 @@ export default function Navbar() {
     sessionStorage.removeItem("email");
 
     navigate("/");
+  };
+
+  const handleCurrent = () => {
+    console.log("HIIIIIII");
   };
 
   return (
@@ -79,6 +73,7 @@ export default function Navbar() {
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <a
+                        onClick={() => console.log("JJJJJJJ")}
                         key={item.name}
                         href={item.href}
                         className={classNames(
@@ -207,17 +202,17 @@ export default function Navbar() {
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item) => (
                 <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current ? "text-primary" : " hover:text-primary",
-                    "block px-3 py-2 text-base font-medium"
-                  )}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
+                    key={item.name}
+                    as="a"
+                    href={item.href}
+                    className={classNames(
+                      item.current ? "text-primary" : " hover:text-primary",
+                      "block px-3 py-2 text-base font-medium"
+                    )}
+                    aria-current={item.current ? "page" : undefined}
+                  >
+                    {item.name}
+                  </Disclosure.Button>
               ))}
             </div>
           </Disclosure.Panel>

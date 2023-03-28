@@ -1,19 +1,39 @@
-import React from "react";
-import { Fragment, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeItem } from "../redux/cartReducer";
-import Breadcrumbs from "../components/Breadcrumbs";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import { useNavigate, useParams, Link } from "react-router-dom";
 
 function Order() {
   const products = useSelector((state) => state.cart.products);
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+  const { userId, orderId } = useParams();
+
+  useEffect(() => {
+    checkLogIn();
+  }, []);
+
+  const checkLogIn = () => {
+    if (!sessionStorage.getItem("jwt")) {
+      navigate("/login");
+    }
+  };
+
   return (
     <div className="w-full mx-auto flex justify-center items-center">
       <div className="max-w-[1400px] w-full">
         <div className="flex flex-col justify-center items-start p-4 md:p-6 lg:p-8 2xl:pl-14 space-y-8">
-          <Breadcrumbs className="z-0" />
+        <Breadcrumbs
+            separator="›"
+            aria-label="breadcrumb"
+            className="!text-white !text-sm !breadcrumbs !scrollbar-thumb-rounded-full !scrollbar-thumb-base-100 !pb-4 !scrollbar-thumb-sm"
+          >
+            <Link to="/">Home</Link>
+            <Link to={`/orders/${userId}`}>Orders</Link>
+            <Link to={`/orders/${userId}`}>{userId}</Link>
+            <Link to={`/orders/${userId}/${orderId}`}>{orderId}</Link>
+          </Breadcrumbs>
           <h2 className="text-xl xl:text-3xl font-bold text-white uppercase tracking-wide">
             order id: 320581431
           </h2>
