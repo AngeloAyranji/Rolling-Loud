@@ -26,10 +26,7 @@ function Product() {
 
   useEffect(() => {
     if (product)
-      setMainImg(
-        process.env.REACT_APP_BACKEND_URL +
-          product[0]?.attributes.image.data[0].attributes.url.substring(1)
-      );
+      setMainImg(product[0]?.attributes.image.data[0].attributes.url);
   }, [product]);
 
   return (
@@ -79,10 +76,7 @@ function Product() {
                       key={index}
                     >
                       <img
-                        src={
-                          process.env.REACT_APP_BACKEND_URL +
-                          item.attributes.url.substring(1)
-                        }
+                        src={item.attributes.url}
                         alt=""
                         className="object-cover object-center w-full h-full rounded-lg"
                         onClick={(e) => setMainImg(e.target.src)}
