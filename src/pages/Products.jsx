@@ -31,12 +31,14 @@ function Products() {
     `api/categories/?filters[title][$eq]=${category}`
   );
 
+
   const {
     data: products,
     loading,
     error,
   } = useFetch(url);
   
+
   useEffect(() => {
     handleFilters()
   }, [isNew, isFeatured, isPromotion, isInStock, sortBy, category, price]);
