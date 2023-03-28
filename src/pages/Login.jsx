@@ -37,7 +37,7 @@ function Login() {
           sessionStorage.setItem("jwt", res.data.jwt);
           sessionStorage.setItem("email", res.data.user.email);
 
-          navigate("/");
+          navigate(-1);
         }
       } catch (err) {
         console.log("error", err);
