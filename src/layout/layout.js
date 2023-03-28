@@ -14,24 +14,24 @@ const Layout = ({ children }) => {
   const { data: categories, loading } = useFetch(`api/categories`);
 
   const [navigation, setNavigation] = useState([
-    { name: "Dashboard", href: "/", current: true },
-    { name: "Team", href: "#", current: false },
-    { name: "Projects", href: "#", current: false },
-    { name: "Calendar", href: "#", current: false },
+    { name: "Home", href: "/", current: true },
   ]);
 
   useEffect(() => {
     if (categories && navigation.length <= 4) {
       let tmpNav = navigation;
-      categories.map((cat) =>
-        tmpNav.push({
-          name:
-            cat.attributes.title.charAt(0).toUpperCase() +
-            cat.attributes.title.slice(1),
-          href: `/products/${cat.attributes.title}`,
-          current: false,
-        })
-      );
+      categories.map((cat) => {
+        if (
+          !navigation.find((nav) => nav.name.toLowerCase() === cat.attributes.title.toLowerCase())
+        )
+          tmpNav.push({
+            name:
+              cat.attributes.title.charAt(0).toUpperCase() +
+              cat.attributes.title.slice(1),
+            href: `/products/${cat.attributes.title}`,
+            current: false,
+          });
+      });
       setNavigation(tmpNav);
     }
   }, [categories]);
@@ -42,7 +42,7 @@ const Layout = ({ children }) => {
         <Loading />
       ) : (
         <>
-          <Navbar navigation={navigation} />
+          <Navbar navigation={navigation} setNavigation={setNavigation} />
           {children}
           {location.pathname !== "/login" &&
             location.pathname !== "/register" && (

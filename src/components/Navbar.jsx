@@ -16,11 +16,11 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar({ navigation }) {
+export default function Navbar({ navigation, setNavigation }) {
   const navigate = useNavigate();
 
   const [opena, setOpena] = useState(false);
-  
+
   const handleOpen = () => {
     setOpena(!opena);
   };
@@ -31,6 +31,10 @@ export default function Navbar({ navigation }) {
     sessionStorage.removeItem("email");
 
     navigate("/");
+  };
+
+  const handleCurrent = () => {
+    console.log("HIIIIIII");
   };
 
   return (
@@ -69,6 +73,7 @@ export default function Navbar({ navigation }) {
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <a
+                        onClick={() => console.log("JJJJJJJ")}
                         key={item.name}
                         href={item.href}
                         className={classNames(
@@ -197,17 +202,17 @@ export default function Navbar({ navigation }) {
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item) => (
                 <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current ? "text-primary" : " hover:text-primary",
-                    "block px-3 py-2 text-base font-medium"
-                  )}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
+                    key={item.name}
+                    as="a"
+                    href={item.href}
+                    className={classNames(
+                      item.current ? "text-primary" : " hover:text-primary",
+                      "block px-3 py-2 text-base font-medium"
+                    )}
+                    aria-current={item.current ? "page" : undefined}
+                  >
+                    {item.name}
+                  </Disclosure.Button>
               ))}
             </div>
           </Disclosure.Panel>

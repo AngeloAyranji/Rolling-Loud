@@ -7,8 +7,6 @@ function Hero() {
   const {data: videoUrl} = useFetch("api/hero-video?populate=*");
   const {data: imagesUrl} = useFetch("api/hero-image?populate=*");
 
-  console.log(videoUrl)
-  
   return (
     <div className="w-full h-screen flex justify-center items-center relative">
       <div className="carousel w-full h-full absolute left-0 top-0">
