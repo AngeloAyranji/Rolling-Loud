@@ -1,11 +1,12 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import bgVid from "../assets/Videos/pexels-mikhail-nilov-6981411.mp4";
+import useFetch from "../hooks/useFetch";
 
 function ForgotEmail() {
   const [error, setError] = useState(false)
   const [logHeight, setLogHeight] = useState(window.innerHeight);
+
+  const {data: videoUrl} = useFetch("api/hero-video?populate=*");
 
   useEffect(() => {
     window.addEventListener("resize", setDimension);
@@ -43,7 +44,7 @@ function ForgotEmail() {
     <div className="w-full h-full relative" style={{ height: logHeight - 64 }}>
       <div className="absolute w-full h-full left-0 top-0 overflow-hidden z-0">
         <video
-          src={bgVid}
+          src={videoUrl?.attributes.video.data.attributes.url}
           loop
           autoPlay
           muted
