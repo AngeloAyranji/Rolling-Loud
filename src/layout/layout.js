@@ -14,8 +14,13 @@ const Layout = ({ children }) => {
   const { data: categories, loading } = useFetch(`api/categories`);
 
   const [navigation, setNavigation] = useState([
-    { name: "Home", href: "/", current: true },
+    { name: "Home", href: "/", current: false },
   ]);
+
+  useEffect(() => {
+    if (location.pathname === '/') handleCurrent("Home")
+    else handleCurrent('')
+  }, [location])
 
   useEffect(() => {
     if (categories && navigation.length <= 4) {
@@ -36,13 +41,24 @@ const Layout = ({ children }) => {
     }
   }, [categories]);
 
+  useEffect(() => {
+    console.log(1)
+  }, [navigation])
+
+  const handleCurrent = (current) => {
+    let tmpNav = navigation;
+    tmpNav.map((x) => x.name === current ? x.current = true : x.current = false);
+
+    setNavigation(tmpNav);
+  }
+
   return (
     <>
       {!categories ? (
         <Loading />
       ) : (
         <>
-          <Navbar navigation={navigation} setNavigation={setNavigation} />
+          <Navbar navigation={navigation} />
           {children}
           {location.pathname !== "/login" &&
             location.pathname !== "/register" && (

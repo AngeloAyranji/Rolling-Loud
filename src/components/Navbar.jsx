@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BsPerson } from "react-icons/bs";
@@ -17,7 +17,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar({ navigation, setNavigation }) {
+export default function Navbar({ navigation }) {
   const navigate = useNavigate();
 
   const [opena, setOpena] = useState(false);
@@ -37,9 +37,9 @@ export default function Navbar({ navigation, setNavigation }) {
     navigate("/");
   };
 
-  const handleCurrent = () => {
-    console.log("HIIIIIII");
-  };
+  // useEffect(() => {
+  //   console.log(1)
+  // }, [navigation])
 
   return (
     <Disclosure as="nav" className="bg-[#121212]">
@@ -76,10 +76,9 @@ export default function Navbar({ navigation, setNavigation }) {
                 <div className="hidden md:ml-6 md:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
-                        onClick={() => console.log("JJJJJJJ")}
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classNames(
                           item.current
                             ? "text-primary border-b-2 border-primary"
@@ -89,7 +88,7 @@ export default function Navbar({ navigation, setNavigation }) {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
