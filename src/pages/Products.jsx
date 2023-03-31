@@ -43,7 +43,7 @@ function Products() {
   } = useFetch(url);
 
   useEffect(() => {
-    handleFilters()
+    if(brandDB && categoryDB) handleFilters()
   }, [isNew, isFeatured, isPromotion, isInStock, sortBy, category, price, brandDB, categoryDB]);
 
   const handleFilters = () => {
