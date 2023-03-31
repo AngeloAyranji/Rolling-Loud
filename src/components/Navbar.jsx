@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BsPerson } from "react-icons/bs";
@@ -11,6 +11,7 @@ import {
 import Cart from "./Cart";
 import Logo from "../assets/Images/LogoSky.png";
 import { Link, useNavigate } from "react-router-dom";
+import useFetch from "../hooks/useFetch"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -20,6 +21,9 @@ export default function Navbar({ navigation, setNavigation }) {
   const navigate = useNavigate();
 
   const [opena, setOpena] = useState(false);
+  const [searchText, setSearchText] = useState("moto")
+
+  const {data: searchRes, loading} = useFetch(searchText.length > 3 && `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[title][$containsi]=${searchText}`)
 
   const handleOpen = () => {
     setOpena(!opena);
