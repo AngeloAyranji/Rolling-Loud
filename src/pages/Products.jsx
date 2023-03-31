@@ -31,21 +31,26 @@ function Products() {
     `api/categories/?filters[title][$eq]=${category}`
   );
 
+  const { data: brandDB } = useFetch(
+    `api/brands/?filters[name][$eq]=${category}`
+  );
+
 
   const {
     data: products,
     loading,
     error,
   } = useFetch(url);
-  
 
   useEffect(() => {
     handleFilters()
-  }, [isNew, isFeatured, isPromotion, isInStock, sortBy, category, price]);
-  
+  }, [isNew, isFeatured, isPromotion, isInStock, sortBy, category, price, brandDB, categoryDB]);
+
   const handleFilters = () => {
-    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}${category ? `&filters[categories][title][$eq]=${category}` : ``}`;
+    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}`;
     
+    if (category && categoryDB?.length) filter += `&filters[categories][title][$eq]=${category}`
+    if (category && brandDB?.length) filter += `&filters[brand][name][$eq]=${category}`
     if (isNew) filter += "&filters[type][$eq]=new";
     if (isPromotion) filter += "&filters[type][$eq]=promotion";
     if (isFeatured) filter += "&filters[type][$eq]=featured";
@@ -83,9 +88,11 @@ function Products() {
             </h2>
             <p className="max-w-[700px]">
               {category
-                ? categoryDB
+                ? categoryDB.length
                   ? categoryDB[0]?.attributes.description
-                  : ""
+                  : brandDB.length
+                    ? brandDB[0]?.attributes.name
+                    : ""
                 : `ALL PRODUCTS Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia
           veritatis placeat id soluta incidunt provident nostrum quibusdam amet
           dolor, excepturi eius, nihil quisquam. Debitis reprehenderit atque,

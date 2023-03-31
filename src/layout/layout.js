@@ -44,7 +44,7 @@ const Layout = ({ children }) => {
   }, [categories]);
 
   const handleCurrent = (current) => {
-    current = current[0].toUpperCase() + current.slice(1);
+    current = current[0]?.toUpperCase() + current?.slice(1);
     let tmpNav = navigation;
     tmpNav.map((x) => x.name === current ? x.current = true : x.current = false);
     setNavigation(tmpNav);
