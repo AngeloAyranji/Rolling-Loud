@@ -37,10 +37,6 @@ export default function Navbar({ navigation }) {
     navigate("/");
   };
 
-  // useEffect(() => {
-  //   console.log(1)
-  // }, [navigation])
-
   return (
     <Disclosure as="nav" className="bg-[#121212]">
       {({ open }) => (
@@ -60,7 +56,7 @@ export default function Navbar({ navigation }) {
               </div>
               <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <Link to="/">
+                  <a href="/">
                     <img
                       className="block h-8 w-auto lg:hidden"
                       src={Logo}
@@ -71,14 +67,14 @@ export default function Navbar({ navigation }) {
                       src={Logo}
                       alt="Your Company"
                     />
-                  </Link>
+                  </a>
                 </div>
                 <div className="hidden md:ml-6 md:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <Link
+                      <a
                         key={item.name}
-                        to={item.href}
+                        href={item.href}
                         className={classNames(
                           item.current
                             ? "text-primary border-b-2 border-primary"
@@ -88,7 +84,7 @@ export default function Navbar({ navigation }) {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 </div>

@@ -18,11 +18,6 @@ const Layout = ({ children }) => {
   ]);
 
   useEffect(() => {
-    if (location.pathname === '/') handleCurrent("Home")
-    else handleCurrent('')
-  }, [location])
-
-  useEffect(() => {
     if (categories && navigation.length <= 4) {
       let tmpNav = navigation;
       categories.map((cat) => {
@@ -38,17 +33,20 @@ const Layout = ({ children }) => {
           });
       });
       setNavigation(tmpNav);
+
     }
+    
+    const productsPrefix = "/products/";
+    if (location.pathname === '/') handleCurrent("Home");
+    else if (location.pathname.startsWith(productsPrefix)) handleCurrent(location.pathname.substring(productsPrefix.length))
+    else handleCurrent('');
+
   }, [categories]);
 
-  useEffect(() => {
-    console.log(1)
-  }, [navigation])
-
   const handleCurrent = (current) => {
+    current = current[0].toUpperCase() + current.slice(1);
     let tmpNav = navigation;
     tmpNav.map((x) => x.name === current ? x.current = true : x.current = false);
-
     setNavigation(tmpNav);
   }
 
