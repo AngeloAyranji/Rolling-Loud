@@ -25,7 +25,7 @@ function Card({ item, id }) {
             addToCart({
               id: id,
               name: item?.title,
-              img: item?.image?.data[0]?.attributes?.url.substring(1),
+              img: item?.image?.data[0]?.attributes?.url,
               price: item?.price,
               quantity,
             })
