@@ -22,12 +22,13 @@ const Layout = ({ children }) => {
       let tmpNav = navigation;
       categories.map((cat) => {
         if (
-          !navigation.find((nav) => nav.name.toLowerCase() === cat.attributes.title.toLowerCase())
+          !navigation.find(
+            (nav) =>
+              nav.name.toLowerCase() === cat.attributes.title.toLowerCase()
+          )
         )
           tmpNav.push({
-            name:
-              cat.attributes.title.charAt(0).toUpperCase() +
-              cat.attributes.title.slice(1),
+            name: cat.attributes.title,
             href: `/products/${cat.attributes.title}`,
             current: false,
           });
