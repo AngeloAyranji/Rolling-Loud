@@ -11,7 +11,7 @@ function SocialsMenu() {
     setOpen(!open);
   };
   return (
-    <div className="fixed bottom-4 right-4 rounded-full bg-secondary flex flex-col items-center justify-center space-y-4 p-4 transition-transform">
+    <div className="fixed bottom-4 right-4 rounded-full bg-secondary flex flex-col items-center justify-center space-y-4 p-4 transition-transform z-[1000]">
       <TfiHeadphoneAlt
         className="text-secondary-content w-6 h-6 cursor-pointer"
         onClick={handleOpen}
