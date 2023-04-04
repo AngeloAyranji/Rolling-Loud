@@ -10,9 +10,9 @@ import ForgotPassword from "./pages/ForgotPassword";
 import { Routes, Route } from "react-router-dom";
 import ScrollToTop from "./layout/scrollToTop";
 import Layout from "./layout/layout";
+import Brands from "./pages/Brands";
 
 function App() {
-
   return (
     <div className="bg-[#121212]">
       <ScrollToTop>
@@ -29,6 +29,7 @@ function App() {
             <Route path="/orders/:userId" element={<Orders />} />
             <Route path="/orders/:userId/:orderId" element={<Order />} />
             {/* <Route path="*" element={} /> */}
+            <Route path="/brands" element={<Brands />} />
           </Routes>
         </Layout>
       </ScrollToTop>

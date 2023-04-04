@@ -35,22 +35,29 @@ function Products() {
     `api/brands/?filters[name][$eq]=${category}`
   );
 
-
-  const {
-    data: products,
-    loading,
-    error,
-  } = useFetch(url);
+  const { data: products, loading, error } = useFetch(url);
 
   useEffect(() => {
-    if(brandDB && categoryDB) handleFilters()
-  }, [isNew, isFeatured, isPromotion, isInStock, sortBy, category, price, brandDB, categoryDB]);
+    if (brandDB && categoryDB) handleFilters();
+  }, [
+    isNew,
+    isFeatured,
+    isPromotion,
+    isInStock,
+    sortBy,
+    category,
+    price,
+    brandDB,
+    categoryDB,
+  ]);
 
   const handleFilters = () => {
     let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}`;
-    
-    if (category && categoryDB?.length) filter += `&filters[categories][title][$eq]=${category}`
-    if (category && brandDB?.length) filter += `&filters[brand][name][$eq]=${category}`
+
+    if (category && categoryDB?.length)
+      filter += `&filters[categories][title][$eq]=${category}`;
+    if (category && brandDB?.length)
+      filter += `&filters[brand][name][$eq]=${category}`;
     if (isNew) filter += "&filters[type][$eq]=new";
     if (isPromotion) filter += "&filters[type][$eq]=promotion";
     if (isFeatured) filter += "&filters[type][$eq]=featured";
@@ -60,7 +67,6 @@ function Products() {
     setUrl(filter);
   };
 
-  
   return (
     <>
       {!products ? (
@@ -83,7 +89,7 @@ function Products() {
                 <Link to={`/products`}>All Products</Link>
               )}
             </Breadcrumbs>
-            <h2 className="text-xl xl:text-3xl font-bold text-white">
+            <h2 className="text-xl xl:text-3xl font-bold text-white uppercase">
               {!category ? "All Products" : category}
             </h2>
             <p className="max-w-[700px]">
@@ -91,8 +97,8 @@ function Products() {
                 ? categoryDB.length
                   ? categoryDB[0]?.attributes.description
                   : brandDB.length
-                    ? brandDB[0]?.attributes.name
-                    : ""
+                  ? brandDB[0]?.attributes.name
+                  : ""
                 : `ALL PRODUCTS Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia
           veritatis placeat id soluta incidunt provident nostrum quibusdam amet
           dolor, excepturi eius, nihil quisquam. Debitis reprehenderit atque,

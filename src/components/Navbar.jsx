@@ -105,7 +105,7 @@ export default function Navbar({ navigation, setNavigation }) {
                           item.current
                             ? "text-primary border-b-2 border-primary"
                             : " hover:text-primary hover:border-b-2 border-primary",
-                          "px-3 py-2 text-sm font-medium"
+                          "py-2 text-sm font-medium uppercase"
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
@@ -232,7 +232,7 @@ export default function Navbar({ navigation, setNavigation }) {
                   href={item.href}
                   className={classNames(
                     item.current ? "text-primary" : " hover:text-primary",
-                    "block px-3 py-2 text-base font-medium"
+                    "block px-3 py-2 text-base font-medium uppercase"
                   )}
                   aria-current={item.current ? "page" : undefined}
                 >
