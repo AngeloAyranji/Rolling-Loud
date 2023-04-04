@@ -153,7 +153,7 @@ export default function Example({ handleOpen }) {
                           or{" "}
                           <button
                             type="button"
-                            className="font-medium text-primary hover:text-primary-focus"
+                            className="font-medium text-secondary hover:text-secondary-focus"
                             onClick={() => handleOpen()}
                           >
                             Continue Shopping

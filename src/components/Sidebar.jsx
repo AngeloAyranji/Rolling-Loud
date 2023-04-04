@@ -29,9 +29,8 @@ function Sidebar({
   isFeatured,
   setIsInStock,
   setPrice,
-  productQuantity
+  productQuantity,
 }) {
-  
   function valuetext(value) {
     return `${value} $`;
   }
@@ -45,8 +44,8 @@ function Sidebar({
     <div
       className={
         open
-          ? "fixed top-0 left-0 w-full h-screen bg-[#121212] overflow-y-scroll z-10 transition-transform md:static md:w-[320px] md:h-full md:overflow-y-auto pl-8 md:pl-0"
-          : "fixed top-0 left-0 w-full h-screen bg-[#121212] translate-x-[-100%] overflow-y-scroll transition-transform md:static md:w-[320px] md:h-full md:translate-x-0 md:overflow-y-auto"
+          ? "fixed top-16 left-0 w-full h-screen bg-[#121212] overflow-y-scroll z-10 transition-transform md:static md:w-[320px] md:h-full md:overflow-y-auto pl-8 md:pl-0"
+          : "fixed top-16 left-0 w-full h-screen bg-[#121212] translate-x-[-100%] overflow-y-scroll transition-transform md:static md:w-[320px] md:h-full md:translate-x-0 md:overflow-y-auto"
       }
     >
       <div className="w-full h-full flex flex-col space-y-4 p-4 lg:pl-8 2xl:pl-14">
@@ -135,7 +134,6 @@ function Sidebar({
             </ThemeProvider>
           </div>
         </div>
-
       </div>
     </div>
   );
