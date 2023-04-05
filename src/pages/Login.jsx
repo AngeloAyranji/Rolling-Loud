@@ -38,6 +38,7 @@ function Login() {
         if (res) {
           sessionStorage.setItem("jwt", res.data.jwt);
           sessionStorage.setItem("email", res.data.user.email);
+          sessionStorage.setItem("username", res.data.user.username);
 
           navigate(-1);
         }
