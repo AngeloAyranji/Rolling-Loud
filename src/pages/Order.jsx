@@ -1,19 +1,15 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 
 function Order() {
-  const products = useSelector((state) => state.cart.products);
-  const dispatch = useDispatch();
-
   const { userId, orderId } = useParams();
   const navigate = useNavigate();
 
-  const { data: order, loading } = useFetch(`api/orders/?populate[products]=*&filters[stripe_id][$eq]=${orderId}`, true);
-  
+  const { data: order, loading } = useFetch(`api/orders/?populate[products][populate][image]=*&filters[stripe_id][$eq]=${orderId}`, true);
+  console.log("order: ", order)
   useEffect(() => {
     checkLogIn();
   }, []);
@@ -31,6 +27,58 @@ function Order() {
     const year = tmpDate.getFullYear();
 
     return `${month} ${day}, ${year}`;
+  }
+
+  const orderStatus = () => {
+    if(order[0]?.attributes.status === "order submitted") {
+      return (
+              <div className="flex justify-center items-center w-full mx-auto max-w-[900px] lg:mt-20 mt-12 ">
+                <ul className="steps w-full">
+                  <li data-content="" className="step step-primary">
+                    Order Placed
+                  </li>
+                  <li data-content="" className="step">
+                    Order Sent
+                  </li>
+                  <li data-content="" className="step">
+                    Delivered
+                  </li>
+                </ul>
+              </div>
+      )
+    } else if(order[0]?.attributes.status === "sent") {
+      return (
+        <div className="flex justify-center items-center w-full mx-auto max-w-[900px] lg:mt-20 mt-12 ">
+          <ul className="steps w-full">
+            <li data-content="" className="step step-primary">
+              Order Placed
+            </li>
+            <li data-content="" className="step step-primary">
+              Order Sent
+            </li>
+            <li data-content="" className="step">
+              Delivered
+            </li>
+          </ul>
+        </div>
+)
+    } else if(order[0]?.attributes.status === "delivered") {
+      return (
+        <div className="flex justify-center items-center w-full mx-auto max-w-[900px] lg:mt-20 mt-12 ">
+          <ul className="steps w-full">
+            <li data-content="" className="step step-primary">
+              Order Placed
+            </li>
+            <li data-content="" className="step step-primary">
+              Order Sent
+            </li>
+            <li data-content="" className="step step-primary">
+              Delivered
+            </li>
+          </ul>
+        </div>
+)
+    }
   }
 
   return (
@@ -58,12 +106,12 @@ function Order() {
               <div className="mt-8 w-full border-b-[2px] pb-8 border-b-base-100">
                 <div className="flow-root">
                   <ul role="list" className="-my-6 divide-y divide-gray-200">
-                    {products.map((product) => (
+                    {order.length && order[0]?.attributes.products.data.map((product) => (
                       <li key={product.id} className="flex py-6">
                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                           <img
-                            src={product.img}
-                            alt={product.imageAlt}
+                            src={product.attributes.image.data[0].attributes.url}
+                            alt={"product image"}
                             className="h-full w-full object-cover object-center"
                           />
                         </div>
@@ -72,15 +120,15 @@ function Order() {
                           <div>
                             <div className="flex justify-between text-sm lg:text-base font-medium text-white">
                               <h3>
-                                <a href={product.href}>{product.name}</a>
+                                <Link to={`/product/${product.attributes.title}`}>{product.attributes.title}</Link>
                               </h3>
                               <p className="ml-4 text-base lg:text-xl">
-                                {product.price * product.quantity} $
+                                {product.attributes.price * product.attributes.quantity} $
                               </p>
                             </div>
                           </div>
                           <div className="flex flex-1 items-end justify-between text-sm">
-                            <p className="">Qty : {product.quantity}</p>
+                            <p className="">Qty : {product.attributes.quantity}</p>
                           </div>
                         </div>
                       </li>
@@ -152,19 +200,7 @@ function Order() {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center items-center w-full mx-auto max-w-[900px] lg:mt-20 mt-12 ">
-                <ul className="steps w-full">
-                  <li data-content="" className="step step-primary">
-                    Order Placed
-                  </li>
-                  <li data-content="" className="step step-primary">
-                    Order Sent
-                  </li>
-                  <li data-content="" className="step">
-                    Delivered
-                  </li>
-                </ul>
-              </div>
+              {orderStatus()}
             </div>
           </div>
         </div>
