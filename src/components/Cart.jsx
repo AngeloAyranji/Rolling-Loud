@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,13 +8,56 @@ import axios from "axios";
 
 export default function Example({ handleOpen }) {
   const [open, setOpen] = useState(true);
+  const [promoCode, setPromoCode] = useState(null);
+
   const products = useSelector((state) => state.cart.products);
   const dispatch = useDispatch();
+
   const totalPrice = () => {
     let total = 0;
     products.forEach((item) => (total += item.price * item.quantity));
-    return total.toFixed(2);
+    if (promoCode) total = total * (1 - promoCode[0].attributes.discount / 100);
+    total = total.toFixed(2);
+    return total;
   };
+
+  const handlePromoCode = async () => {
+    if (promoCode === null) {
+      try {
+        const code = document.getElementById("promoCode").value;
+        const res = await axios.get(
+          process.env.REACT_APP_BACKEND_URL +
+            `api/promotions/?filters[code][$eq]=${code}`
+        );
+        if (res.data.data.length) setPromoCode(res.data.data);
+      } catch (err) {
+        console.log("Error: ", err);
+        setPromoCode(null);
+      }
+    }
+  };
+
+  const handleCheckout = async () => {
+    const productList = products.map((prd) => {
+      return {
+        id: prd.id,
+        quantity: prd.quantity,
+      }
+    })
+    const payload = {
+      items: productList,
+      promoCode: promoCode ? promoCode[0].attributes.code : null,
+      userId: sessionStorage.getItem('userId')
+    }
+
+    const config = {
+      headers: { Authorization: `Bearer ${sessionStorage.getItem('jwt')}` }
+    }
+    
+    const res = await axios.post(process.env.REACT_APP_BACKEND_URL + "api/checkout", payload, config)
+
+  }
+
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -126,11 +169,16 @@ export default function Example({ handleOpen }) {
                         </label>
                         <div className="relative">
                           <input
+                            id="promoCode"
                             type="text"
                             placeholder="CODE"
                             className="input input-bordered w-full pr-16"
                           />
-                          <button className="btn btn-primary absolute top-0 right-0 rounded-l-none">
+                          {promoCode && <p>Code Added!</p>}
+                          <button
+                            className="btn btn-primary absolute top-0 right-0 rounded-l-none"
+                            onClick={handlePromoCode}
+                          >
                             ADD
                           </button>
                         </div>
@@ -151,7 +199,7 @@ export default function Example({ handleOpen }) {
                           }
                           className="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-focus"
                         >
-                          <div onClick={handleOpen}>Checkout</div>
+                          <div onClick={handleCheckout}>Checkout</div>
                         </Link>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">

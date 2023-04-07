@@ -9,7 +9,7 @@ function Orders() {
   const { userId } = useParams();
 
   const { data: orders, loading } = useFetch(
-    `api/orders?populate[0]=product&filters[user][username][$eq]=${userId}`,
+    `api/orders/?populate[products]=*&filters[user][username][$eq]=${userId}`,
     true
   );
   console.log("orders: ", orders);

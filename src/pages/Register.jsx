@@ -38,6 +38,7 @@ function Register() {
           sessionStorage.setItem("jwt", res.data.jwt);
           sessionStorage.setItem("email", res.data.user.email);
           sessionStorage.setItem("username", res.data.user.username);
+          sessionStorage.setItem("userId", res.data.user.id);
 
           navigate("/");
         }
