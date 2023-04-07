@@ -34,6 +34,14 @@ const Layout = ({ children }) => {
             current: false,
           });
       });
+      if (!navigation.find((nav) => nav.name.toLowerCase() === "brands")) {
+        tmpNav.push({
+          name: "Brands",
+          href: "/brands",
+          current: false,
+        });
+      }
+
       setNavigation(tmpNav);
     }
   }, [categories]);

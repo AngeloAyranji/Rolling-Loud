@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FiHeart } from "react-icons/fi";
 import { CiDeliveryTruck, CiLock } from "react-icons/ci";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/cartReducer";
 import { Link, useParams } from "react-router-dom";
 import ReactMakrdown from "react-markdown";
@@ -23,12 +23,59 @@ function Product() {
 
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [isAvailable, setIsAvailable] = useState(true);
 
   useEffect(() => {
     if (product)
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
   }, [product]);
 
+  const products = useSelector((state) => state.cart.products);
+
+  const checkAvailability = (quantityValue) => {
+    if (product) {
+      const prod = products.find((x) => x.id === product[0].id);
+      if (!prod && product[0].attributes.quantity > 0) {
+        console.log(
+          "added to cart: " + quantityValue,
+          "total quantity",
+          quantityValue
+        );
+        dispatch(
+          addToCart({
+            id: product[0].id,
+            name: product[0].attributes.title,
+            img: product[0].attributes.image.data[0].attributes.url,
+            price: product[0].attributes.price,
+            quantity,
+          })
+        );
+      } else {
+        if (!prod) {
+          console.log("Item out of Stock");
+        } else {
+          if (quantityValue + prod.quantity <= product[0].attributes.quantity) {
+            console.log(
+              "added to cart: " + quantityValue,
+              "total quantity",
+              prod.quantity + quantityValue
+            );
+            dispatch(
+              addToCart({
+                id: product[0].id,
+                name: product[0].attributes.title,
+                img: product[0].attributes.image.data[0].attributes.url,
+                price: product[0].attributes.price,
+                quantity,
+              })
+            );
+          } else {
+            console.log("cart is full");
+          }
+        }
+      }
+    }
+  };
   return (
     <>
       {!loading && product ? (
@@ -133,22 +180,11 @@ function Product() {
                   </div>
                   <button
                     className={
-                      product[0].attributes.quantity === 0
+                      product[0].attributes.quantity === 0 && !isAvailable
                         ? "btn btn-disabled btn-primary w-full max-w-[250px]"
                         : "btn btn-primary w-full max-w-[250px]"
                     }
-                    onClick={() =>
-                      dispatch(
-                        addToCart({
-                          id: product[0].id,
-                          name: product[0].attributes.title,
-                          img: product[0].attributes.image.data[0].attributes
-                            .url,
-                          price: product[0].attributes.price,
-                          quantity,
-                        })
-                      )
-                    }
+                    onClick={() => checkAvailability(quantity)}
                   >
                     Add to Cart
                   </button>

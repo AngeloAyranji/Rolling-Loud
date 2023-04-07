@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import React, { Fragment } from "react";
 import useFetch from "../hooks/useFetch";
@@ -20,15 +19,9 @@ function List({ type }) {
         <Loading />
       ) : (
         <Fragment>
-          { products?.map((item, index) => (
-          <Link
-            to={`/product/${item.attributes.title}`}
-            state={{ product: item.attributes, product_id: item.id }}
-            key={index}
-          >
-            <Card item={item.attributes} id={item.id} />
-          </Link>
-        ))}
+          {products?.map((item, index) => (
+            <Card item={item.attributes} id={item.id} key={index} />
+          ))}
         </Fragment>
       )}
     </div>
