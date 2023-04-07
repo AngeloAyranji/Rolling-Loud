@@ -7,6 +7,7 @@ import SocialsMenu from "../components/SocialsMenu";
 import { useLocation } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import Loading from "../components/Loading";
+import SearchBar from "../components/SearchBar";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -22,18 +23,26 @@ const Layout = ({ children }) => {
       let tmpNav = navigation;
       categories.map((cat) => {
         if (
-          !navigation.find((nav) => nav.name.toLowerCase() === cat.attributes.title.toLowerCase())
+          !navigation.find(
+            (nav) =>
+              nav.name.toLowerCase() === cat.attributes.title.toLowerCase()
+          )
         )
           tmpNav.push({
-            name:
-              cat.attributes.title.charAt(0).toUpperCase() +
-              cat.attributes.title.slice(1),
+            name: cat.attributes.title,
             href: `/products/${cat.attributes.title}`,
             current: false,
           });
       });
-      setNavigation(tmpNav);
+      if (!navigation.find((nav) => nav.name.toLowerCase() === "brands")) {
+        tmpNav.push({
+          name: "Brands",
+          href: "/brands",
+          current: false,
+        });
+      }
 
+      setNavigation(tmpNav);
     }
   }, [categories]);
 
@@ -44,6 +53,7 @@ const Layout = ({ children }) => {
       ) : (
         <>
           <Navbar navigation={navigation} setNavigation={setNavigation} />
+          <SearchBar />
           {children}
           {location.pathname !== "/login" &&
             location.pathname !== "/register" && (

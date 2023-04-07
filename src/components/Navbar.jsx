@@ -11,7 +11,7 @@ import {
 import Cart from "./Cart";
 import Logo from "../assets/Images/LogoSky.png";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import useFetch from "../hooks/useFetch"
+import useFetch from "../hooks/useFetch";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -22,10 +22,13 @@ export default function Navbar({ navigation, setNavigation }) {
   const location = useLocation();
 
   const [opena, setOpena] = useState(false);
-  const [searchText, setSearchText] = useState("moto")
-  
+  const [searchText, setSearchText] = useState("moto");
+
   const products = useSelector((state) => state.cart.products);
-  const {data: searchRes, loading} = useFetch(searchText.length > 3 && `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[title][$containsi]=${searchText}`)
+  const { data: searchRes, loading } = useFetch(
+    searchText.length > 3 &&
+      `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[title][$containsi]=${searchText}`
+  );
 
   const handleOpen = () => {
     setOpena(!opena);
@@ -42,19 +45,27 @@ export default function Navbar({ navigation, setNavigation }) {
 
   const handleCurrentNav = (current) => {
     let tmpNav = navigation;
-    tmpNav.map((x) => x.name.toLowerCase() === current.toLowerCase() ? x.current = true : x.current = false);
+    tmpNav.map((x) =>
+      x.name.toLowerCase() === current.toLowerCase()
+        ? (x.current = true)
+        : (x.current = false)
+    );
     setNavigation(tmpNav);
-  }
+  };
 
   useEffect(() => {
     const productsprefix = "/products/";
-    if (location.pathname === '/') handleCurrentNav("home");
-    else if (location.pathname.startsWith(productsprefix)) handleCurrentNav(location.pathname.substring(productsprefix.length))
-    else handleCurrentNav('');
-  }, [])
+    if (location.pathname === "/") handleCurrentNav("home");
+    else if (location.pathname.startsWith(productsprefix))
+      handleCurrentNav(location.pathname.substring(productsprefix.length));
+    else handleCurrentNav("");
+  }, []);
 
   return (
-    <Disclosure as="nav" className="bg-[#121212]">
+    <Disclosure
+      as="nav"
+      className="bg-[#121212] fixed top-0 left-0 right-0 z-[10000]"
+    >
       {({ open }) => (
         <>
           <div className="mx-auto max-w-[1400px] px-2 md:px-6 lg:px-8">
@@ -72,7 +83,7 @@ export default function Navbar({ navigation, setNavigation }) {
               </div>
               <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <Link to="/" onClick={() => handleCurrentNav('Home')}>
+                  <Link to="/" onClick={() => handleCurrentNav("Home")}>
                     <img
                       className="block h-8 w-auto lg:hidden"
                       src={Logo}
@@ -96,7 +107,7 @@ export default function Navbar({ navigation, setNavigation }) {
                           item.current
                             ? "text-primary border-b-2 border-primary"
                             : " hover:text-primary hover:border-b-2 border-primary",
-                          "px-3 py-2 text-sm font-medium"
+                          "py-2 text-sm font-medium uppercase"
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
@@ -218,17 +229,17 @@ export default function Navbar({ navigation, setNavigation }) {
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item) => (
                 <Disclosure.Button
-                    key={item.name}
-                    as="a"
-                    href={item.href}
-                    className={classNames(
-                      item.current ? "text-primary" : " hover:text-primary",
-                      "block px-3 py-2 text-base font-medium"
-                    )}
-                    aria-current={item.current ? "page" : undefined}
-                  >
-                    {item.name}
-                  </Disclosure.Button>
+                  key={item.name}
+                  as="a"
+                  href={item.href}
+                  className={classNames(
+                    item.current ? "text-primary" : " hover:text-primary",
+                    "block px-3 py-2 text-base font-medium uppercase"
+                  )}
+                  aria-current={item.current ? "page" : undefined}
+                >
+                  {item.name}
+                </Disclosure.Button>
               ))}
             </div>
           </Disclosure.Panel>
