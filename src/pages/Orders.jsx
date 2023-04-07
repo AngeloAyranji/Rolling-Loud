@@ -9,10 +9,10 @@ function Orders() {
   const { userId } = useParams();
 
   const { data: orders, loading } = useFetch(
-    `api/orders/?populate[products]=*&filters[user][username][$eq]=${userId}`,
+    `api/orders/?populate[products]=*&populate[promotion]=*&pagination[withCount]=true&filters[user][username][$eq]=${userId}`,
     true
   );
-
+  console.log(orders)
   useEffect(() => {
     checkLogIn();
   }, []);
@@ -32,10 +32,19 @@ function Orders() {
     return `${month} ${day}, ${year}`;
   };
 
-  // const getPrice = () => {
-  //   let total = 0;
-  //   orders.forEach((item) => (total += ));
-  // }
+
+
+  const getPrice = (order) => {
+    let totalPrice = 0;
+    order.attributes.products.data.forEach(product => {
+      const price = product.attributes.price;
+      const quantity = order.attributes.quantities.find(qt => qt.id === product.id).quantity
+      totalPrice += price * quantity;
+    })
+
+    if(order.attributes.promotion.data.attributes) totalPrice = totalPrice * (1 - order.attributes.promotion.data.attributes.discount / 100)
+    return totalPrice
+  }
 
   return (
     <>
@@ -68,7 +77,7 @@ function Orders() {
                       order id: {order.attributes.stripe_id}
                     </h2>
                     <p className="text-secondary-content font-semibold tracking-wide uppercase lg:text-lg">
-                      170.00 $
+                      {getPrice(order)}$
                     </p>
                   </div>
                   <div className="flex w-full justify-between">

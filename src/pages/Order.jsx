@@ -8,8 +8,11 @@ function Order() {
   const { userId, orderId } = useParams();
   const navigate = useNavigate();
 
-  const { data: order, loading } = useFetch(`api/orders/?populate[products][populate][image]=*&filters[stripe_id][$eq]=${orderId}`, true);
-  console.log("order: ", order)
+  const { data: order, loading } = useFetch(
+    `api/orders/?populate[products][populate][image]=*&filters[stripe_id][$eq]=${orderId}`,
+    true
+  );
+  console.log("order: ", order);
   useEffect(() => {
     checkLogIn();
   }, []);
@@ -22,31 +25,38 @@ function Order() {
 
   const convertDate = (date) => {
     const tmpDate = new Date(date);
-    const month = tmpDate.toLocaleString('default', { month: 'long' });
+    const month = tmpDate.toLocaleString("default", { month: "long" });
     const day = tmpDate.getDate();
     const year = tmpDate.getFullYear();
 
     return `${month} ${day}, ${year}`;
+  };
+
+  const getPrice = (product) => {
+    if(order) {
+      const quantity = order[0]?.attributes.quantities.find(x => x.id === product.id).quantity
+      return product.attributes.price * quantity;
+    }
   }
 
   const orderStatus = () => {
-    if(order[0]?.attributes.status === "order submitted") {
+    if (order[0]?.attributes.status === "order submitted") {
       return (
-              <div className="flex justify-center items-center w-full mx-auto max-w-[900px] lg:mt-20 mt-12 ">
-                <ul className="steps w-full">
-                  <li data-content="" className="step step-primary">
-                    Order Placed
-                  </li>
-                  <li data-content="" className="step">
-                    Order Sent
-                  </li>
-                  <li data-content="" className="step">
-                    Delivered
-                  </li>
-                </ul>
-              </div>
-      )
-    } else if(order[0]?.attributes.status === "sent") {
+        <div className="flex justify-center items-center w-full mx-auto max-w-[900px] lg:mt-20 mt-12 ">
+          <ul className="steps w-full">
+            <li data-content="" className="step step-primary">
+              Order Placed
+            </li>
+            <li data-content="" className="step">
+              Order Sent
+            </li>
+            <li data-content="" className="step">
+              Delivered
+            </li>
+          </ul>
+        </div>
+      );
+    } else if (order[0]?.attributes.status === "sent") {
       return (
         <div className="flex justify-center items-center w-full mx-auto max-w-[900px] lg:mt-20 mt-12 ">
           <ul className="steps w-full">
@@ -61,8 +71,8 @@ function Order() {
             </li>
           </ul>
         </div>
-)
-    } else if(order[0]?.attributes.status === "delivered") {
+      );
+    } else if (order[0]?.attributes.status === "delivered") {
       return (
         <div className="flex justify-center items-center w-full mx-auto max-w-[900px] lg:mt-20 mt-12 ">
           <ul className="steps w-full">
@@ -77,9 +87,10 @@ function Order() {
             </li>
           </ul>
         </div>
-)
+      );
     }
-  }
+  };
+
 
   return (
     <>
@@ -100,39 +111,56 @@ function Order() {
               <h2 className="text-xl xl:text-3xl font-bold text-white uppercase tracking-wide">
                 order id: {orderId}
               </h2>
-              <p className="max-w-[700px]">Order Date: {convertDate(order[0]?.attributes.date)}</p>
+              <p className="max-w-[700px]">
+                Order Date: {convertDate(order[0]?.attributes.date)}
+              </p>
               <div className="h-[2px] w-full bg-primary"></div>
 
               <div className="mt-8 w-full border-b-[2px] pb-8 border-b-base-100">
                 <div className="flow-root">
                   <ul role="list" className="-my-6 divide-y divide-gray-200">
-                    {order.length && order[0]?.attributes.products.data.map((product) => (
-                      <li key={product.id} className="flex py-6">
-                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                          <img
-                            src={product.attributes.image.data[0].attributes.url}
-                            alt={"product image"}
-                            className="h-full w-full object-cover object-center"
-                          />
-                        </div>
+                    {order.length &&
+                      order[0]?.attributes.products.data.map((product) => (
+                        <li key={product.id} className="flex py-6">
+                          <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                            <img
+                              src={
+                                product.attributes.image.data[0].attributes.url
+                              }
+                              alt={"product image"}
+                              className="h-full w-full object-cover object-center"
+                            />
+                          </div>
 
-                        <div className="ml-4 flex flex-1 flex-col">
-                          <div>
-                            <div className="flex justify-between text-sm lg:text-base font-medium text-white">
-                              <h3>
-                                <Link to={`/product/${product.attributes.title}`}>{product.attributes.title}</Link>
-                              </h3>
-                              <p className="ml-4 text-base lg:text-xl">
-                                {product.attributes.price * product.attributes.quantity} $
+                          <div className="ml-4 flex flex-1 flex-col">
+                            <div>
+                              <div className="flex justify-between text-sm lg:text-base font-medium text-white">
+                                <h3>
+                                  <Link
+                                    to={`/product/${product.attributes.title}`}
+                                  >
+                                    {product.attributes.title}
+                                  </Link>
+                                </h3>
+                                <p className="ml-4 text-base lg:text-xl">
+                                  {getPrice(product)}{" "}
+                                  $
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex flex-1 items-end justify-between text-sm">
+                              <p className="">
+                                Qty :{" "}
+                                {
+                                  order[0]?.attributes.quantities.find(
+                                    (x) => x.id === product.id
+                                  ).quantity
+                                }
                               </p>
                             </div>
                           </div>
-                          <div className="flex flex-1 items-end justify-between text-sm">
-                            <p className="">Qty : {product.attributes.quantity}</p>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
+                        </li>
+                      ))}
                   </ul>
                 </div>
               </div>
@@ -142,7 +170,7 @@ function Order() {
                   <p className="text-secondary-content font-medium text-lg mb-2">
                     Payment Method:
                   </p>
-                  <p className="">Visa **56</p>
+                  <p className="">Visa {'************' + order[0]?.attributes.card_number.substring(14)}</p>
                 </div>
                 <div className="w-full lg:w-[50%]">
                   <p className="text-secondary-content font-medium text-lg mb-2">
@@ -152,7 +180,9 @@ function Order() {
                   <p className="text-lg tracking-wide">
                     847 Jewess Bridge Apt.174
                   </p>
-                  <p className="text-lg tracking-wide">{order[0]?.attributes.address}</p>
+                  <p className="text-lg tracking-wide">
+                    {order[0]?.attributes.address}
+                  </p>
                 </div>
               </div>
 

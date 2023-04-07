@@ -40,7 +40,6 @@ export default function Example({ handleOpen }) {
   };
 
   const handleCheckout = async () => {
-    console.log("Check");
     if (sessionStorage.getItem("jwt")) {
       const productList = products.map((prd) => {
         return {
@@ -63,6 +62,7 @@ export default function Example({ handleOpen }) {
         payload,
         config
       );
+      console.log(res)
       navigate(`/orders/${sessionStorage.getItem("username")}`);
     } else {
       navigate("/login");
