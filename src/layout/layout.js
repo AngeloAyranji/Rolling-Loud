@@ -7,6 +7,7 @@ import SocialsMenu from "../components/SocialsMenu";
 import { useLocation } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import Loading from "../components/Loading";
+import SearchBar from "../components/SearchBar";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -14,7 +15,7 @@ const Layout = ({ children }) => {
   const { data: categories, loading } = useFetch(`api/categories`);
 
   const [navigation, setNavigation] = useState([
-    { name: "Home", href: "/", current: true },
+    { name: "Home", href: "/", current: false },
   ]);
 
   useEffect(() => {
@@ -44,6 +45,7 @@ const Layout = ({ children }) => {
       ) : (
         <>
           <Navbar navigation={navigation} setNavigation={setNavigation} />
+          <SearchBar />
           {children}
           {location.pathname !== "/login" &&
             location.pathname !== "/register" && (

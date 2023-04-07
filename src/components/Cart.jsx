@@ -70,10 +70,7 @@ export default function Example({ handleOpen }) {
                               <li key={product.id} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
-                                    src={
-                                      process.env.REACT_APP_BACKEND_URL +
-                                      product.img
-                                    }
+                                    src={product.img}
                                     alt={product.imageAlt}
                                     className="h-full w-full object-cover object-center"
                                   />
@@ -156,7 +153,7 @@ export default function Example({ handleOpen }) {
                           or{" "}
                           <button
                             type="button"
-                            className="font-medium text-primary hover:text-primary-focus"
+                            className="font-medium text-secondary hover:text-secondary-focus"
                             onClick={() => handleOpen()}
                           >
                             Continue Shopping
