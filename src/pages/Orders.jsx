@@ -9,10 +9,10 @@ function Orders() {
   const { userId } = useParams();
 
   const { data: orders, loading } = useFetch(
-    `api/orders/?populate[products][populate]=*&filters[user][username][$eq]=${userId}`,
+    `api/orders/?populate[products]=*&filters[user][username][$eq]=${userId}`,
     true
   );
-  
+
   useEffect(() => {
     checkLogIn();
   }, []);

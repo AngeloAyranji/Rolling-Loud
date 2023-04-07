@@ -3,10 +3,12 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { removeItem } from "../redux/cartReducer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Example({ handleOpen }) {
+  const navigate = useNavigate();
+
   const [open, setOpen] = useState(true);
   const [promoCode, setPromoCode] = useState(null);
 
@@ -38,26 +40,34 @@ export default function Example({ handleOpen }) {
   };
 
   const handleCheckout = async () => {
-    const productList = products.map((prd) => {
-      return {
-        id: prd.id,
-        quantity: prd.quantity,
-      }
-    })
-    const payload = {
-      items: productList,
-      promoCode: promoCode ? promoCode[0].attributes.code : null,
-      userId: sessionStorage.getItem('userId')
+    console.log("Check");
+    if (sessionStorage.getItem("jwt")) {
+      const productList = products.map((prd) => {
+        return {
+          id: prd.id,
+          quantity: prd.quantity,
+        };
+      });
+      const payload = {
+        items: productList,
+        promoCode: promoCode ? promoCode[0].attributes.code : null,
+        userId: sessionStorage.getItem("userId"),
+      };
+
+      const config = {
+        headers: { Authorization: `Bearer ${sessionStorage.getItem("jwt")}` },
+      };
+
+      const res = await axios.post(
+        process.env.REACT_APP_BACKEND_URL + "api/checkout",
+        payload,
+        config
+      );
+      navigate(`/orders/${sessionStorage.getItem("username")}`);
+    } else {
+      navigate("/login");
     }
-
-    const config = {
-      headers: { Authorization: `Bearer ${sessionStorage.getItem('jwt')}` }
-    }
-    
-    const res = await axios.post(process.env.REACT_APP_BACKEND_URL + "api/checkout", payload, config)
-
-  }
-
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -191,16 +201,12 @@ export default function Example({ handleOpen }) {
                         Shipping and taxes calculated at checkout.
                       </p>
                       <div className="mt-6">
-                        <Link
-                          to={
-                            sessionStorage.getItem("jwt")
-                              ? `/orders/${sessionStorage.getItem("username")}`
-                              : `/login`
-                          }
+                        <div
+                          onClick={handleCheckout}
                           className="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-focus"
                         >
-                          <div onClick={handleCheckout}>Checkout</div>
-                        </Link>
+                          Checkout
+                        </div>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
