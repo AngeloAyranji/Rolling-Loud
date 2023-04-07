@@ -37,6 +37,8 @@ export default function Navbar({ navigation, setNavigation }) {
   const handleLogOut = () => {
     sessionStorage.removeItem("jwt");
     sessionStorage.removeItem("email");
+    sessionStorage.removeItem("username");
+    sessionStorage.removeItem("userId");
 
     navigate("/");
   };
