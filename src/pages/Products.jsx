@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
+import { useParams, useLocation, Link } from "react-router-dom";
+import { Select, Option } from "@material-tailwind/react";
+import { BsSliders } from "react-icons/bs";
 import Sidebar from "../components/Sidebar";
 import ListProduct from "../components/ListProduct";
-import { Select, Option } from "@material-tailwind/react";
 import Loading from "../components/Loading";
-import { BsSliders } from "react-icons/bs";
 import useFetch from "../hooks/useFetch";
-import { useParams, useLocation, Link } from "react-router-dom";
 
 function Products() {
   const { category } = useParams();
   const location = useLocation();
+
   const queryParams = new URLSearchParams(location.search);
   const queryFilter = queryParams.get("filter");
+  const querySearch = queryParams.get("search");
 
   const [isSidebar, setIsSidebar] = useState(false);
   const [isNew, setIsNew] = useState(queryFilter === "new" ? true : false);
@@ -49,11 +51,13 @@ function Products() {
     price,
     brandDB,
     categoryDB,
+    querySearch
   ]);
 
   const handleFilters = () => {
     let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}`;
 
+    if (querySearch) filter += `&filters[title][$containsi]=${querySearch}`;
     if (category && categoryDB?.length)
       filter += `&filters[categories][title][$eq]=${category}`;
     if (category && brandDB?.length)
@@ -85,12 +89,20 @@ function Products() {
                 <Link to={`/products/${category}`}>
                   {category.charAt(0).toUpperCase() + category.slice(1)}
                 </Link>
+              ) : querySearch ? (
+                <Link to={`/products?search=${querySearch}`}>
+                  {querySearch}
+                </Link>
               ) : (
                 <Link to={`/products`}>All Products</Link>
               )}
             </Breadcrumbs>
             <h2 className="text-xl xl:text-3xl font-bold text-white uppercase">
-              {!category ? "All Products" : category}
+              {!category
+                ? querySearch
+                  ? `Search in ${querySearch}`
+                  : "All Products"
+                : category}
             </h2>
             <p className="max-w-[700px]">
               {category
@@ -99,6 +111,8 @@ function Products() {
                   : brandDB.length
                   ? brandDB[0]?.attributes.description
                   : ""
+                : querySearch
+                ? ""
                 : `ALL PRODUCTS Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia
           veritatis placeat id soluta incidunt provident nostrum quibusdam amet
           dolor, excepturi eius, nihil quisquam. Debitis reprehenderit atque,

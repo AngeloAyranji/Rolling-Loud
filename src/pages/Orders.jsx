@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
@@ -7,7 +7,7 @@ import Loading from "../components/Loading";
 function Orders() {
   const navigate = useNavigate();
   const { userId } = useParams();
-
+  
   const { data: orders, loading } = useFetch(
     `api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&filters[user][username][$eq]=${userId}`,
     true

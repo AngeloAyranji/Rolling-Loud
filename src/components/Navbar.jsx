@@ -25,10 +25,6 @@ export default function Navbar({ navigation, setNavigation }) {
   const [searchText, setSearchText] = useState("moto");
 
   const products = useSelector((state) => state.cart.products);
-  const { data: searchRes, loading } = useFetch(
-    searchText.length > 3 &&
-      `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[title][$containsi]=${searchText}`
-  );
 
   const handleOpen = () => {
     setOpena(!opena);

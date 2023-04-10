@@ -1,17 +1,37 @@
-import React from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function SearchBar() {
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    const search = document.getElementById("searchBar").value;
+
+    if (search.length > 3) {
+      navigate(`products?search=${search}`);
+    }
+  };
+
+  useEffect(() => {
+    const searchInput = document.getElementById("searchBar");
+    const searchIcon = document.getElementById("searchIcon");
+
+    searchInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") searchIcon.click();
+    });
+  }, []);
+
   return (
     <div className="w-full mx-auto flex items-center justify-center mt-16 pt-8 pb-4 border-t-[1px] border-[#313131]">
       <div className="max-w-[1400px] w-full px-2 md:px-6 lg:px-8">
-        <form className="flex items-center">
+        <div className="flex items-center">
           <label htmlFor="simple-search" className="sr-only">
             Search
           </label>
           <div className="relative w-full">
             <input
               type="text"
-              id="simple-search"
+              id="searchBar"
               className="bg-[#313131] text-secondary-content text-sm rounded-lg focus:ring-primary focus:ring-1 border-none block w-full pl-4 p-2.5 placeholder:text-gray-400 placeholder:font-medium"
               placeholder="Search"
               required
@@ -19,6 +39,8 @@ function SearchBar() {
           </div>
           <button
             type="submit"
+            id="searchIcon"
+            onClick={handleSearch}
             className="p-2.5 ml-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-focus focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             <svg
@@ -37,7 +59,7 @@ function SearchBar() {
             </svg>
             <span className="sr-only">Search</span>
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );
