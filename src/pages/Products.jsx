@@ -97,7 +97,7 @@ function Products() {
                 ? categoryDB.length
                   ? categoryDB[0]?.attributes.description
                   : brandDB.length
-                  ? brandDB[0]?.attributes.name
+                  ? brandDB[0]?.attributes.description
                   : ""
                 : `ALL PRODUCTS Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia
           veritatis placeat id soluta incidunt provident nostrum quibusdam amet
