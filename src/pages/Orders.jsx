@@ -9,10 +9,10 @@ function Orders() {
   const { userId } = useParams();
 
   const { data: orders, loading } = useFetch(
-    `api/orders/?populate[products]=*&populate[promotion]=*&pagination[withCount]=true&filters[user][username][$eq]=${userId}`,
+    `api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=1&pagination[pageSize]=2&pagination[withCount]=true&filters[user][username][$eq]=${userId}`,
     true
   );
-  console.log(orders)
+  
   useEffect(() => {
     checkLogIn();
   }, []);
@@ -33,7 +33,6 @@ function Orders() {
   };
 
 
-
   const getPrice = (order) => {
     let totalPrice = 0;
     order.attributes.products.data.forEach(product => {
@@ -42,7 +41,7 @@ function Orders() {
       totalPrice += price * quantity;
     })
 
-    if(order.attributes.promotion.data.attributes) totalPrice = totalPrice * (1 - order.attributes.promotion.data.attributes.discount / 100)
+    if(order?.attributes.promotion.data !== null) totalPrice = totalPrice * (1 - order.attributes.promotion.data.attributes.discount / 100)
     return totalPrice
   }
 
@@ -74,16 +73,16 @@ function Orders() {
                 >
                   <div className="flex w-full justify-between">
                     <h2 className="text-secondary-content font-semibold tracking-wide uppercase lg:text-lg">
-                      order id: {order.attributes.stripe_id}
+                      order id: {order?.attributes.stripe_id}
                     </h2>
                     <p className="text-secondary-content font-semibold tracking-wide uppercase lg:text-lg">
                       {getPrice(order)}$
                     </p>
                   </div>
                   <div className="flex w-full justify-between">
-                    <p>{convertDate(order.attributes.date)}</p>
+                    <p>{convertDate(order?.attributes.date)}</p>
                     <Link
-                      to={`/orders/${userId}/${order.attributes.stripe_id}`}
+                      to={`/orders/${userId}/${order?.attributes.stripe_id}`}
                       className="link"
                     >
                       <p> Order Details</p>

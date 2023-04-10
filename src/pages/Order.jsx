@@ -9,10 +9,10 @@ function Order() {
   const navigate = useNavigate();
 
   const { data: order, loading } = useFetch(
-    `api/orders/?populate[products][populate][image]=*&filters[stripe_id][$eq]=${orderId}`,
+    `api/orders/?populate[products][populate][image]=*&populate[promotion]=*&filters[stripe_id][$eq]=${orderId}`,
     true
   );
-  console.log("order: ", order);
+  
   useEffect(() => {
     checkLogIn();
   }, []);
@@ -37,6 +37,20 @@ function Order() {
       const quantity = order[0]?.attributes.quantities.find(x => x.id === product.id).quantity
       return product.attributes.price * quantity;
     }
+  }
+
+  const getSubTotal = (products) => {
+    let total = 0;
+    products.forEach(product => {
+      total += getPrice(product)
+    });
+
+    return total;
+  }
+
+  const getDiscount = () => {
+    if(order[0]?.attributes.promotion.data) return ((order[0]?.attributes.promotion.data.attributes.discount / 100) * getSubTotal(order[0]?.attributes.products.data)).toFixed(0);
+    else return 0;
   }
 
   const orderStatus = () => {
@@ -207,11 +221,11 @@ function Order() {
                   </p>
                   <div className="flex flex-row w-full justify-between items-center mb-2">
                     <p className="text-xl font-semibold">Subtotal</p>
-                    <p className="text-xl font-semibold">524.50 $</p>
+                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes.products.data)} $</p>
                   </div>
                   <div className="flex flex-row justify-between items-center w-full">
                     <p>Discount</p>
-                    <p>-127.40 $</p>
+                    <p>-{getDiscount()} $</p>
                   </div>
 
                   <div className="flex flex-row justify-between items-center w-full">
@@ -226,7 +240,7 @@ function Order() {
 
                   <div className="flex flex-row w-full justify-between items-center text-secondary-content">
                     <p className="text-xl font-semibold">Total</p>
-                    <p className="text-xl font-semibold">397.10 $</p>
+                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes.products.data) - getDiscount()} $</p>
                   </div>
                 </div>
               </div>
