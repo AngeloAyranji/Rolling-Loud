@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
@@ -7,15 +7,36 @@ import Loading from "../components/Loading";
 function Orders() {
   const navigate = useNavigate();
   const { userId } = useParams();
-  
-  const { data: orders, loading } = useFetch(
-    `api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&filters[user][username][$eq]=${userId}`,
+
+  const [page, setPage] = useState(1);
+  const [orders, setOrders] = useState([]);
+
+  const {
+    data: ordersDB,
+    metadata,
+    loading,
+  } = useFetch(
+    `api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=${page}&pagination[pageSize]=10&filters[user][username][$eq]=${userId}`,
     true
   );
-  
+
   useEffect(() => {
     checkLogIn();
   }, []);
+
+  useEffect(() => {
+    handleAddMore();
+  }, [ordersDB]);
+
+  const handleAddMore = () => {
+    let tmpOrders = orders.slice();
+    ordersDB?.map((order) => {
+      if (orders.findIndex((x) => x.id === order.id) === -1)
+        tmpOrders.push(order);
+    });
+    console.log(tmpOrders, page)
+    setOrders(tmpOrders);
+  };
 
   const checkLogIn = () => {
     if (!sessionStorage.getItem("jwt")) {
@@ -32,22 +53,26 @@ function Orders() {
     return `${month} ${day}, ${year}`;
   };
 
-
   const getPrice = (order) => {
     let totalPrice = 0;
-    order.attributes.products.data.forEach(product => {
+    order.attributes.products.data.forEach((product) => {
       const price = product.attributes.price;
-      const quantity = order.attributes.quantities.find(qt => qt.id === product.id).quantity
+      const quantity = order.attributes.quantities.find(
+        (qt) => qt.id === product.id
+      ).quantity;
       totalPrice += price * quantity;
-    })
+    });
 
-    if(order?.attributes.promotion.data !== null) totalPrice = totalPrice * (1 - order.attributes.promotion.data.attributes.discount / 100)
-    return totalPrice
-  }
+    if (order?.attributes.promotion.data !== null)
+      totalPrice =
+        totalPrice *
+        (1 - order.attributes.promotion.data.attributes.discount / 100);
+    return totalPrice;
+  };
 
   return (
     <>
-      {!loading && orders ? (
+      {ordersDB ? (
         <div className="w-full mx-auto flex justify-center items-center">
           <div className="max-w-[1400px] w-full">
             <div className="flex flex-col justify-center items-start p-4 md:p-6 lg:p-8 2xl:pl-14 space-y-8">
@@ -63,7 +88,9 @@ function Orders() {
               <h2 className="text-xl xl:text-3xl font-bold text-white uppercase tracking-wide">
                 Your orders
               </h2>
-              <p className="max-w-[700px]">3 total orders</p>
+              <p className="max-w-[700px]">
+                {metadata?.pagination.total} total orders
+              </p>
               <div className="h-[2px] w-full bg-primary"></div>
 
               {orders?.map((order, index) => (
@@ -90,6 +117,9 @@ function Orders() {
                   </div>
                 </div>
               ))}
+              {page < metadata?.pagination.pageCount && (
+                <p onClick={() => setPage(page + 1)}>Add More</p>
+              )}
             </div>
           </div>
         </div>

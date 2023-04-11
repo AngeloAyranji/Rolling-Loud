@@ -27,6 +27,8 @@ function Products() {
   const [isInStock, setIsInStock] = useState(false);
   const [price, setPrice] = useState([0, 2000]);
   const [url, setUrl] = useState("");
+  const [page, setPage] = useState(1);
+  const [products, setProducts] = useState([]);
   const [sortBy, setSortBy] = useState(null);
 
   const { data: categoryDB } = useFetch(
@@ -37,7 +39,7 @@ function Products() {
     `api/brands/?filters[name][$eq]=${category}`
   );
 
-  const { data: products, loading, error } = useFetch(url);
+  const { data: productsDB, metadata, loading } = useFetch(url);
 
   useEffect(() => {
     if (brandDB && categoryDB) handleFilters();
@@ -51,11 +53,20 @@ function Products() {
     price,
     brandDB,
     categoryDB,
-    querySearch
+    querySearch,
+    page,
   ]);
 
+  useEffect(() => {
+    handleAddMore();
+  }, [productsDB]);
+
+  useEffect(() => {
+    console.log("productsssssssssssssssss")
+  }, [products])
+  
   const handleFilters = () => {
-    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}`;
+    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&pagination[page]=${page}&pagination[pageSize]=25&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}`;
 
     if (querySearch) filter += `&filters[title][$containsi]=${querySearch}`;
     if (category && categoryDB?.length)
@@ -71,9 +82,23 @@ function Products() {
     setUrl(filter);
   };
 
+  const handleAddMore = () => {
+    let tmpProducts = products.slice();
+    productsDB?.map((product) => {
+      if (products.findIndex((x) => x.id === product.id) === -1)
+        tmpProducts.push(product);
+    });
+    
+    if (productsDB) {
+      console.log("Fetnaaaa", tmpProducts)
+      setProducts(tmpProducts);
+    }
+  };
+
+
   return (
     <>
-      {!products ? (
+      {!productsDB ? (
         <Loading />
       ) : (
         <div className="w-full md:mb-[200px] mb-20">
@@ -152,12 +177,15 @@ function Products() {
               isPromotion={isPromotion}
               setIsInStock={setIsInStock}
               setPrice={setPrice}
-              productQuantity={products?.length}
+              productQuantity={metadata.pagination.total}
             />
             <div className="w-full mx-auto flex items-center justify-center">
               <ListProduct products={products} />
             </div>
           </div>
+          {page < metadata.pagination.pageCount && (
+            <p onClick={() => setPage(metadata.pagination.page + 1)}>Add More</p>
+          )}
         </div>
       )}
     </>
