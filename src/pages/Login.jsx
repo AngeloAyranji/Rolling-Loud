@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import useFetch from "../hooks/useFetch";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
+import useFetch from "../hooks/useFetch";
 
 function Login() {
   const navigate = useNavigate();

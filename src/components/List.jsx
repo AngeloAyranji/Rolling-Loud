@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import useFetch from "../hooks/useFetch";
 import Card from "./Card";
 import Loading from "./Loading";

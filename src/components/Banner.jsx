@@ -1,4 +1,3 @@
-import React from "react";
 import { CiDeliveryTruck, CiLock } from "react-icons/ci";
 
 function Banner() {

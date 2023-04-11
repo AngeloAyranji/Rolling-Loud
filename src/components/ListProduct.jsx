@@ -1,6 +1,5 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import Card from "./Card";
-import { Link } from "react-router-dom";
 import Loading from "./Loading";
 
 function ListProduct({ products, loading, error }) {

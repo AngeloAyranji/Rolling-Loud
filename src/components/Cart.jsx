@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useJwt } from 'react-jwt';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { removeItem } from "../redux/cartReducer";
 import Loading from "./Loading";
+import { removeItem } from "../redux/cartReducer";
 
 export default function Example({ handleOpen }) {
   const navigate = useNavigate();

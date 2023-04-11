@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { Link } from "react-router-dom";
+import { useJwt } from 'react-jwt';
 import useFetch from "../hooks/useFetch";
 import Loading from "../components/Loading";
-import { useJwt } from 'react-jwt';
 
 function Orders() {
   const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
@@ -15,7 +15,7 @@ function Orders() {
     data: ordersDB,
     metadata,
     loading,
-  } = useFetch(`api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=${page}&pagination[pageSize]=10&filters[user][id][$eq]=${decodedToken?.id}`,
+  } = useFetch(decodedToken ? `api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=${page}&pagination[pageSize]=10&filters[user][id][$eq]=${decodedToken?.id}` : '',
     true
   );
 
