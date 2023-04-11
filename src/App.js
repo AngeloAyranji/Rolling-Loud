@@ -7,12 +7,14 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotEmail from "./pages/ForgotEmail";
 import ForgotPassword from "./pages/ForgotPassword";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import ScrollToTop from "./layout/scrollToTop";
 import Layout from "./layout/layout";
 import Brands from "./pages/Brands";
 
 function App() {
+  const location = useLocation();
+
   return (
     <div className="bg-[#121212]">
       <ScrollToTop>
@@ -23,13 +25,13 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/forgetPassword" element={<ForgotPassword />} />
             <Route path="/forgetEmail" element={<ForgotEmail />} />
+            <Route path="/brands" element={<Brands />} />
             <Route path="/product/:productName" element={<Product />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:category" element={<Products />} />
-            <Route path="/orders/:userId" element={<Orders />} />
-            <Route path="/orders/:userId/:orderId" element={<Order />} />
+            <Route path="/orders/:userId" element={sessionStorage.getItem("jwt") ? <Orders /> : <Navigate to={"/login"} state={{ from: location }} />} />
+            <Route path="/orders/:userId/:orderId" element={sessionStorage.getItem("jwt") ?  <Order /> : <Navigate to={"/login"} state={{ from: location }} />} />
             {/* <Route path="*" element={} /> */}
-            <Route path="/brands" element={<Brands />} />
           </Routes>
         </Layout>
       </ScrollToTop>

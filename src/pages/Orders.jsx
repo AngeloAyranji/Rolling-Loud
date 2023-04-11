@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { useNavigate, Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import Loading from "../components/Loading";
 
 function Orders() {
-  const navigate = useNavigate();
   const { userId } = useParams();
 
   const [page, setPage] = useState(1);
@@ -15,14 +14,9 @@ function Orders() {
     data: ordersDB,
     metadata,
     loading,
-  } = useFetch(
-    `api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=${page}&pagination[pageSize]=10&filters[user][username][$eq]=${userId}`,
+  } = useFetch(`api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=${page}&pagination[pageSize]=10&filters[user][username][$eq]=${userId}`,
     true
   );
-
-  useEffect(() => {
-    checkLogIn();
-  }, []);
 
   useEffect(() => {
     handleAddMore();
@@ -38,11 +32,6 @@ function Orders() {
     if(ordersDB) setOrders(tmpOrders);
   };
 
-  const checkLogIn = () => {
-    if (!sessionStorage.getItem("jwt")) {
-      navigate("/login");
-    }
-  };
 
   const convertDate = (date) => {
     const tmpDate = new Date(date);

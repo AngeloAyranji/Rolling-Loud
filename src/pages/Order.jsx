@@ -1,27 +1,15 @@
-import React, { useEffect } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 
 function Order() {
   const { userId, orderId } = useParams();
-  const navigate = useNavigate();
 
   const { data: order, loading } = useFetch(
     `api/orders/?populate[products][populate][image]=*&populate[promotion]=*&filters[stripe_id][$eq]=${orderId}`,
     true
   );
-  
-  useEffect(() => {
-    checkLogIn();
-  }, []);
-
-  const checkLogIn = () => {
-    if (!sessionStorage.getItem("jwt")) {
-      navigate("/login");
-    }
-  };
 
   const convertDate = (date) => {
     const tmpDate = new Date(date);

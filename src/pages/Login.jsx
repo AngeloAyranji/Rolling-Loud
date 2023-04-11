@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 
 function Login() {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  
   const [error, setError] = useState(false);
   const [logHeight, setLogHeight] = useState(window.innerHeight);
 
@@ -40,15 +41,16 @@ function Login() {
           sessionStorage.setItem("email", res.data.user.email);
           sessionStorage.setItem("username", res.data.user.username);
           sessionStorage.setItem("userId", res.data.user.id);
-
-          navigate(-1);
+          
+          if(location.state?.from) navigate(location.state.from)
+          else navigate(-1)
         }
       } catch (err) {
         console.log("error", err);
+        setError(true);
       }
     }
 
-    setError(true);
   };
 
   return (
