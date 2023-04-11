@@ -34,8 +34,8 @@ function Orders() {
       if (orders.findIndex((x) => x.id === order.id) === -1)
         tmpOrders.push(order);
     });
-    console.log(tmpOrders, page)
-    setOrders(tmpOrders);
+
+    if(ordersDB) setOrders(tmpOrders);
   };
 
   const checkLogIn = () => {

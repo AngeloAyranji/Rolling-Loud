@@ -60,10 +60,6 @@ function Products() {
   useEffect(() => {
     handleAddMore();
   }, [productsDB]);
-
-  useEffect(() => {
-    console.log("productsssssssssssssssss")
-  }, [products])
   
   const handleFilters = () => {
     let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&pagination[page]=${page}&pagination[pageSize]=25&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}`;
@@ -89,10 +85,7 @@ function Products() {
         tmpProducts.push(product);
     });
     
-    if (productsDB) {
-      console.log("Fetnaaaa", tmpProducts)
-      setProducts(tmpProducts);
-    }
+    if (productsDB) setProducts(tmpProducts);
   };
 
 
