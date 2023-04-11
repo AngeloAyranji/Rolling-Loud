@@ -3,6 +3,7 @@ import { makeRequest, makeAuthRequest } from "../makeRequest";
 
 const useFetch = (url, authentication = false) => {
     const [data, setData] = useState(null);
+    const [metadata, setMetadata] = useState(null)
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     
@@ -15,6 +16,7 @@ const useFetch = (url, authentication = false) => {
                     if(authentication) res = await makeAuthRequest.get(url)
                     else res = await makeRequest.get(url)
                     setData(res.data.data)
+                    setMetadata(res.data.meta)
                 }
             } catch(err) {
                 console.log("error: ", err)
@@ -27,7 +29,7 @@ const useFetch = (url, authentication = false) => {
         
     }, [url, authentication])
 
-    return { data, loading, error }
+    return { data, metadata, loading, error }
 }
 
 export default useFetch;
