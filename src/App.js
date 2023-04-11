@@ -29,8 +29,8 @@ function App() {
             <Route path="/product/:productName" element={<Product />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:category" element={<Products />} />
-            <Route path="/orders/:userId" element={sessionStorage.getItem("jwt") ? <Orders /> : <Navigate to={"/login"} state={{ from: location }} />} />
-            <Route path="/orders/:userId/:orderId" element={sessionStorage.getItem("jwt") ?  <Order /> : <Navigate to={"/login"} state={{ from: location }} />} />
+            <Route path="/orders" element={sessionStorage.getItem("jwt") ? <Orders /> : <Navigate to={"/login"} state={{ from: location }} />} />
+            <Route path="/orders/:orderId" element={sessionStorage.getItem("jwt") ?  <Order /> : <Navigate to={"/login"} state={{ from: location }} />} />
             {/* <Route path="*" element={} /> */}
           </Routes>
         </Layout>

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import Loading from "../components/Loading";
+import { useJwt } from 'react-jwt';
 
 function Orders() {
-  const { userId } = useParams();
+  const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
 
   const [page, setPage] = useState(1);
   const [orders, setOrders] = useState([]);
@@ -14,9 +15,10 @@ function Orders() {
     data: ordersDB,
     metadata,
     loading,
-  } = useFetch(`api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=${page}&pagination[pageSize]=10&filters[user][username][$eq]=${userId}`,
+  } = useFetch(`api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=${page}&pagination[pageSize]=10&filters[user][id][$eq]=${decodedToken?.id}`,
     true
   );
+
 
   useEffect(() => {
     handleAddMore();
@@ -71,8 +73,8 @@ function Orders() {
                 className="!text-white !text-sm !breadcrumbs !scrollbar-thumb-rounded-full !scrollbar-thumb-base-100 !pb-4 !scrollbar-thumb-sm"
               >
                 <Link to="/">Home</Link>
-                <Link to={`/orders/${userId}`}>Orders</Link>
-                <Link to={`/orders/${userId}`}>{userId}</Link>
+                <Link to={`/orders`}>Orders</Link>
+                <Link to={`/orders`}>{sessionStorage.getItem("username")}</Link>
               </Breadcrumbs>
               <h2 className="text-xl xl:text-3xl font-bold text-white uppercase tracking-wide">
                 Your orders
@@ -98,7 +100,7 @@ function Orders() {
                   <div className="flex w-full justify-between">
                     <p>{convertDate(order?.attributes.date)}</p>
                     <Link
-                      to={`/orders/${userId}/${order?.attributes.stripe_id}`}
+                      to={`/orders/${order?.attributes.stripe_id}`}
                       className="link"
                     >
                       <p> Order Details</p>

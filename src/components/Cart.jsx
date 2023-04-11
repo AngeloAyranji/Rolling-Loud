@@ -2,13 +2,15 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { removeItem } from "../redux/cartReducer";
+import { useJwt } from 'react-jwt';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { removeItem } from "../redux/cartReducer";
 import Loading from "./Loading";
 
 export default function Example({ handleOpen }) {
   const navigate = useNavigate();
+  const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
 
   const [open, setOpen] = useState(true);
   const [promoCode, setPromoCode] = useState(null);
@@ -53,7 +55,7 @@ export default function Example({ handleOpen }) {
       const payload = {
         items: productList,
         promoCode: promoCode ? promoCode[0].attributes.code : null,
-        userId: sessionStorage.getItem("userId"),
+        userId: decodedToken?.id,
       };
 
       const config = {
@@ -67,7 +69,7 @@ export default function Example({ handleOpen }) {
       );
       console.log(res)
       setLoadingCheckout(false)
-      navigate(`/orders/${sessionStorage.getItem("username")}`);
+      navigate(`/orders`);
     } else {
       navigate("/login");
     }

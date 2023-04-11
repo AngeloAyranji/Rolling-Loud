@@ -4,7 +4,7 @@ import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 
 function Order() {
-  const { userId, orderId } = useParams();
+  const { orderId } = useParams();
 
   const { data: order, loading } = useFetch(
     `api/orders/?populate[products][populate][image]=*&populate[promotion]=*&filters[stripe_id][$eq]=${orderId}`,
@@ -106,9 +106,9 @@ function Order() {
                 className="!text-white !text-sm !breadcrumbs !scrollbar-thumb-rounded-full !scrollbar-thumb-base-100 !pb-4 !scrollbar-thumb-sm"
               >
                 <Link to="/">Home</Link>
-                <Link to={`/orders/${userId}`}>Orders</Link>
-                <Link to={`/orders/${userId}`}>{userId}</Link>
-                <Link to={`/orders/${userId}/${orderId}`}>{orderId}</Link>
+                <Link to={`/orders`}>Orders</Link>
+                <Link to={`/orders`}>{sessionStorage.getItem("username")}</Link>
+                <Link to={`/orders/${orderId}`}>{orderId}</Link>
               </Breadcrumbs>
               <h2 className="text-xl xl:text-3xl font-bold text-white uppercase tracking-wide">
                 order id: {orderId}
