@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { makeRequest, makeAuthRequest } from "../makeRequest";
 
 const useFetch = (url, authentication = false) => {
@@ -6,27 +7,34 @@ const useFetch = (url, authentication = false) => {
     const [metadata, setMetadata] = useState(null)
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
-    
+
     useEffect(() => {
         const fetch = async () => {
-            try{
-                if(url !== ""){
+            try {
+                if (url !== "") {
                     setLoading(true)
                     let res;
-                    if(authentication) res = await makeAuthRequest.get(url)
+                    if (authentication) {
+                        res = await axios.create({
+                            baseURL: process.env.REACT_APP_BACKEND_URL,
+                            headers: {
+                                Authorization: "bearer " + sessionStorage.getItem("jwt")
+                            }
+                        }).get(url)
+                    }
                     else res = await makeRequest.get(url)
                     setData(res.data.data)
                     setMetadata(res.data.meta)
                 }
-            } catch(err) {
+            } catch (err) {
                 console.log("error: ", err)
                 setError(true)
             }
             setLoading(false)
         }
-        
+
         fetch()
-        
+
     }, [url, authentication])
 
     return { data, metadata, loading, error }
