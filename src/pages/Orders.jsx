@@ -16,7 +16,7 @@ function Orders() {
     metadata,
     loading,
   } = useFetch(
-    `api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=${page}&pagination[pageSize]=2&filters[user][username][$eq]=${userId}`,
+    `api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=${page}&pagination[pageSize]=10&filters[user][username][$eq]=${userId}`,
     true
   );
 
@@ -29,7 +29,7 @@ function Orders() {
   }, [ordersDB]);
 
   const handleAddMore = () => {
-    const tmpOrders = orders;
+    let tmpOrders = orders.slice();
     ordersDB?.map((order) => {
       if (orders.findIndex((x) => x.id === order.id) === -1)
         tmpOrders.push(order);

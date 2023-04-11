@@ -62,12 +62,11 @@ function Products() {
   }, [productsDB]);
 
   useEffect(() => {
-    console.log("W#A")
+    console.log("productsssssssssssssssss")
   }, [products])
   
-  
   const handleFilters = () => {
-    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&pagination[page]=${page}&pagination[pageSize]=2&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}`;
+    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&pagination[page]=${page}&pagination[pageSize]=25&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}`;
 
     if (querySearch) filter += `&filters[title][$containsi]=${querySearch}`;
     if (category && categoryDB?.length)
@@ -84,7 +83,7 @@ function Products() {
   };
 
   const handleAddMore = () => {
-    const tmpProducts = products;
+    let tmpProducts = products.slice();
     productsDB?.map((product) => {
       if (products.findIndex((x) => x.id === product.id) === -1)
         tmpProducts.push(product);
