@@ -31,7 +31,7 @@ function Orders() {
         tmpOrders.push(order);
     });
 
-    if(ordersDB) setOrders(tmpOrders);
+    if (ordersDB) setOrders(tmpOrders);
   };
 
 
@@ -46,20 +46,15 @@ function Orders() {
 
   const getPrice = (order) => {
     let totalPrice = 0;
-    order.attributes.products.data.forEach((product) => {
-      const price = product.attributes.price;
-      const quantity = order.attributes.quantities.find(
-        (qt) => qt.id === product.id
-      ).quantity;
-      totalPrice += price * quantity;
-    });
+
+    order?.attributes.quantities.forEach(product => {
+      totalPrice += product.price * product.quantity
+    })
 
     if (order?.attributes.promotion.data !== null)
-      totalPrice =
-        totalPrice *
-        (1 - order.attributes.promotion.data.attributes.discount / 100);
+      totalPrice = totalPrice * (1 - order.attributes.promotion.data.attributes.discount / 100);
     return totalPrice;
-  };
+  }
 
   return (
     <>

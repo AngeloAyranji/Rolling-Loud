@@ -21,15 +21,15 @@ function Order() {
   };
 
   const getPrice = (product) => {
-    if(order) {
-      const quantity = order[0]?.attributes.quantities.find(x => x.id === product.id).quantity
-      return product.attributes.price * quantity;
+    if (order) {
+      const productOrder = order[0]?.attributes.quantities.find(x => x.id === product.id)
+      return productOrder.price * productOrder.quantity;
     }
   }
 
-  const getSubTotal = (products) => {
+  const getSubTotal = (order) => {
     let total = 0;
-    products.forEach(product => {
+    order?.quantities.forEach(product => {
       total += getPrice(product)
     });
 
@@ -37,7 +37,7 @@ function Order() {
   }
 
   const getDiscount = () => {
-    if(order[0]?.attributes.promotion.data) return ((order[0]?.attributes.promotion.data.attributes.discount / 100) * getSubTotal(order[0]?.attributes.products.data)).toFixed(0);
+    if (order[0]?.attributes.promotion.data) return ((order[0]?.attributes.promotion.data.attributes.discount / 100) * getSubTotal(order[0]?.attributes)).toFixed(0);
     else return 0;
   }
 
@@ -178,7 +178,7 @@ function Order() {
                   <p className="text-secondary-content font-medium text-lg mb-2">
                     Delivery
                   </p>
-                  <p className="text-sm text-gray-600">Adress</p>
+                  <p className="text-sm text-gray-600">Address</p>
                   <p className="text-lg tracking-wide">
                     847 Jewess Bridge Apt.174
                   </p>
@@ -209,7 +209,7 @@ function Order() {
                   </p>
                   <div className="flex flex-row w-full justify-between items-center mb-2">
                     <p className="text-xl font-semibold">Subtotal</p>
-                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes.products.data)} $</p>
+                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes)} $</p>
                   </div>
                   <div className="flex flex-row justify-between items-center w-full">
                     <p>Discount</p>
@@ -228,7 +228,7 @@ function Order() {
 
                   <div className="flex flex-row w-full justify-between items-center text-secondary-content">
                     <p className="text-xl font-semibold">Total</p>
-                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes.products.data) - getDiscount()} $</p>
+                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes) - getDiscount()} $</p>
                   </div>
                 </div>
               </div>
