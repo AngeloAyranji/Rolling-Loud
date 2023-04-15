@@ -53,7 +53,7 @@ function App() {
             />
             {/* <Route path="*" element={} /> */}
           </Routes>
-        </Layout>
+        </Layout>{" "}
       </ScrollToTop>
     </div>
   );
