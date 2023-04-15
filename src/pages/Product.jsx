@@ -3,9 +3,9 @@ import { FiHeart } from "react-icons/fi";
 import { CiDeliveryTruck, CiLock } from "react-icons/ci";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../redux/cartReducer";
 import { Link, useParams } from "react-router-dom";
 import ReactMakrdown from "react-markdown";
+import { addToCart } from "../redux/cartReducer";
 import useFetch from "../hooks/useFetch";
 import Loading from "../components/Loading";
 

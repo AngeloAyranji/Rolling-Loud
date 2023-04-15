@@ -7,6 +7,7 @@ import Sidebar from "../components/Sidebar";
 import ListProduct from "../components/ListProduct";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
+import axios from "axios";
 
 function Products() {
   const { category } = useParams();
@@ -39,8 +40,8 @@ function Products() {
     `api/brands/?filters[name][$eq]=${category}`
   );
 
-  const { data: productsDB, metadata, loading } = useFetch(url);
-
+  const { data: productsDB, metadata, loading } = useFetch(url.length ? url + `&pagination[page]=1` : '');
+  
   useEffect(() => {
     if (brandDB && categoryDB) handleFilters();
   }, [
@@ -54,21 +55,15 @@ function Products() {
     brandDB,
     categoryDB,
     querySearch,
-    page,
   ]);
 
   useEffect(() => {
-    handleAddMore();
+    setProducts(productsDB)
   }, [productsDB]);
-
-  useEffect(() => {
-    console.log("W#A")
-  }, [products])
-  
   
   const handleFilters = () => {
-    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&pagination[page]=${page}&pagination[pageSize]=2&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}`;
-
+    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}&pagination[pageSize]=25`;
+    
     if (querySearch) filter += `&filters[title][$containsi]=${querySearch}`;
     if (category && categoryDB?.length)
       filter += `&filters[categories][title][$eq]=${category}`;
@@ -81,19 +76,15 @@ function Products() {
     if (sortBy == 2) filter += "&sort[0]=price:asc";
     if (sortBy == 1) filter += "&sort[0]=price:desc";
     setUrl(filter);
+    setPage(1);
   };
 
-  const handleAddMore = () => {
-    const tmpProducts = products;
-    productsDB?.map((product) => {
-      if (products.findIndex((x) => x.id === product.id) === -1)
-        tmpProducts.push(product);
-    });
-    
-    if (productsDB) {
-      console.log("Fetnaaaa", tmpProducts)
-      setProducts(tmpProducts);
-    }
+  const handleAddMore = async (page) => {
+    const res = await axios.get(process.env.REACT_APP_BACKEND_URL + url + `&pagination[page]=${page}`)
+    let tmpProducts = products.slice();
+    tmpProducts = tmpProducts.concat(res.data.data);
+    setProducts(tmpProducts)
+    setPage(page)
   };
 
 
@@ -185,7 +176,7 @@ function Products() {
             </div>
           </div>
           {page < metadata.pagination.pageCount && (
-            <p onClick={() => setPage(metadata.pagination.page + 1)}>Add More</p>
+            <p onClick={() => handleAddMore(page + 1)}>Add More</p>
           )}
         </div>
       )}

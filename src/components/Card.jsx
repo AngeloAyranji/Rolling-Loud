@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { MdAddShoppingCart } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../redux/cartReducer";
 import { Link } from "react-router-dom";
+import { addToCart } from "../redux/cartReducer";
 
 function Card({ item, id }) {
   const dispatch = useDispatch();

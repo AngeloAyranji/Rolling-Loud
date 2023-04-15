@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { FiChevronDown } from "react-icons/fi";
+import { useState } from "react";
 import { BsWhatsapp } from "react-icons/bs";
 import { BsMessenger } from "react-icons/bs";
 import { TfiHeadphoneAlt } from "react-icons/tfi";

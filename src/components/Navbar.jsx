@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BsPerson } from "react-icons/bs";
@@ -8,10 +8,9 @@ import {
   XMarkIcon,
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
-import Cart from "./Cart";
-import Logo from "../assets/Images/LogoSky.png";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import useFetch from "../hooks/useFetch";
+import Logo from "../assets/Images/LogoSky.png";
+import Cart from "./Cart";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");

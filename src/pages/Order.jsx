@@ -1,27 +1,15 @@
-import React, { useEffect } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 
 function Order() {
-  const { userId, orderId } = useParams();
-  const navigate = useNavigate();
+  const { orderId } = useParams();
 
   const { data: order, loading } = useFetch(
     `api/orders/?populate[products][populate][image]=*&populate[promotion]=*&filters[stripe_id][$eq]=${orderId}`,
     true
   );
-  
-  useEffect(() => {
-    checkLogIn();
-  }, []);
-
-  const checkLogIn = () => {
-    if (!sessionStorage.getItem("jwt")) {
-      navigate("/login");
-    }
-  };
 
   const convertDate = (date) => {
     const tmpDate = new Date(date);
@@ -33,15 +21,15 @@ function Order() {
   };
 
   const getPrice = (product) => {
-    if(order) {
-      const quantity = order[0]?.attributes.quantities.find(x => x.id === product.id).quantity
-      return product.attributes.price * quantity;
+    if (order) {
+      const productOrder = order[0]?.attributes.quantities.find(x => x.id === product.id)
+      return productOrder.price * productOrder.quantity;
     }
   }
 
-  const getSubTotal = (products) => {
+  const getSubTotal = (order) => {
     let total = 0;
-    products.forEach(product => {
+    order?.quantities.forEach(product => {
       total += getPrice(product)
     });
 
@@ -49,7 +37,7 @@ function Order() {
   }
 
   const getDiscount = () => {
-    if(order[0]?.attributes.promotion.data) return ((order[0]?.attributes.promotion.data.attributes.discount / 100) * getSubTotal(order[0]?.attributes.products.data)).toFixed(0);
+    if (order[0]?.attributes.promotion.data) return ((order[0]?.attributes.promotion.data.attributes.discount / 100) * getSubTotal(order[0]?.attributes)).toFixed(0);
     else return 0;
   }
 
@@ -118,9 +106,9 @@ function Order() {
                 className="!text-white !text-sm !breadcrumbs !scrollbar-thumb-rounded-full !scrollbar-thumb-base-100 !pb-4 !scrollbar-thumb-sm"
               >
                 <Link to="/">Home</Link>
-                <Link to={`/orders/${userId}`}>Orders</Link>
-                <Link to={`/orders/${userId}`}>{userId}</Link>
-                <Link to={`/orders/${userId}/${orderId}`}>{orderId}</Link>
+                <Link to={`/orders`}>Orders</Link>
+                <Link to={`/orders`}>{sessionStorage.getItem("username")}</Link>
+                <Link to={`/orders/${orderId}`}>{orderId}</Link>
               </Breadcrumbs>
               <h2 className="text-xl xl:text-3xl font-bold text-white uppercase tracking-wide">
                 order id: {orderId}
@@ -190,7 +178,7 @@ function Order() {
                   <p className="text-secondary-content font-medium text-lg mb-2">
                     Delivery
                   </p>
-                  <p className="text-sm text-gray-600">Adress</p>
+                  <p className="text-sm text-gray-600">Address</p>
                   <p className="text-lg tracking-wide">
                     847 Jewess Bridge Apt.174
                   </p>
@@ -221,7 +209,7 @@ function Order() {
                   </p>
                   <div className="flex flex-row w-full justify-between items-center mb-2">
                     <p className="text-xl font-semibold">Subtotal</p>
-                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes.products.data)} $</p>
+                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes)} $</p>
                   </div>
                   <div className="flex flex-row justify-between items-center w-full">
                     <p>Discount</p>
@@ -240,7 +228,7 @@ function Order() {
 
                   <div className="flex flex-row w-full justify-between items-center text-secondary-content">
                     <p className="text-xl font-semibold">Total</p>
-                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes.products.data) - getDiscount()} $</p>
+                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes) - getDiscount()} $</p>
                   </div>
                 </div>
               </div>

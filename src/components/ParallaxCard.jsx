@@ -1,4 +1,3 @@
-import React from "react";
 import drone from "../assets/Images/droneimage.png";
 
 import { useMotionValue, useTransform, motion } from "framer-motion";

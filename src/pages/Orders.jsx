@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { useNavigate, Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useJwt } from 'react-jwt';
 import useFetch from "../hooks/useFetch";
 import Loading from "../components/Loading";
 
 function Orders() {
-  const navigate = useNavigate();
-  const { userId } = useParams();
+  const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
 
   const [page, setPage] = useState(1);
   const [orders, setOrders] = useState([]);
@@ -15,34 +15,25 @@ function Orders() {
     data: ordersDB,
     metadata,
     loading,
-  } = useFetch(
-    `api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=${page}&pagination[pageSize]=2&filters[user][username][$eq]=${userId}`,
+  } = useFetch(decodedToken ? `api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=${page}&pagination[pageSize]=10&filters[user][id][$eq]=${decodedToken?.id}` : '',
     true
   );
 
-  useEffect(() => {
-    checkLogIn();
-  }, []);
 
   useEffect(() => {
     handleAddMore();
   }, [ordersDB]);
 
   const handleAddMore = () => {
-    const tmpOrders = orders;
+    let tmpOrders = orders.slice();
     ordersDB?.map((order) => {
       if (orders.findIndex((x) => x.id === order.id) === -1)
         tmpOrders.push(order);
     });
-    console.log(tmpOrders, page)
-    setOrders(tmpOrders);
+
+    if (ordersDB) setOrders(tmpOrders);
   };
 
-  const checkLogIn = () => {
-    if (!sessionStorage.getItem("jwt")) {
-      navigate("/login");
-    }
-  };
 
   const convertDate = (date) => {
     const tmpDate = new Date(date);
@@ -55,20 +46,15 @@ function Orders() {
 
   const getPrice = (order) => {
     let totalPrice = 0;
-    order.attributes.products.data.forEach((product) => {
-      const price = product.attributes.price;
-      const quantity = order.attributes.quantities.find(
-        (qt) => qt.id === product.id
-      ).quantity;
-      totalPrice += price * quantity;
-    });
+
+    order?.attributes.quantities.forEach(product => {
+      totalPrice += product.price * product.quantity
+    })
 
     if (order?.attributes.promotion.data !== null)
-      totalPrice =
-        totalPrice *
-        (1 - order.attributes.promotion.data.attributes.discount / 100);
+      totalPrice = totalPrice * (1 - order.attributes.promotion.data.attributes.discount / 100);
     return totalPrice;
-  };
+  }
 
   return (
     <>
@@ -82,8 +68,8 @@ function Orders() {
                 className="!text-white !text-sm !breadcrumbs !scrollbar-thumb-rounded-full !scrollbar-thumb-base-100 !pb-4 !scrollbar-thumb-sm"
               >
                 <Link to="/">Home</Link>
-                <Link to={`/orders/${userId}`}>Orders</Link>
-                <Link to={`/orders/${userId}`}>{userId}</Link>
+                <Link to={`/orders`}>Orders</Link>
+                <Link to={`/orders`}>{sessionStorage.getItem("username")}</Link>
               </Breadcrumbs>
               <h2 className="text-xl xl:text-3xl font-bold text-white uppercase tracking-wide">
                 Your orders
@@ -109,7 +95,7 @@ function Orders() {
                   <div className="flex w-full justify-between">
                     <p>{convertDate(order?.attributes.date)}</p>
                     <Link
-                      to={`/orders/${userId}/${order?.attributes.stripe_id}`}
+                      to={`/orders/${order?.attributes.stripe_id}`}
                       className="link"
                     >
                       <p> Order Details</p>
