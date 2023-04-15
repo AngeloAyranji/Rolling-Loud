@@ -65,7 +65,7 @@ export default function Navbar({ navigation, setNavigation }) {
         <>
           <div className="mx-auto max-w-[1400px] px-2 md:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center md:hidden">
+              <div className="absolute inset-y-0 left-0 flex items-center lg:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
@@ -76,7 +76,7 @@ export default function Navbar({ navigation, setNavigation }) {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
+              <div className="flex flex-1 items-center justify-center lg:items-stretch lg:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <Link to="/" onClick={() => handleCurrentNav("Home")}>
                     <img
@@ -91,7 +91,7 @@ export default function Navbar({ navigation, setNavigation }) {
                     />
                   </Link>
                 </div>
-                <div className="hidden md:ml-6 md:block">
+                <div className="hidden lg:ml-6 lg:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <Link
@@ -112,7 +112,7 @@ export default function Navbar({ navigation, setNavigation }) {
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
+              <div className="absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0">
                 <button
                   type="button"
                   className="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -121,7 +121,10 @@ export default function Navbar({ navigation, setNavigation }) {
                   }}
                 >
                   <span className="sr-only">View cart</span>
-                  <FiHeart className="h-6 w-6" aria-hidden="true" />
+                  <FiHeart
+                    className="h-5 w-5 sm:h-6 sm:w-6"
+                    aria-hidden="true"
+                  />
                 </button>
 
                 <button
@@ -132,7 +135,10 @@ export default function Navbar({ navigation, setNavigation }) {
                   }}
                 >
                   <span className="sr-only">View cart</span>
-                  <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
+                  <ShoppingCartIcon
+                    className="h-5 w-5 sm:h-6 sm:w-6"
+                    aria-hidden="true"
+                  />
                   <div className="absolute flex top-[-3px] right-[-2px] h-4 w-3 rounded-full bg-primary  justify-center text-center items-center">
                     <p className=" text-white text-sm">{products.length}</p>
                   </div>
@@ -145,7 +151,7 @@ export default function Navbar({ navigation, setNavigation }) {
                   <div>
                     <Menu.Button className="flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 hover:text-white">
                       <span className="sr-only">Open user menu</span>
-                      <BsPerson className="h-6 w-6 rounded-full" />
+                      <BsPerson className="h-5 w-5 sm:h-6 sm:w-6 rounded-full" />
                     </Menu.Button>
                   </div>
                   <Transition
@@ -220,7 +226,7 @@ export default function Navbar({ navigation, setNavigation }) {
             </div>
           </div>
 
-          <Disclosure.Panel className="md:hidden">
+          <Disclosure.Panel className="lg:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item) => (
                 <Disclosure.Button
