@@ -128,7 +128,7 @@ function Card({ item, id }) {
         </div>
       </div>{" "}
       {/* card */}
-      <div className="flex flex-col rounded-xl w-[150px] md:w-[190px] shadow-xl h-[296px] lg:w-[320px] md:h-[370px] lg:h-[570px] cursor-pointer group relative bg-secondary-content">
+      <div className="flex flex-col rounded-xl w-[150px] md:w-[190px] shadow-xl h-full lg:w-[320px] md:h-[350px] lg:h-[520px] cursor-pointer group relative bg-secondary-content">
         <Link to={`/product/${item.title}`}>
           <figure>
             {item && (
@@ -150,7 +150,7 @@ function Card({ item, id }) {
           <div className="flex flex-col justify-between lg:w-[320px] w-[150px] md:w-[190px] h-full p-4 lg:p-6">
             <div>
               <div className="flex flex-col space-y-2  mb-4">
-                <h2 className="card-title uppercase text-neutral group-hover:text-black ease-in-out duration-150 text-xs lg:text-base">
+                <h2 className="card-title uppercase text-neutral group-hover:text-black ease-in-out duration-150 text-xs lg:text-base line-clamp-4">
                   {item.title}
                 </h2>
                 {item.type === "new" && (
@@ -169,7 +169,7 @@ function Card({ item, id }) {
                   </div>
                 )}
               </div>
-              <div className="h-4">
+              <div className="h-4 mb-2">
                 {item.quantity > 0 ? (
                   <p className="text-green-500 text-xs lg:text-sm">In Stock</p>
                 ) : (
@@ -178,9 +178,9 @@ function Card({ item, id }) {
                   </p>
                 )}
               </div>
-              <p className="hidden group-hover:text-black text-base-100 ease-in-out duration-150 text-sm line-clamp-0 lg:line-clamp-3 mb-4 lg:mb-8 lg:inline-block">
+              {/* <p className="hidden group-hover:text-black text-base-100 ease-in-out duration-150 text-sm line-clamp-4 lg:line-clamp-3 mb-4 lg:mb-8 lg:inline-block">
                 {item.shortDescription}
-              </p>
+              </p> */}
             </div>
             {item.type == "promotion" ? (
               <div className="card-actions justify-start">
