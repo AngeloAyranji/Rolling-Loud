@@ -181,11 +181,11 @@ function Products() {
             </div>
           </div>
           {page < metadata.pagination.pageCount && (
-            <div className="w-full p-4 flex justify-center items-center px-12">
+            <div className="w-full p-4 flex justify-center items-center px-12 space-x-4">
               <div className="h-[2px] w-full bg-primary"></div>
               <p
                 onClick={() => handleAddMore(page + 1)}
-                className="font-semibold hover:text-primary ml-4 mr-4 w-[300px] text-center cursor-pointer"
+                className="font-semibold hover:text-primary text-center cursor-pointer text-xl whitespace-nowrap"
               >
                 Load more
               </p>
