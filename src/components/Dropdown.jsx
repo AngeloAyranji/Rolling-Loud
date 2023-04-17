@@ -1,54 +1,61 @@
 import { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 
-function Dropdown({ categoriesDB, categories, setCategories, name }) {
+function Dropdown({ category }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleCategories = (checked, id) => {
-    let x = categories;
-    if(checked) x.push(id);
-    else x = x.filter((item) => item != id);
-    setCategories(x)
-  };
+  // const handleCategories = (checked, id) => {
+  //   let x = categories;
+  //   if (checked) x.push(id);
+  //   else x = x.filter((item) => item != id);
+  //   setCategories(x);
+  // };
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
   return (
-    <div className="w-full flex flex-col space-y-4 mt-8 z-10">
-      <div className="flex flex-row justify-between items-center w-[180px]">
-        <h3 className="text-white text-md ">{name}</h3>
+    <div
+      className=" relative overflow-visible"
+      onMouseEnter={handleOpen}
+      onMouseLeave={handleOpen}
+    >
+      <div className="relative flex flex-row justify-between items-center space-x-2 hover:text-primary hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
+        <h3 className=" text-sm font-medium">{category}</h3>
         <FiChevronDown
           className={
             isOpen
-              ? "text-white h-5 w-5 cursor-pointer rotate-180 ease-in-out duration-300"
-              : "text-white h-5 w-5 cursor-pointer ease-in-out duration-300"
+              ? " h-5 w-5 cursor-pointer rotate-180 ease-in-out duration-300"
+              : " h-5 w-5 cursor-pointer ease-in-out duration-300"
           }
-          onClick={handleOpen}
         />
       </div>
       <div
         className={
           isOpen
-            ? "w-full mb-4 flex flex-col space-y-4 justify-start h-full overflow-y-hidden ease-in-out duration-300"
-            : "w-full mb-4 flex flex-col space-y-4 justify-start h-0 overflow-y-hidden ease-in-out duration-300"
+            ? "w-fit absolute left-0 top-0 mb-4 flex flex-col space-y-4 justify-start ease-in-out duration-300 z-0"
+            : "hidden"
         }
       >
-        {categoriesDB?.map((item, index) => (
+        <div className="pt-[36px]">
           <div
-            className="flex flex-row justify-start space-x-4 items-center pl-2"
-            key={index}
+            id="drop"
+            className=" bg-[#313131] rounded-md p-4 flex flex-col space-y-4"
           >
-            <input
-              type="checkbox"
-              id={item.attributes.title}
-              value={item.attributes.title}
-              onChange={(e) => handleCategories(e.target.checked, item.id)}
-              className="checked:bg-primary rounded-sm"
-            />
-            <label htmlFor={item.id}>{item.attributes.title}</label>
+            <p className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase">
+              Cat 1
+            </p>
+            <p className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap">
+              BATTERIES AND CHARGERS
+            </p>
+            <p className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap">
+              Cat 1
+            </p>
+            <p className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase">
+              Cat 1
+            </p>
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );

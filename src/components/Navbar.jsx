@@ -11,6 +11,7 @@ import {
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Logo from "../assets/Images/LogoSky.png";
 import Cart from "./Cart";
+import Dropdown from "./Dropdown";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -80,7 +81,7 @@ export default function Navbar({ navigation, setNavigation }) {
                 <div className="flex flex-shrink-0 items-center">
                   <Link to="/" onClick={() => handleCurrentNav("Home")}>
                     <img
-                      className="block h-8 w-auto lg:hidden"
+                      className="block h-10 w-auto lg:hidden"
                       src={Logo}
                       alt="Your Company"
                     />
@@ -92,22 +93,24 @@ export default function Navbar({ navigation, setNavigation }) {
                   </Link>
                 </div>
                 <div className="hidden lg:ml-6 lg:block">
-                  <div className="flex space-x-4">
+                  <div className="flex space-x-4 items-center ove">
                     {navigation.map((item) => (
-                      <Link
-                        onClick={() => handleCurrentNav(item.name)}
-                        key={item.name}
-                        to={item.href}
-                        className={classNames(
-                          item.current
-                            ? "text-primary border-b-2 border-primary"
-                            : " hover:text-primary hover:border-b-2 border-primary",
-                          "py-2 text-sm font-medium uppercase"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {item.name}
-                      </Link>
+                      // <Link
+                      //   onClick={() => handleCurrentNav(item.name)}
+                      //   key={item.name}
+                      //   to={item.href}
+                      //   className={classNames(
+                      //     item.current
+                      //       ? "text-primary border-b-2 border-primary"
+                      //       : " hover:text-primary hover:border-b-2 border-primary",
+                      //     "py-2 text-sm font-medium uppercase"
+                      //   )}
+                      //   aria-current={item.current ? "page" : undefined}
+                      // >
+                      //   {item.name}
+                      //   <Dropdown />
+                      // </Link>
+                      <Dropdown category={item.name} />
                     ))}
                   </div>
                 </div>
