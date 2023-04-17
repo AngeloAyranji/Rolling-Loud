@@ -7,10 +7,13 @@ import { Link, useParams } from "react-router-dom";
 import ReactMakrdown from "react-markdown";
 import { addToCart } from "../redux/cartReducer";
 import useFetch from "../hooks/useFetch";
+import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
 
 function Product() {
   const dispatch = useDispatch();
+
+  const { region } = useRegionChecker();
 
   const { productName } = useParams();
   const {
@@ -18,7 +21,7 @@ function Product() {
     loading,
     error,
   } = useFetch(
-    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[title][$eq]=${productName}`
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
 
   const [mainImg, setMainImg] = useState(null);

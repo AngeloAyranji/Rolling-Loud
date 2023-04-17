@@ -31,7 +31,16 @@ function App() {
             <Route path="/product/:productName" element={<Product />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:category" element={<Products />} />
-            <Route path="/orders" element={sessionStorage.getItem("jwt") ? (<Orders />) : (<Navigate to={"/login"} state={{ from: location }} />)}/>
+            <Route
+              path="/orders"
+              element={
+                sessionStorage.getItem("jwt") ? (
+                  <Orders />
+                ) : (
+                  <Navigate to={"/login"} state={{ from: location }} />
+                )
+              }
+            />
             <Route
               path="/orders/:orderId"
               element={
