@@ -83,12 +83,12 @@ export default function Navbar({ navigation, setNavigation }) {
                     <img
                       className="block h-10 w-auto lg:hidden"
                       src={Logo}
-                      alt="Your Company"
+                      alt="Skyshop"
                     />
                     <img
                       className="hidden h-8 w-auto lg:block "
                       src={Logo}
-                      alt="Your Company"
+                      alt="Skyshop"
                     />
                   </Link>
                 </div>
@@ -232,18 +232,18 @@ export default function Navbar({ navigation, setNavigation }) {
           <Disclosure.Panel className="lg:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current ? "text-primary" : " hover:text-primary",
-                    "block px-3 py-2 text-base font-medium uppercase"
-                  )}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
+                // <Disclosure.Button
+                //   key={item.name}
+                //   as="a"
+                //   href={item.href}
+                //   className={classNames(
+                //     item.current ? "text-primary" : " hover:text-primary",
+                //     "block px-3 py-2 text-base font-medium uppercase"
+                //   )}
+                //   aria-current={item.current ? "page" : undefined}
+                // >
+                <Dropdown category={item.name} />
+                //</Disclosure.Button>
               ))}
             </div>
           </Disclosure.Panel>

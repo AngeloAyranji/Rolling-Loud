@@ -147,9 +147,9 @@ function Card({ item, id }) {
           <MdAddShoppingCart />
         </div>
         <Link to={`/product/${item.title}`}>
-          <div className="flex flex-col justify-between lg:w-[320px] w-[150px] md:w-[190px] h-full p-4 lg:p-6">
+          <div className="flex flex-col justify-between lg:w-[320px] w-[150px] md:w-[190px] h-[168px] p-4 lg:p-6">
             <div>
-              <div className="flex flex-col space-y-2  mb-4">
+              <div className="flex flex-col space-y-2 mb-2 ">
                 <h2 className="card-title uppercase text-neutral group-hover:text-black ease-in-out duration-150 text-xs lg:text-base line-clamp-4">
                   {item.title}
                 </h2>
