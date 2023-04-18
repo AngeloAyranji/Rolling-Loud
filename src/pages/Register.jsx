@@ -32,6 +32,7 @@ function Register() {
             username: email,
             email: email,
             password: password,
+            region: localStorage.getItem("region")
           });
 
         if (res) {
