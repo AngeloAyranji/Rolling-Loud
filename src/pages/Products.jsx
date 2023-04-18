@@ -43,8 +43,12 @@ function Products() {
     `api/brands/?filters[name][$eq]=${category}`
   );
 
-  const { data: productsDB, metadata } = useFetch(url.length ? url + `&pagination[page]=1` : '');
-  
+  const {
+    data: productsDB,
+    metadata,
+    loading,
+  } = useFetch(url.length ? url + `&pagination[page]=1` : "");
+
   useEffect(() => {
     if (brandDB && categoryDB) handleFilters();
   }, [
@@ -61,9 +65,9 @@ function Products() {
   ]);
 
   useEffect(() => {
-    setProducts(productsDB)
+    setProducts(productsDB);
   }, [productsDB]);
-  
+
   const handleFilters = () => {
     let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}&pagination[pageSize]=25&filters[region][$eq]=${region}`;
     
@@ -82,13 +86,14 @@ function Products() {
   };
 
   const handleAddMore = async (page) => {
-    const res = await axios.get(process.env.REACT_APP_BACKEND_URL + url + `&pagination[page]=${page}`)
+    const res = await axios.get(
+      process.env.REACT_APP_BACKEND_URL + url + `&pagination[page]=${page}`
+    );
     let tmpProducts = products.slice();
     tmpProducts = tmpProducts.concat(res.data.data);
-    setProducts(tmpProducts)
-    setPage(page)
+    setProducts(tmpProducts);
+    setPage(page);
   };
-
 
   return (
     <>
@@ -178,7 +183,16 @@ function Products() {
             </div>
           </div>
           {page < metadata.pagination.pageCount && (
-            <p onClick={() => handleAddMore(page + 1)}>Add More</p>
+            <div className="w-full p-4 flex justify-center items-center px-12 space-x-4">
+              <div className="h-[2px] w-full bg-primary"></div>
+              <p
+                onClick={() => handleAddMore(page + 1)}
+                className="font-semibold hover:text-primary text-center cursor-pointer text-xl whitespace-nowrap"
+              >
+                Load more
+              </p>
+              <div className="h-[2px] w-full bg-primary"></div>
+            </div>
           )}
         </div>
       )}
