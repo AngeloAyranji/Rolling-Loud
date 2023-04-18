@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
   const { data: categories, loading } = useFetch(`api/categories`);
 
   const [navigation, setNavigation] = useState([
-    { name: "Home", href: "/", current: false },
+    { name: "Home", href: "/", current: false, hasSub: false },
   ]);
 
   useEffect(() => {
@@ -32,6 +32,7 @@ const Layout = ({ children }) => {
             name: cat.attributes.title,
             href: `/products/${cat.attributes.title}`,
             current: false,
+            hasSub: true
           });
       });
       if (!navigation.find((nav) => nav.name.toLowerCase() === "brands")) {
@@ -39,6 +40,7 @@ const Layout = ({ children }) => {
           name: "Brands",
           href: "/brands",
           current: false,
+          hasSub: false
         });
       }
 
