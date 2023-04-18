@@ -7,6 +7,7 @@ import Sidebar from "../components/Sidebar";
 import ListProduct from "../components/ListProduct";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
+import { useRegionChecker } from "../hooks/regionChecker";
 import axios from "axios";
 
 function Products() {
@@ -16,6 +17,8 @@ function Products() {
   const queryParams = new URLSearchParams(location.search);
   const queryFilter = queryParams.get("filter");
   const querySearch = queryParams.get("search");
+
+  const { region } = useRegionChecker();
 
   const [isSidebar, setIsSidebar] = useState(false);
   const [isNew, setIsNew] = useState(queryFilter === "new" ? true : false);
@@ -40,7 +43,7 @@ function Products() {
     `api/brands/?filters[name][$eq]=${category}`
   );
 
-  const { data: productsDB, metadata, loading } = useFetch(url.length ? url + `&pagination[page]=1` : '');
+  const { data: productsDB, metadata } = useFetch(url.length ? url + `&pagination[page]=1` : '');
   
   useEffect(() => {
     if (brandDB && categoryDB) handleFilters();
@@ -62,7 +65,7 @@ function Products() {
   }, [productsDB]);
   
   const handleFilters = () => {
-    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}&pagination[pageSize]=25`;
+    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}&pagination[pageSize]=25&filters[region][$eq]=${region}`;
     
     if (querySearch) filter += `&filters[title][$containsi]=${querySearch}`;
     if (category && categoryDB?.length)

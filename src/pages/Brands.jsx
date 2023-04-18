@@ -6,7 +6,6 @@ import useFetch from "../hooks/useFetch";
 function Brands() {
 
   const { data: brands, loading } = useFetch(`api/brands?populate[image]=*`);
-  console.log(brands)
 
   return (
     <>
