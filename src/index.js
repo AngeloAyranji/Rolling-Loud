@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import { persistor, store } from "./redux/store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
+import "./index.css";
+import App from "./App";
+import { persistor, store } from "./redux/store";
+import { RegionCheckerProvider } from "./hooks/regionChecker";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -13,7 +14,9 @@ root.render(
     <React.StrictMode>
       <PersistGate loading={"loading"} persistor={persistor}>
         <BrowserRouter>
-          <App />
+          <RegionCheckerProvider>
+            <App />
+          </RegionCheckerProvider>
         </BrowserRouter>
       </PersistGate>
     </React.StrictMode>

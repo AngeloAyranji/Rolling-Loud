@@ -3,19 +3,22 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useParams, useLocation, Link } from "react-router-dom";
 import { Select, Option } from "@material-tailwind/react";
 import { BsSliders } from "react-icons/bs";
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import ListProduct from "../components/ListProduct";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
-import axios from "axios";
+import { useRegionChecker } from "../hooks/regionChecker";
 
 function Products() {
-  const { category } = useParams();
+  const { category, subcategory } = useParams();
   const location = useLocation();
-
+  console.log(category, subcategory)
   const queryParams = new URLSearchParams(location.search);
   const queryFilter = queryParams.get("filter");
   const querySearch = queryParams.get("search");
+
+  const { region } = useRegionChecker();
 
   const [isSidebar, setIsSidebar] = useState(false);
   const [isNew, setIsNew] = useState(queryFilter === "new" ? true : false);
@@ -66,13 +69,12 @@ function Products() {
   }, [productsDB]);
 
   const handleFilters = () => {
-    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}&pagination[pageSize]=25`;
-
+    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}&pagination[pageSize]=25&filters[region][$eq]=${region}`;
+    
     if (querySearch) filter += `&filters[title][$containsi]=${querySearch}`;
-    if (category && categoryDB?.length)
-      filter += `&filters[categories][title][$eq]=${category}`;
-    if (category && brandDB?.length)
-      filter += `&filters[brand][name][$eq]=${category}`;
+    if (category && categoryDB?.length) filter += `&filters[categories][title][$eq]=${category}`;
+    if (category && brandDB?.length) filter += `&filters[brand][name][$eq]=${category}`;
+    if(subcategory) filter += `&filters[subcategories][title][$eq]=${subcategory}`
     if (isNew) filter += "&filters[type][$eq]=new";
     if (isPromotion) filter += "&filters[type][$eq]=promotion";
     if (isFeatured) filter += "&filters[type][$eq]=featured";
