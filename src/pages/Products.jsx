@@ -13,7 +13,7 @@ import { useRegionChecker } from "../hooks/regionChecker";
 function Products() {
   const { category, subcategory } = useParams();
   const location = useLocation();
-  console.log(category, subcategory)
+  console.log(category, subcategory);
   const queryParams = new URLSearchParams(location.search);
   const queryFilter = queryParams.get("filter");
   const querySearch = queryParams.get("search");
@@ -62,7 +62,7 @@ function Products() {
     brandDB,
     categoryDB,
     querySearch,
-    subcategory
+    subcategory,
   ]);
 
   useEffect(() => {
@@ -71,11 +71,14 @@ function Products() {
 
   const handleFilters = () => {
     let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}&pagination[pageSize]=25&filters[region][$eq]=${region}`;
-    
+
     if (querySearch) filter += `&filters[title][$containsi]=${querySearch}`;
-    if (category && categoryDB?.length) filter += `&filters[categories][title][$eq]=${category}`;
-    if (category && brandDB?.length) filter += `&filters[brand][name][$eq]=${category}`;
-    if(subcategory) filter += `&filters[subcategories][title][$eq]=${subcategory}`
+    if (category && categoryDB?.length)
+      filter += `&filters[categories][title][$eq]=${category}`;
+    if (category && brandDB?.length)
+      filter += `&filters[brand][name][$eq]=${category}`;
+    if (subcategory)
+      filter += `&filters[subcategories][title][$eq]=${subcategory}`;
     if (isNew) filter += "&filters[type][$eq]=new";
     if (isPromotion) filter += "&filters[type][$eq]=promotion";
     if (isFeatured) filter += "&filters[type][$eq]=featured";
@@ -121,13 +124,18 @@ function Products() {
               ) : (
                 <Link to={`/products`}>All Products</Link>
               )}
+              {subcategory && (
+                <Link to={`/products/${category}/${subcategory}`}>
+                  {subcategory}
+                </Link>
+              )}
             </Breadcrumbs>
             <h2 className="text-xl xl:text-3xl font-bold text-white uppercase">
               {!category
                 ? querySearch
                   ? `Search in ${querySearch}`
                   : "All Products"
-                : category}
+                : subcategory ? subcategory : category}
             </h2>
             <p className="max-w-[700px]">
               {category

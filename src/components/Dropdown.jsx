@@ -12,7 +12,7 @@ function Dropdown({ title, subCategories }) {
   //   else x = x.filter((item) => item != id);
   //   setCategories(x);
   // };
-  console.log("subb:", subCategories);
+  
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
