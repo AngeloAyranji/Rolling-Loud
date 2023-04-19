@@ -108,7 +108,7 @@ export default function Navbar({ navigation, setNavigation }) {
                       //   {item.name}
                       // </Link>
 
-                      <Dropdown title={item.name} subCategories={item.sub} />
+                      <Dropdown title={item.name} href={item.href} subCategories={item.sub} />
                     ))}
                   </div>
                 </div>
