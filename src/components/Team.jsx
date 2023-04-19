@@ -1,6 +1,4 @@
 import React from "react";
-import person from "../assets/Images/Person.png";
-import happy from "../assets/Images/Happy.png";
 import { AiOutlineInstagram } from "react-icons/ai";
 import useFetch from "../hooks/useFetch";
 
