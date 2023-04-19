@@ -62,6 +62,7 @@ function Products() {
     brandDB,
     categoryDB,
     querySearch,
+    subcategory
   ]);
 
   useEffect(() => {

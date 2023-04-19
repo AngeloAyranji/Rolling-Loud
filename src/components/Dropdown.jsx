@@ -1,7 +1,9 @@
-import { Fragment, useState, useEffect } from "react";
+import { useState } from "react";
+import { Fragment, useEffect } from "react";
 import { FiChevronDown } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
-function Dropdown({ category }) {
+function Dropdown({ title, subCategories }) {
   const [isOpen, setIsOpen] = useState(false);
 
   // const handleCategories = (checked, id) => {
@@ -10,7 +12,7 @@ function Dropdown({ category }) {
   //   else x = x.filter((item) => item != id);
   //   setCategories(x);
   // };
-
+  console.log("subb:", subCategories);
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
@@ -33,43 +35,41 @@ function Dropdown({ category }) {
       {isTouchDevice ? (
         <div className="relative overflow-visible">
           <div className="relative flex flex-row lg:justify-between items-center space-x-2 hover:text-primary lg:hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
-            <h3 className=" text-sm font-medium">{category}</h3>
-            <FiChevronDown
+            <Link to={`/products/${title}`} className=" text-sm font-medium">{title}</Link>
+            {subCategories && (
+              <FiChevronDown
+                className={
+                  isOpen
+                    ? " h-5 w-5 cursor-pointer rotate-180 ease-in-out duration-300"
+                    : " h-5 w-5 cursor-pointer ease-in-out duration-300"
+                }
+                onClick={handleOpen}
+              />
+            )}
+          </div>
+          {subCategories && (
+            <div
               className={
                 isOpen
-                  ? " h-5 w-5 cursor-pointer rotate-180 ease-in-out duration-300"
-                  : " h-5 w-5 cursor-pointer ease-in-out duration-300"
+                  ? "w-fit lg:absolute lg:left-0 lg:top-0 mb-4 flex flex-col space-y-4 justify-start ease-in-out duration-300 z-0"
+                  : "hidden"
               }
-              onClick={handleOpen}
-            />
-          </div>
-          <div
-            className={
-              isOpen
-                ? "w-fit lg:absolute lg:left-0 lg:top-0 mb-4 flex flex-col space-y-4 justify-start ease-in-out duration-300 z-0"
-                : "hidden"
-            }
-          >
-            <div className="pt-0 lg:pt-[36px]">
-              <div
-                id="drop"
-                className="lg:bg-[#313131] lg:rounded-md p-4 flex flex-col space-y-4"
-              >
-                <p className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase">
-                  Cat 1
-                </p>
-                <p className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap">
-                  BATTERIES AND CHARGERS
-                </p>
-                <p className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap">
-                  Cat 1
-                </p>
-                <p className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase">
-                  Cat 1
-                </p>
+            >
+              <div className="pt-0 lg:pt-[36px]">
+                <div className="lg:bg-[#313131] lg:rounded-md p-4 flex flex-col space-y-4">
+                  {subCategories?.map((sub, index) => (
+                    <Link
+                      key={index}
+                      to={`/products/${title}/${sub?.attributes.title}`}
+                      className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap"
+                    >
+                      {sub.attributes.title}
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       ) : (
         <div
@@ -78,42 +78,40 @@ function Dropdown({ category }) {
           onMouseLeave={handleOpen}
         >
           <div className="relative flex flex-row lg:justify-between items-center space-x-2 hover:text-primary lg:hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
-            <h3 className=" text-sm font-medium">{category}</h3>
-            <FiChevronDown
+            <Link to={`/products/${title}`} className=" text-sm font-medium">{title}</Link>
+            {subCategories && (
+              <FiChevronDown
+                className={
+                  isOpen
+                    ? " h-5 w-5 cursor-pointer rotate-180 ease-in-out duration-300"
+                    : " h-5 w-5 cursor-pointer ease-in-out duration-300"
+                }
+              />
+            )}
+          </div>
+          {subCategories && (
+            <div
               className={
                 isOpen
-                  ? " h-5 w-5 cursor-pointer rotate-180 ease-in-out duration-300"
-                  : " h-5 w-5 cursor-pointer ease-in-out duration-300"
+                  ? "w-fit lg:absolute lg:left-0 lg:top-0 mb-4 flex flex-col space-y-4 justify-start ease-in-out duration-300 z-0"
+                  : "hidden"
               }
-            />
-          </div>
-          <div
-            className={
-              isOpen
-                ? "w-fit lg:absolute lg:left-0 lg:top-0 mb-4 flex flex-col space-y-4 justify-start ease-in-out duration-300 z-0"
-                : "hidden"
-            }
-          >
-            <div className="pt-[8px] lg:pt-[36px]">
-              <div
-                id="drop"
-                className=" bg-[#313131] rounded-md p-4 flex flex-col space-y-4"
-              >
-                <p className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase">
-                  Cat 1
-                </p>
-                <p className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap">
-                  BATTERIES AND CHARGERS
-                </p>
-                <p className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap">
-                  Cat 1
-                </p>
-                <p className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase">
-                  Cat 1
-                </p>
+            >
+              <div className="pt-[8px] lg:pt-[36px]">
+                <div className=" bg-[#313131] rounded-md p-4 flex flex-col space-y-4">
+                  {subCategories?.map((sub, index) => (
+                    <Link
+                      key={index}
+                      to={`/products/${title}/${sub.attributes.title}`}
+                      className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap"
+                    >
+                      {sub.attributes.title}
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </Fragment>
