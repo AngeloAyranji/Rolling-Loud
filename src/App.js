@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotEmail from "./pages/ForgotEmail";
 import ForgotPassword from "./pages/ForgotPassword";
+import Checkout from "./pages/Checkout";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import ScrollToTop from "./layout/scrollToTop";
 import Layout from "./layout/layout";
@@ -31,7 +32,11 @@ function App() {
             <Route path="/product/:productName" element={<Product />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:category" element={<Products />} />
-            <Route path="/products/:category/:subcategory" element={<Products />} />
+            <Route
+              path="/products/:category/:subcategory"
+              element={<Products />}
+            />
+            <Route path="/checkout" element={<Checkout />} />
             <Route
               path="/orders"
               element={

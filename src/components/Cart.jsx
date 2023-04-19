@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { useJwt } from 'react-jwt';
+import { useJwt } from "react-jwt";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loading from "./Loading";
@@ -33,7 +33,7 @@ export default function Example({ handleOpen }) {
         const code = document.getElementById("promoCode").value;
         const res = await axios.get(
           process.env.REACT_APP_BACKEND_URL +
-          `api/promotions/?filters[code][$eq]=${code}`
+            `api/promotions/?filters[code][$eq]=${code}`
         );
         if (res.data.data.length) setPromoCode(res.data.data);
       } catch (err) {
@@ -44,8 +44,9 @@ export default function Example({ handleOpen }) {
   };
 
   const handleCheckout = async () => {
+    handleOpen();
     if (sessionStorage.getItem("jwt")) {
-      setLoadingCheckout(true)
+      setLoadingCheckout(true);
       const productList = products.map((prd) => {
         return {
           id: prd.id,
@@ -67,8 +68,8 @@ export default function Example({ handleOpen }) {
         payload,
         config
       );
-      console.log(res)
-      setLoadingCheckout(false)
+      console.log(res);
+      setLoadingCheckout(false);
       navigate(`/orders`);
     } else {
       navigate("/login");
@@ -119,7 +120,10 @@ export default function Example({ handleOpen }) {
                                   onClick={() => handleOpen()}
                                 >
                                   <span className="sr-only">Close panel</span>
-                                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                                  <XMarkIcon
+                                    className="h-6 w-6"
+                                    aria-hidden="true"
+                                  />
                                 </button>
                               </div>
                             </div>
@@ -149,7 +153,8 @@ export default function Example({ handleOpen }) {
                                               </a>
                                             </h3>
                                             <p className="ml-4">
-                                              {product.price * product.quantity} $
+                                              {product.price * product.quantity}{" "}
+                                              $
                                             </p>
                                           </div>
                                           <p className="mt-1 text-sm text-gray-500">
@@ -184,7 +189,9 @@ export default function Example({ handleOpen }) {
                           <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                             <div className="form-control w-full">
                               <label className="label">
-                                <span className="label-text">Enter PROMO Code</span>
+                                <span className="label-text">
+                                  Enter PROMO Code
+                                </span>
                               </label>
                               <div className="relative">
                                 <input
@@ -212,7 +219,7 @@ export default function Example({ handleOpen }) {
                             <div className="mt-6">
                               <div
                                 onClick={handleCheckout}
-                                className="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-focus"
+                                className="cursor-pointer flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-focus"
                               >
                                 Checkout
                               </div>
@@ -222,7 +229,7 @@ export default function Example({ handleOpen }) {
                                 or{" "}
                                 <button
                                   type="button"
-                                  className="font-medium text-primary hover:text-primary-focus"
+                                  className="font-medium text-secondary hover:text-secondary-focus"
                                   onClick={handleOpen}
                                 >
                                   Continue Shopping
@@ -242,8 +249,7 @@ export default function Example({ handleOpen }) {
         </>
       ) : (
         <Loading />
-      )
-      }
+      )}
     </>
   );
 }
