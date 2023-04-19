@@ -36,7 +36,7 @@ function Dropdown({ title, href, subCategories }) {
         <div className="relative overflow-visible">
           <div className="relative flex flex-row lg:justify-between items-center space-x-2 hover:text-primary lg:hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
             <Link to={href} className=" text-sm font-medium">{title}</Link>
-            {subCategories && (
+            {subCategories.length > 0 && (
               <FiChevronDown
                 className={
                   isOpen
@@ -47,7 +47,7 @@ function Dropdown({ title, href, subCategories }) {
               />
             )}
           </div>
-          {subCategories && (
+          {subCategories.length > 0 && (
             <div
               className={
                 isOpen
@@ -79,7 +79,7 @@ function Dropdown({ title, href, subCategories }) {
         >
           <div className="relative flex flex-row lg:justify-between items-center space-x-2 hover:text-primary lg:hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
             <Link to={href} className=" text-sm font-medium">{title}</Link>
-            {subCategories && (
+            {subCategories.length > 0 && (
               <FiChevronDown
                 className={
                   isOpen
@@ -89,7 +89,7 @@ function Dropdown({ title, href, subCategories }) {
               />
             )}
           </div>
-          {subCategories && (
+          {subCategories.length > 0 && (
             <div
               className={
                 isOpen

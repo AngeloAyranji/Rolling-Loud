@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
   const { data: categories } = useFetch(`api/categories/?populate[subcategories]=*`);
   
   const [navigation, setNavigation] = useState([
-    { name: "Home", href: "/", current: false, sub: null },
+    { name: "Home", href: "/", current: false, sub: [] },
   ]);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Layout = ({ children }) => {
           name: "Brands",
           href: "/brands",
           current: false,
-          sub: null
+          sub: []
         });
       }
 
