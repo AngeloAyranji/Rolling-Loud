@@ -136,6 +136,17 @@ function Order() {
               </div>
             </div>
           </div>
+          <div className="flex w-full items-center justify-center">
+            <button
+              className={
+                products.length
+                  ? "w-full btn btn-primary uppercase text-xl max-w-[500px]"
+                  : "w-full btn btn-disabled uppercase text-xl max-w-[500px]"
+              }
+            >
+              Checkout
+            </button>
+          </div>
         </div>
       </div>
     </div>
