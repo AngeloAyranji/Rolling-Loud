@@ -1,12 +1,17 @@
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import axios from "axios";
+import { useJwt } from "react-jwt";
 
 function Order() {
+  const navigate = useNavigate();
+  const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
   const products = useSelector((state) => state.cart.products);
 
   const [promoCode, setPromoCode] = useState(null);
+  const [loadingCheckout, setLoadingCheckout] = useState(false);
 
   const totalPrice = () => {
     let total = 0;
@@ -16,26 +21,53 @@ function Order() {
     return total;
   };
 
+  const handleCheckout = async () => {
+    if (sessionStorage.getItem("jwt")) {
+      setLoadingCheckout(true);
+      const productList = products.map((prd) => {
+        return {
+          id: prd.id,
+          quantity: prd.quantity,
+        };
+      });
+      const payload = {
+        items: productList,
+        promoCode: promoCode ? promoCode[0].attributes.code : null,
+        userId: decodedToken?.id,
+      };
+
+      const config = {
+        headers: { Authorization: `Bearer ${sessionStorage.getItem("jwt")}` },
+      };
+
+      const res = await axios.post(
+        process.env.REACT_APP_BACKEND_URL + "api/checkout",
+        payload,
+        config
+      );
+      console.log(res);
+      setLoadingCheckout(false);
+      navigate(`/orders`);
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <div className="w-full mx-auto flex justify-center items-center">
       <div className="max-w-[1400px] w-full">
         <div className="flex flex-col justify-center items-start p-4 md:p-6 lg:p-8 2xl:pl-14 space-y-8">
-          {/* <Breadcrumbs
+          <Breadcrumbs
             separator="›"
             aria-label="breadcrumb"
             className="!text-white !text-sm !breadcrumbs !scrollbar-thumb-rounded-full !scrollbar-thumb-base-100 !pb-4 !scrollbar-thumb-sm"
           >
             <Link to="/">Home</Link>
-            <Link to={`/orders`}>Orders</Link>
-            <Link to={`/orders`}>{sessionStorage.getItem("username")}</Link>
-            <Link to={`/orders/${orderId}`}>{orderId}</Link>
-          </Breadcrumbs> */}
+            <Link to={`/checkout`}>Checkout</Link>
+          </Breadcrumbs>
           <h2 className="text-xl xl:text-3xl font-bold text-white uppercase tracking-wide">
             Checkout
           </h2>
-          {/* <p className="max-w-[700px]">
-            Order Date: {convertDate(order[0]?.attributes.date)}
-          </p> */}
           <div className="h-[2px] w-full bg-primary"></div>
 
           <div className="mt-8 w-full border-b-[2px] pb-8 border-b-base-100">
@@ -143,6 +175,7 @@ function Order() {
                   ? "w-full btn btn-primary uppercase text-xl max-w-[500px]"
                   : "w-full btn btn-disabled uppercase text-xl max-w-[500px]"
               }
+              onClick={handleCheckout}
             >
               Checkout
             </button>
