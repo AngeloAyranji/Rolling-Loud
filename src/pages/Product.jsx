@@ -21,9 +21,9 @@ function Product() {
     loading,
     error,
   } = useFetch(
-    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
-
+  console.log(product);
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isAvailable, setIsAvailable] = useState(true);
@@ -99,6 +99,11 @@ function Product() {
                   product[0].attributes.categories.data[0].attributes.title.slice(
                     1
                   )}
+              </Link>
+              <Link
+                to={`/products/${product[0].attributes.categories.data[0].attributes.title}/${product[0].attributes.subcategories.data[0].attributes.title}`}
+              >
+                {product[0].attributes.subcategories.data[0].attributes.title}
               </Link>
               <Link to={`/product/${product[0].attributes.title}`}>
                 {product[0]?.attributes.title.charAt(0).toUpperCase() +

@@ -106,9 +106,9 @@ export default function Navbar({ navigation, setNavigation }) {
                       //   aria-current={item.current ? "page" : undefined}
                       // >
                       //   {item.name}
-                      //   <Dropdown />
                       // </Link>
-                      <Dropdown category={item.name} />
+
+                      <Dropdown title={item.name} subCategories={item.sub} />
                     ))}
                   </div>
                 </div>
