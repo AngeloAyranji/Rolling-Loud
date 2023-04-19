@@ -1,56 +1,120 @@
 import { useState } from "react";
+import { Fragment, useEffect } from "react";
 import { FiChevronDown } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
-function Dropdown({ categoriesDB, categories, setCategories, name }) {
+function Dropdown({ title, href, subCategories }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleCategories = (checked, id) => {
-    let x = categories;
-    if(checked) x.push(id);
-    else x = x.filter((item) => item != id);
-    setCategories(x)
-  };
-
+  // const handleCategories = (checked, id) => {
+  //   let x = categories;
+  //   if (checked) x.push(id);
+  //   else x = x.filter((item) => item != id);
+  //   setCategories(x);
+  // };
+  
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
+
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    function handleTouchStart() {
+      setIsTouchDevice(true);
+    }
+
+    window.addEventListener("touchstart", handleTouchStart);
+
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+    };
+  }, []);
   return (
-    <div className="w-full flex flex-col space-y-4 mt-8 z-10">
-      <div className="flex flex-row justify-between items-center w-[180px]">
-        <h3 className="text-white text-md ">{name}</h3>
-        <FiChevronDown
-          className={
-            isOpen
-              ? "text-white h-5 w-5 cursor-pointer rotate-180 ease-in-out duration-300"
-              : "text-white h-5 w-5 cursor-pointer ease-in-out duration-300"
-          }
-          onClick={handleOpen}
-        />
-      </div>
-      <div
-        className={
-          isOpen
-            ? "w-full mb-4 flex flex-col space-y-4 justify-start h-full overflow-y-hidden ease-in-out duration-300"
-            : "w-full mb-4 flex flex-col space-y-4 justify-start h-0 overflow-y-hidden ease-in-out duration-300"
-        }
-      >
-        {categoriesDB?.map((item, index) => (
-          <div
-            className="flex flex-row justify-start space-x-4 items-center pl-2"
-            key={index}
-          >
-            <input
-              type="checkbox"
-              id={item.attributes.title}
-              value={item.attributes.title}
-              onChange={(e) => handleCategories(e.target.checked, item.id)}
-              className="checked:bg-primary rounded-sm"
-            />
-            <label htmlFor={item.id}>{item.attributes.title}</label>
+    <Fragment>
+      {isTouchDevice ? (
+        <div className="relative overflow-visible">
+          <div className="relative flex flex-row lg:justify-between items-center space-x-2 hover:text-primary lg:hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
+            <Link to={href} className=" text-sm font-medium">{title}</Link>
+            {subCategories && (
+              <FiChevronDown
+                className={
+                  isOpen
+                    ? " h-5 w-5 cursor-pointer rotate-180 ease-in-out duration-300"
+                    : " h-5 w-5 cursor-pointer ease-in-out duration-300"
+                }
+                onClick={handleOpen}
+              />
+            )}
           </div>
-        ))}
-      </div>
-    </div>
+          {subCategories && (
+            <div
+              className={
+                isOpen
+                  ? "w-fit lg:absolute lg:left-0 lg:top-0 mb-4 flex flex-col space-y-4 justify-start ease-in-out duration-300 z-0"
+                  : "hidden"
+              }
+            >
+              <div className="pt-0 lg:pt-[36px]">
+                <div className="lg:bg-[#313131] lg:rounded-md p-4 flex flex-col space-y-4">
+                  {subCategories?.map((sub, index) => (
+                    <Link
+                      key={index}
+                      to={`/products/${title}/${sub?.attributes.title}`}
+                      className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap"
+                    >
+                      {sub.attributes.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div
+          className="block relative overflow-visible"
+          onMouseEnter={handleOpen}
+          onMouseLeave={handleOpen}
+        >
+          <div className="relative flex flex-row lg:justify-between items-center space-x-2 hover:text-primary lg:hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
+            <Link to={href} className=" text-sm font-medium">{title}</Link>
+            {subCategories && (
+              <FiChevronDown
+                className={
+                  isOpen
+                    ? " h-5 w-5 cursor-pointer rotate-180 ease-in-out duration-300"
+                    : " h-5 w-5 cursor-pointer ease-in-out duration-300"
+                }
+              />
+            )}
+          </div>
+          {subCategories && (
+            <div
+              className={
+                isOpen
+                  ? "w-fit lg:absolute lg:left-0 lg:top-0 mb-4 flex flex-col space-y-4 justify-start ease-in-out duration-300 z-0"
+                  : "hidden"
+              }
+            >
+              <div className="pt-[8px] lg:pt-[36px]">
+                <div className=" bg-[#313131] rounded-md p-4 flex flex-col space-y-4">
+                  {subCategories?.map((sub, index) => (
+                    <Link
+                      key={index}
+                      to={`/products/${title}/${sub.attributes.title}`}
+                      className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap"
+                    >
+                      {sub.attributes.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </Fragment>
   );
 }
 

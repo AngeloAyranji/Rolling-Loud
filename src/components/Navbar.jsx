@@ -11,6 +11,7 @@ import {
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Logo from "../assets/Images/LogoSky.png";
 import Cart from "./Cart";
+import Dropdown from "./Dropdown";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -31,8 +32,6 @@ export default function Navbar({ navigation, setNavigation }) {
 
   const handleLogOut = () => {
     sessionStorage.removeItem("jwt");
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("username");
     sessionStorage.removeItem("userId");
 
     navigate("/");
@@ -80,34 +79,36 @@ export default function Navbar({ navigation, setNavigation }) {
                 <div className="flex flex-shrink-0 items-center">
                   <Link to="/" onClick={() => handleCurrentNav("Home")}>
                     <img
-                      className="block h-8 w-auto lg:hidden"
+                      className="block h-10 w-auto lg:hidden"
                       src={Logo}
-                      alt="Your Company"
+                      alt="Skyshop"
                     />
                     <img
                       className="hidden h-8 w-auto lg:block "
                       src={Logo}
-                      alt="Your Company"
+                      alt="Skyshop"
                     />
                   </Link>
                 </div>
                 <div className="hidden lg:ml-6 lg:block">
-                  <div className="flex space-x-4">
+                  <div className="flex space-x-4 items-center ove">
                     {navigation.map((item) => (
-                      <Link
-                        onClick={() => handleCurrentNav(item.name)}
-                        key={item.name}
-                        to={item.href}
-                        className={classNames(
-                          item.current
-                            ? "text-primary border-b-2 border-primary"
-                            : " hover:text-primary hover:border-b-2 border-primary",
-                          "py-2 text-sm font-medium uppercase"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {item.name}
-                      </Link>
+                      // <Link
+                      //   onClick={() => handleCurrentNav(item.name)}
+                      //   key={item.name}
+                      //   to={item.href}
+                      //   className={classNames(
+                      //     item.current
+                      //       ? "text-primary border-b-2 border-primary"
+                      //       : " hover:text-primary hover:border-b-2 border-primary",
+                      //     "py-2 text-sm font-medium uppercase"
+                      //   )}
+                      //   aria-current={item.current ? "page" : undefined}
+                      // >
+                      //   {item.name}
+                      // </Link>
+
+                      <Dropdown title={item.name} href={item.href} subCategories={item.sub} />
                     ))}
                   </div>
                 </div>
@@ -166,28 +167,19 @@ export default function Navbar({ navigation, setNavigation }) {
                     <Menu.Items className="absolute right-0 z-[100] mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                          <>
+                            {sessionStorage.getItem("jwt") !== null && (
+                              <a
+                                href="/orders"
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700"
+                                )}
+                              >
+                                Your Orders
+                              </a>
                             )}
-                          >
-                            Your Profile
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Settings
-                          </a>
+                          </>
                         )}
                       </Menu.Item>
                       <Menu.Item>
@@ -229,18 +221,18 @@ export default function Navbar({ navigation, setNavigation }) {
           <Disclosure.Panel className="lg:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current ? "text-primary" : " hover:text-primary",
-                    "block px-3 py-2 text-base font-medium uppercase"
-                  )}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
+                // <Disclosure.Button
+                //   key={item.name}
+                //   as="a"
+                //   href={item.href}
+                //   className={classNames(
+                //     item.current ? "text-primary" : " hover:text-primary",
+                //     "block px-3 py-2 text-base font-medium uppercase"
+                //   )}
+                //   aria-current={item.current ? "page" : undefined}
+                // >
+                <Dropdown category={item.name} />
+                //</Disclosure.Button>
               ))}
             </div>
           </Disclosure.Panel>

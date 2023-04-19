@@ -1,15 +1,19 @@
 import { Fragment } from "react";
 import useFetch from "../hooks/useFetch";
+import { useRegionChecker } from "../hooks/regionChecker";
 import Card from "./Card";
 import Loading from "./Loading";
 
 function List({ type }) {
+  
+  const { region } = useRegionChecker();
+
   const {
     data: products,
     loading,
     error,
   } = useFetch(
-    `api/products?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[type][$eq]=${type}&pagination[pageSize]=4`
+    `api/products?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[type][$eq]=${type}&pagination[pageSize]=4&filters[region][$eq]=${region}`
   );
 
   return (

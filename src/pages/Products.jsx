@@ -3,19 +3,22 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useParams, useLocation, Link } from "react-router-dom";
 import { Select, Option } from "@material-tailwind/react";
 import { BsSliders } from "react-icons/bs";
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import ListProduct from "../components/ListProduct";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
-import axios from "axios";
+import { useRegionChecker } from "../hooks/regionChecker";
 
 function Products() {
-  const { category } = useParams();
+  const { category, subcategory } = useParams();
   const location = useLocation();
-
+  console.log(category, subcategory);
   const queryParams = new URLSearchParams(location.search);
   const queryFilter = queryParams.get("filter");
   const querySearch = queryParams.get("search");
+
+  const { region } = useRegionChecker();
 
   const [isSidebar, setIsSidebar] = useState(false);
   const [isNew, setIsNew] = useState(queryFilter === "new" ? true : false);
@@ -40,8 +43,12 @@ function Products() {
     `api/brands/?filters[name][$eq]=${category}`
   );
 
-  const { data: productsDB, metadata, loading } = useFetch(url.length ? url + `&pagination[page]=1` : '');
-  
+  const {
+    data: productsDB,
+    metadata,
+    loading,
+  } = useFetch(url.length ? url + `&pagination[page]=1` : "");
+
   useEffect(() => {
     if (brandDB && categoryDB) handleFilters();
   }, [
@@ -55,20 +62,23 @@ function Products() {
     brandDB,
     categoryDB,
     querySearch,
+    subcategory,
   ]);
 
   useEffect(() => {
-    setProducts(productsDB)
+    setProducts(productsDB);
   }, [productsDB]);
-  
+
   const handleFilters = () => {
-    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}&pagination[pageSize]=25`;
-    
+    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}&pagination[pageSize]=25&filters[region][$eq]=${region}`;
+
     if (querySearch) filter += `&filters[title][$containsi]=${querySearch}`;
     if (category && categoryDB?.length)
       filter += `&filters[categories][title][$eq]=${category}`;
     if (category && brandDB?.length)
       filter += `&filters[brand][name][$eq]=${category}`;
+    if (subcategory)
+      filter += `&filters[subcategories][title][$eq]=${subcategory}`;
     if (isNew) filter += "&filters[type][$eq]=new";
     if (isPromotion) filter += "&filters[type][$eq]=promotion";
     if (isFeatured) filter += "&filters[type][$eq]=featured";
@@ -80,13 +90,14 @@ function Products() {
   };
 
   const handleAddMore = async (page) => {
-    const res = await axios.get(process.env.REACT_APP_BACKEND_URL + url + `&pagination[page]=${page}`)
+    const res = await axios.get(
+      process.env.REACT_APP_BACKEND_URL + url + `&pagination[page]=${page}`
+    );
     let tmpProducts = products.slice();
     tmpProducts = tmpProducts.concat(res.data.data);
-    setProducts(tmpProducts)
-    setPage(page)
+    setProducts(tmpProducts);
+    setPage(page);
   };
-
 
   return (
     <>
@@ -113,13 +124,18 @@ function Products() {
               ) : (
                 <Link to={`/products`}>All Products</Link>
               )}
+              {subcategory && (
+                <Link to={`/products/${category}/${subcategory}`}>
+                  {subcategory}
+                </Link>
+              )}
             </Breadcrumbs>
             <h2 className="text-xl xl:text-3xl font-bold text-white uppercase">
               {!category
                 ? querySearch
                   ? `Search in ${querySearch}`
                   : "All Products"
-                : category}
+                : subcategory ? subcategory : category}
             </h2>
             <p className="max-w-[700px]">
               {category
@@ -176,7 +192,16 @@ function Products() {
             </div>
           </div>
           {page < metadata.pagination.pageCount && (
-            <p onClick={() => handleAddMore(page + 1)}>Add More</p>
+            <div className="w-full p-4 flex justify-center items-center px-12 space-x-4">
+              <div className="h-[2px] w-full bg-primary"></div>
+              <p
+                onClick={() => handleAddMore(page + 1)}
+                className="font-semibold hover:text-primary text-center cursor-pointer text-xl whitespace-nowrap"
+              >
+                Load more
+              </p>
+              <div className="h-[2px] w-full bg-primary"></div>
+            </div>
           )}
         </div>
       )}

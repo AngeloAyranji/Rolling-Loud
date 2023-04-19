@@ -7,9 +7,7 @@ function SearchBar() {
   const handleSearch = () => {
     const search = document.getElementById("searchBar").value;
 
-    if (search.length > 3) {
-      navigate(`products?search=${search}`);
-    }
+    navigate(`products?search=${search}`);
   };
 
   useEffect(() => {

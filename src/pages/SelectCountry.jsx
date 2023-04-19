@@ -1,16 +1,25 @@
-import React from "react";
-import { Select, Option } from "@material-tailwind/react";
 import { useState } from "react";
+import { Select, Option } from "@material-tailwind/react";
+import { useRegionChecker } from "../hooks/regionChecker";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function SelectCountry() {
-  const [region, setRegion] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { setRegion } = useRegionChecker();
+  
+  const [regionTmp, setRegionTmp] = useState("");
+
   const handleChange = () => {
-    console.log(region);
-    if (region === "") return;
+    if (regionTmp === "") return;
     else {
-      localStorage.setItem("region", region);
+      localStorage.setItem("region", regionTmp.toLowerCase());
+      setRegion(regionTmp.toLowerCase())
+      navigate(location.state.from)
     }
   };
+
   return (
     <div className="w-full mx-auto h-screen flex items-center justify-center p-8">
       <div className="h-[300px] rounded-xl border-2 border-primary max-w-xl p-8 flex flex-col justify-between">
@@ -26,7 +35,7 @@ function SelectCountry() {
             unmount: { y: 25 },
           }}
           className="!ml-0"
-          onChange={setRegion}
+          onChange={setRegionTmp}
         >
           <Option value={"Europe"}>Europe</Option>
           <Option value={"Gulf"}>Gulf</Option>

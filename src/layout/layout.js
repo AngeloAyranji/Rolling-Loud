@@ -12,10 +12,10 @@ import SearchBar from "../components/SearchBar";
 const Layout = ({ children }) => {
   const location = useLocation();
 
-  const { data: categories, loading } = useFetch(`api/categories`);
-
+  const { data: categories } = useFetch(`api/categories/?populate[subcategories]=*`);
+  
   const [navigation, setNavigation] = useState([
-    { name: "Home", href: "/", current: false },
+    { name: "Home", href: "/", current: false, sub: null },
   ]);
 
   useEffect(() => {
@@ -32,6 +32,7 @@ const Layout = ({ children }) => {
             name: cat.attributes.title,
             href: `/products/${cat.attributes.title}`,
             current: false,
+            sub: cat.attributes.subcategories.data
           });
       });
       if (!navigation.find((nav) => nav.name.toLowerCase() === "brands")) {
@@ -39,6 +40,7 @@ const Layout = ({ children }) => {
           name: "Brands",
           href: "/brands",
           current: false,
+          sub: null
         });
       }
 
@@ -52,10 +54,15 @@ const Layout = ({ children }) => {
         <Loading />
       ) : (
         <>
-          <Navbar navigation={navigation} setNavigation={setNavigation} />
-          <SearchBar />
+          {location.pathname !== "/country" && (
+            <>
+              <Navbar navigation={navigation} setNavigation={setNavigation} />
+              <SearchBar />
+            </>
+          )}
           {children}
           {location.pathname !== "/login" &&
+            location.pathname !== "/country" &&
             location.pathname !== "/register" && (
               <>
                 <SocialsMenu />
