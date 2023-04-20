@@ -93,22 +93,11 @@ export default function Navbar({ navigation, setNavigation }) {
                 <div className="hidden lg:ml-6 lg:block">
                   <div className="flex space-x-4 items-center ove">
                     {navigation.map((item) => (
-                      // <Link
-                      //   onClick={() => handleCurrentNav(item.name)}
-                      //   key={item.name}
-                      //   to={item.href}
-                      //   className={classNames(
-                      //     item.current
-                      //       ? "text-primary border-b-2 border-primary"
-                      //       : " hover:text-primary hover:border-b-2 border-primary",
-                      //     "py-2 text-sm font-medium uppercase"
-                      //   )}
-                      //   aria-current={item.current ? "page" : undefined}
-                      // >
-                      //   {item.name}
-                      // </Link>
-
-                      <Dropdown title={item.name} href={item.href} subCategories={item.sub} />
+                      <Dropdown
+                        title={item.name}
+                        href={item.href}
+                        subCategories={item.sub}
+                      />
                     ))}
                   </div>
                 </div>
@@ -221,18 +210,11 @@ export default function Navbar({ navigation, setNavigation }) {
           <Disclosure.Panel className="lg:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item) => (
-                // <Disclosure.Button
-                //   key={item.name}
-                //   as="a"
-                //   href={item.href}
-                //   className={classNames(
-                //     item.current ? "text-primary" : " hover:text-primary",
-                //     "block px-3 py-2 text-base font-medium uppercase"
-                //   )}
-                //   aria-current={item.current ? "page" : undefined}
-                // >
-                <Dropdown category={item.name} />
-                //</Disclosure.Button>
+                <Dropdown
+                  title={item.name}
+                  href={item.href}
+                  subCategories={item.sub}
+                />
               ))}
             </div>
           </Disclosure.Panel>
