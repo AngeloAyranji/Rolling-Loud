@@ -100,11 +100,13 @@ function Product() {
                     1
                   )}
               </Link>
-              <Link
-                to={`/products/${product[0].attributes.categories.data[0].attributes.title}/${product[0].attributes.subcategories.data[0].attributes.title}`}
-              >
-                {product[0].attributes.subcategories.data[0].attributes.title}
-              </Link>
+              {product[0]?.attributes.subcategories.data.length > 0 && (
+                <Link
+                  to={`/products/${product[0].attributes.categories.data[0].attributes.title}/${product[0].attributes.subcategories.data[0].attributes.title}`}
+                >
+                  {product[0].attributes.subcategories.data[0].attributes.title}
+                </Link>
+              )}
               <Link to={`/product/${product[0].attributes.title}`}>
                 {product[0]?.attributes.title.charAt(0).toUpperCase() +
                   product[0]?.attributes.title.slice(1)}
