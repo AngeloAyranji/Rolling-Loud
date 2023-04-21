@@ -30,9 +30,18 @@ function Product() {
       },
     },
   ];
+  // const dummyOptions = [];
   const dispatch = useDispatch();
 
   const { region } = useRegionChecker();
+
+  useEffect(() => {
+    console.log(canCheckout);
+    if (dummyOptions.length === 0) {
+      setCanCheckout(true);
+      console.log(canCheckout);
+    }
+  }, []);
 
   const { productName } = useParams();
   const {
@@ -47,6 +56,7 @@ function Product() {
   const [isAvailable, setIsAvailable] = useState(true);
   const [price, setPrice] = useState(0);
   const [optionsMap, setOptionsMap] = useState(new Map());
+  const [canCheckout, setCanCheckout] = useState(false);
 
   useEffect(() => {
     if (product) {
@@ -59,12 +69,14 @@ function Product() {
 
   const handePriceChange = (value) => {
     setOptionsMap(new Map(optionsMap.set(value[0], value[1])));
-    console.log(optionsMap);
     let sum = 0;
     optionsMap.forEach(function (value, key) {
       sum += value;
     });
     setPrice(product[0]?.attributes.price + sum);
+    if (dummyOptions.length === optionsMap.size) {
+      setCanCheckout(true);
+    }
   };
 
   const checkAvailability = (quantityValue) => {
@@ -198,26 +210,27 @@ function Product() {
                 <p className="text-secondary-content">
                   {product[0].attributes.shortDescription}
                 </p>
-                {dummyOptions?.map((item, index) => (
-                  <div key={index} className="max-w-[300px] mb-4">
-                    <Select
-                      variant="standard"
-                      label={item.name}
-                      color="cyan"
-                      className="text-secondary-content mb-4"
-                      onChange={handePriceChange}
-                    >
-                      {Object.keys(item.options).map((key) => (
-                        <Option
-                          value={[item.name, item.options[key]]}
-                          key={key}
-                        >
-                          {key}
-                        </Option>
-                      ))}
-                    </Select>
-                  </div>
-                ))}
+                {dummyOptions &&
+                  dummyOptions?.map((item, index) => (
+                    <div key={index} className="max-w-[300px] mb-4">
+                      <Select
+                        variant="standard"
+                        label={item.name}
+                        color="cyan"
+                        className="text-secondary-content mb-4"
+                        onChange={handePriceChange}
+                      >
+                        {Object.keys(item.options).map((key) => (
+                          <Option
+                            value={[item.name, item.options[key]]}
+                            key={key}
+                          >
+                            {key}
+                          </Option>
+                        ))}
+                      </Select>
+                    </div>
+                  ))}
                 <div className="pt-8 pb-8 flex flex-row justify-start space-x-4 items-center">
                   <div className="flex h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[90px] text-secondary-content pl-4 pr-4">
                     <button
@@ -242,7 +255,8 @@ function Product() {
                   </div>
                   <button
                     className={
-                      product[0].attributes.quantity === 0 && !isAvailable
+                      (product[0].attributes.quantity === 0 && !isAvailable) ||
+                      canCheckout === false
                         ? "btn btn-disabled btn-primary w-full max-w-[250px]"
                         : "btn btn-primary w-full max-w-[250px]"
                     }
