@@ -36,10 +36,8 @@ function Product() {
   const { region } = useRegionChecker();
 
   useEffect(() => {
-    console.log(canCheckout);
     if (dummyOptions.length === 0) {
       setCanCheckout(true);
-      console.log(canCheckout);
     }
   }, []);
 
