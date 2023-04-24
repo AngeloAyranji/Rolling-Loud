@@ -25,7 +25,7 @@ function Product() {
   } = useFetch(
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
-  console.log(product);
+  
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isAvailable, setIsAvailable] = useState(true);
@@ -41,11 +41,6 @@ function Product() {
     if (product) {
       const prod = products.find((x) => x.id === product[0].id);
       if (!prod && product[0].attributes.quantity > 0) {
-        console.log(
-          "added to cart: " + quantityValue,
-          "total quantity",
-          quantityValue
-        );
         dispatch(
           addToCart({
             id: product[0].id,
@@ -56,15 +51,8 @@ function Product() {
           })
         );
       } else {
-        if (!prod) {
-          console.log("Item out of Stock");
-        } else {
+        if (prod) {
           if (quantityValue + prod.quantity <= product[0].attributes.quantity) {
-            console.log(
-              "added to cart: " + quantityValue,
-              "total quantity",
-              prod.quantity + quantityValue
-            );
             dispatch(
               addToCart({
                 id: product[0].id,
@@ -74,8 +62,6 @@ function Product() {
                 quantity,
               })
             );
-          } else {
-            console.log("cart is full");
           }
         }
       }

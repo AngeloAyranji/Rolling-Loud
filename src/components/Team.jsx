@@ -4,7 +4,7 @@ import useFetch from "../hooks/useFetch";
 
 function Team() {
   const { data: teams } = useFetch(`api/teams/?populate[image]=*`);
-  console.log("teams: ", teams);
+  
   return (
     <div className="w-full mx-auto flex items-center justify-center">
       <div className="w-full mx-auto max-w-[1400px] flex flex-col px-8 mb-20 md:mt-20 mt-10">

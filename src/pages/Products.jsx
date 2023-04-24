@@ -14,7 +14,7 @@ import { parseLink } from "../utils/utils";
 function Products() {
   const { category, subcategory } = useParams();
   const location = useLocation();
-  console.log(category, subcategory);
+  
   const queryParams = new URLSearchParams(location.search);
   const queryFilter = queryParams.get("filter");
   const querySearch = queryParams.get("search");

@@ -15,7 +15,6 @@ function Card({ item, id }) {
   const products = useSelector((state) => state.cart.products);
 
   const handleToast = () => {
-    console.log("handleToast called");
     setShowToast(true);
     setTimeout(() => {
       setShowToast(false);
@@ -30,11 +29,6 @@ function Card({ item, id }) {
     if (item) {
       const prod = products.find((x) => x.id === id);
       if (!prod && item.quantity > 0) {
-        console.log(
-          "added to cart: " + quantityValue,
-          "total quantity",
-          quantityValue
-        );
         handleToast();
         dispatch(
           addToCart({
@@ -46,15 +40,8 @@ function Card({ item, id }) {
           })
         );
       } else {
-        if (!prod) {
-          console.log("Item out of Stock");
-        } else {
+        if (prod) {
           if (quantityValue + prod.quantity <= item.quantity) {
-            console.log(
-              "added to cart: " + quantityValue,
-              "total quantity",
-              prod.quantity + quantityValue
-            );
             handleToast();
             dispatch(
               addToCart({
@@ -65,8 +52,6 @@ function Card({ item, id }) {
                 quantity,
               })
             );
-          } else {
-            console.log("cart is full");
           }
         }
       }

@@ -46,7 +46,7 @@ function Order() {
         payload,
         config
       );
-      console.log(res.data.session);
+      
       setLoadingCheckout(false);
       window.open(res.data.session.url);
     } else {
