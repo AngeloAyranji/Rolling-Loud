@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useJwt } from 'react-jwt';
 import useFetch from "../hooks/useFetch";
 import Loading from "../components/Loading";
+import { parseLink } from "../utils/utils";
 
 function Orders() {
   const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
@@ -95,7 +96,7 @@ function Orders() {
                   <div className="flex w-full justify-between">
                     <p>{convertDate(order?.attributes.date)}</p>
                     <Link
-                      to={`/orders/${order?.attributes.stripe_id}`}
+                      to={`/orders/${parseLink(order?.attributes.stripe_id)}`}
                       className="link"
                     >
                       <p> Order Details</p>
