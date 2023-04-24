@@ -30,10 +30,11 @@ function Order() {
           quantity: prd.quantity,
         };
       });
+      
       const payload = {
         items: productList,
         promoCode: promoCode ? promoCode[0].attributes.code : null,
-        userId: decodedToken?.id,
+        // userId: decodedToken?.id,
       };
 
       const config = {
@@ -41,13 +42,13 @@ function Order() {
       };
 
       const res = await axios.post(
-        process.env.REACT_APP_BACKEND_URL + "api/checkout",
+        process.env.REACT_APP_BACKEND_URL + "api/stripePayment",
         payload,
         config
       );
-      console.log(res);
+      console.log(res.data.session);
       setLoadingCheckout(false);
-      navigate(`/orders`);
+      window.open(res.data.session.url);
     } else {
       navigate("/login");
     }
