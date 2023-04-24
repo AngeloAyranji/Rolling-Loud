@@ -168,6 +168,7 @@ function Products() {
                   className="!ml-0"
                   onChange={setSortBy}
                 >
+                  <Option value={"0"}>Default</Option>
                   <Option value={"1"}>Highest Price First</Option>
                   <Option value={"2"}>Lowest Price First</Option>
                 </Select>
