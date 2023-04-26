@@ -33,8 +33,8 @@ function Order() {
       
       const payload = {
         items: productList,
-        promoCode: promoCode ? promoCode[0].attributes.code : null,
-        // userId: decodedToken?.id,
+        promoCode: 'angelolo',
+        userId: decodedToken?.id
       };
 
       const config = {
