@@ -30,7 +30,7 @@ function Product() {
       },
     },
   ];
-  // const dummyOptions = [];
+  
   const dispatch = useDispatch();
 
   const { region } = useRegionChecker();
@@ -47,7 +47,7 @@ function Product() {
     loading,
     error,
   } = useFetch(
-    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options][populate]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -72,10 +72,15 @@ function Product() {
       sum += value;
     });
     setPrice(product[0]?.attributes.price + sum);
-    if (dummyOptions.length === optionsMap.size) {
+    if (product[0].attributes.options.length === optionsMap.size) {
       setCanCheckout(true);
     }
   };
+
+  useEffect(() => {
+    console.log(optionsMap)
+  }, [optionsMap])
+
 
   const checkAvailability = (quantityValue) => {
     if (product) {
@@ -208,25 +213,25 @@ function Product() {
                 <p className="text-secondary-content">
                   {product[0].attributes.shortDescription}
                 </p>
-                {dummyOptions &&
-                  dummyOptions?.map((item, index) => (
+                {product[0].attributes.options.length &&
+                  product[0].attributes.options?.map((item, index) => (
                     <div key={index} className="max-w-[300px] mb-4">
                       <Select
                         variant="standard"
-                        label={item.name}
+                        label={item.option}
                         color="cyan"
                         className="text-secondary-content mb-4"
                         onChange={handePriceChange}
                       >
-                        {Object.keys(item.options).map((key) => (
+                        {item.suboption.map((sub) => (
                           <Option
-                            value={[item.name, item.options[key]]}
-                            key={key}
+                            value={[item.option, sub.price]}
+                            key={sub.suboption}
                           >
-                            {key}
+                            {sub.suboption}
                           </Option>
                         ))}
-                      </Select>
+                        </Select>
                     </div>
                   ))}
                 <div className="pt-8 pb-8 flex flex-row justify-start space-x-4 items-center">
