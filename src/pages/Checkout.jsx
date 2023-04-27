@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import axios from "axios";
 import { useJwt } from "react-jwt";
+import Loading from "../components/Loading";
 
 function Order() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ function Order() {
       
       const payload = {
         items: productList,
-        promoCode: 'angelolo',
+        promoCode: '12345',
         userId: decodedToken?.id
       };
 
@@ -41,20 +42,27 @@ function Order() {
         headers: { Authorization: `Bearer ${sessionStorage.getItem("jwt")}` },
       };
 
-      const res = await axios.post(
-        process.env.REACT_APP_BACKEND_URL + "api/stripePayment",
-        payload,
-        config
-      );
-      console.log(res.data.session);
+      try {
+
+        const res = await axios.post(
+          process.env.REACT_APP_BACKEND_URL + "api/stripePayment",
+          payload,
+          config
+        );
+        console.log(res.data.session);
+        window.open(res.data.session.url);
+      } catch (err) {
+        console.log(err)
+      }
       setLoadingCheckout(false);
-      window.open(res.data.session.url);
     } else {
       navigate("/login");
     }
   };
 
   return (
+    <>
+    {!loadingCheckout ? (
     <div className="w-full mx-auto flex justify-center items-center">
       <div className="max-w-[1400px] w-full">
         <div className="flex flex-col justify-center items-start p-4 md:p-6 lg:p-8 2xl:pl-14 space-y-8">
@@ -184,6 +192,10 @@ function Order() {
         </div>
       </div>
     </div>
+    ) : (
+      <Loading />
+    )}
+    </>
   );
 }
 
