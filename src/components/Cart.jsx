@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,12 +6,11 @@ import axios from "axios";
 import Loading from "./Loading";
 import { removeItem } from "../redux/cartReducer";
 import { Link } from "react-router-dom";
-import { addPromo, removePromo } from "../redux/promoCodeReducer";
 
 export default function Example({ handleOpen }) {
   const [open, setOpen] = useState(true);
+  const [promoCode, setPromoCode] = useState(null);
 
-  const promoCode = useSelector((state) => state.promo.promoCode);
   const products = useSelector((state) => state.cart.products);
   const dispatch = useDispatch();
 
@@ -22,9 +21,6 @@ export default function Example({ handleOpen }) {
     total = total.toFixed(2);
     return total;
   };
-  useEffect(() => {
-    console.log(promoCode);
-  }, [promoCode]);
 
   const handlePromoCode = async () => {
     if (promoCode === null) {
@@ -34,13 +30,10 @@ export default function Example({ handleOpen }) {
           process.env.REACT_APP_BACKEND_URL +
             `api/promotions/?filters[code][$eq]=${code}`
         );
-        if (res.data.data.length) {
-          dispatch(addPromo(res.data.data));
-          console.log(promoCode);
-        }
+        if (res.data.data.length) setPromoCode(res.data.data);
       } catch (err) {
         console.log("Error: ", err);
-        dispatch(removePromo());
+        setPromoCode(null);
       }
     }
   };
@@ -164,19 +157,9 @@ export default function Example({ handleOpen }) {
                               placeholder="CODE"
                               className="input input-bordered w-full pr-16"
                             />
-                            {promoCode != null ? (
-                              <p className="text-sm mt-2">
-                                {promoCode[0].attributes.code} Added!
-                              </p>
-                            ) : (
-                              <></>
-                            )}
+                            {promoCode && <p>Code Added!</p>}
                             <button
-                              className={
-                                promoCode === null
-                                  ? "btn btn-primary absolute top-0 right-0 rounded-l-none"
-                                  : "btn btn-primary btn-disabled absolute top-0 right-0 rounded-l-none"
-                              }
+                              className="btn btn-primary absolute top-0 right-0 rounded-l-none"
                               onClick={handlePromoCode}
                             >
                               ADD
