@@ -49,6 +49,10 @@ function Product() {
     }
   }, [product]);
 
+  useEffect(() => {
+    console.log(optionsMap)
+  }, [optionsMap])
+
   
 
   const handePriceChange = (value) => {
@@ -57,6 +61,7 @@ function Product() {
     optionsMap.forEach(function (value, key) {
       sum += value;
     });
+    console.log("sum: ", sum, product[0]?.attributes.price)
     setPrice(product[0]?.attributes.price + sum);
     if (product[0].attributes.options.length === optionsMap.size) {
       setCanCheckout(true);
@@ -173,7 +178,7 @@ function Product() {
 
                 <div className="w-full h-1 rounded-full bg-base-100"></div>
                 <p className="text-xl text-primary font-semibold tracking-wide">
-                  {product[0]?.attributes.price}
+                  {price}
                   {"$"}
                 </p>
                 <p className="text-secondary-content">
