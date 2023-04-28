@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { MdAddShoppingCart } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { addToCart } from "../redux/cartReducer";
-import { Fragment } from "react";
+import { parseLink } from "../utils/utils";
 
 function Card({ item, id }) {
   const dispatch = useDispatch();
@@ -15,7 +15,6 @@ function Card({ item, id }) {
   const products = useSelector((state) => state.cart.products);
 
   const handleToast = () => {
-    console.log("handleToast called");
     setShowToast(true);
     setTimeout(() => {
       setShowToast(false);
@@ -30,11 +29,6 @@ function Card({ item, id }) {
     if (item) {
       const prod = products.find((x) => x.id === id);
       if (!prod && item.quantity > 0) {
-        console.log(
-          "added to cart: " + quantityValue,
-          "total quantity",
-          quantityValue
-        );
         handleToast();
         dispatch(
           addToCart({
@@ -46,15 +40,8 @@ function Card({ item, id }) {
           })
         );
       } else {
-        if (!prod) {
-          console.log("Item out of Stock");
-        } else {
+        if (prod) {
           if (quantityValue + prod.quantity <= item.quantity) {
-            console.log(
-              "added to cart: " + quantityValue,
-              "total quantity",
-              prod.quantity + quantityValue
-            );
             handleToast();
             dispatch(
               addToCart({
@@ -65,8 +52,6 @@ function Card({ item, id }) {
                 quantity,
               })
             );
-          } else {
-            console.log("cart is full");
           }
         }
       }
@@ -129,7 +114,7 @@ function Card({ item, id }) {
       </div>{" "}
       {/* card */}
       <div className="flex flex-col rounded-xl w-[150px] md:w-[190px] shadow-xl h-full lg:w-[320px] md:h-[350px] lg:h-[520px] cursor-pointer group relative bg-secondary-content">
-        <Link to={`/product/${item.title}`}>
+        <Link to={`/product/${parseLink(item.title)}`}>
           <figure>
             {item && (
               <img
@@ -146,7 +131,7 @@ function Card({ item, id }) {
         >
           <MdAddShoppingCart />
         </div>
-        <Link to={`/product/${item.title}`}>
+        <Link to={`/product/${parseLink(item.title)}`}>
           <div className="flex flex-col justify-between lg:w-[320px] w-[150px] md:w-[190px] h-[168px] p-4 lg:p-6">
             <div>
               <div className="flex flex-col space-y-2 mb-2 ">

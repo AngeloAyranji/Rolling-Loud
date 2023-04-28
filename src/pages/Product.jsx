@@ -9,7 +9,9 @@ import { addToCart } from "../redux/cartReducer";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
+import { parseLink } from "../utils/utils";
 import { Select, Option } from "@material-tailwind/react";
+
 
 function Product() {
   
@@ -20,6 +22,7 @@ function Product() {
   const products = useSelector((state) => state.cart.products);
 
   const { productName } = useParams();
+
   const {
     data: product,
     loading,
@@ -27,6 +30,7 @@ function Product() {
   } = useFetch(
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options][populate]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
+
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isAvailable, setIsAvailable] = useState(true);
@@ -64,11 +68,6 @@ function Product() {
     if (product) {
       const prod = products.find((x) => x.id === product[0].id);
       if (!prod && product[0].attributes.quantity > 0) {
-        console.log(
-          "added to cart: " + quantityValue,
-          "total quantity",
-          quantityValue
-        );
         dispatch(
           addToCart({
             id: product[0].id,
@@ -79,15 +78,8 @@ function Product() {
           })
         );
       } else {
-        if (!prod) {
-          console.log("Item out of Stock");
-        } else {
+        if (prod) {
           if (quantityValue + prod.quantity <= product[0].attributes.quantity) {
-            console.log(
-              "added to cart: " + quantityValue,
-              "total quantity",
-              prod.quantity + quantityValue
-            );
             dispatch(
               addToCart({
                 id: product[0].id,
@@ -97,8 +89,6 @@ function Product() {
                 quantity,
               })
             );
-          } else {
-            console.log("cart is full");
           }
         }
       }
@@ -116,23 +106,21 @@ function Product() {
             >
               <Link to="/">Home</Link>
               <Link
-                to={`/products/${product[0].attributes.categories.data[0].attributes.title}`}
+                to={`/products/${parseLink(product[0]?.attributes.categories.data[0].attributes.title)}`}
               >
-                {product[0].attributes.categories.data[0].attributes.title
+                {product[0]?.attributes.categories.data[0].attributes.title
                   .charAt(0)
                   .toUpperCase() +
-                  product[0].attributes.categories.data[0].attributes.title.slice(
+                  product[0]?.attributes.categories.data[0].attributes.title.slice(
                     1
                   )}
               </Link>
-              {product[0]?.attributes.subcategories.data.length > 0 && (
-                <Link
-                  to={`/products/${product[0].attributes.categories.data[0].attributes.title}/${product[0].attributes.subcategories.data[0].attributes.title}`}
-                >
-                  {product[0].attributes.subcategories.data[0].attributes.title}
-                </Link>
-              )}
-              <Link to={`/product/${product[0].attributes.title}`}>
+              <Link
+                to={`/products/${parseLink(product[0]?.attributes.categories.data[0].attributes.title)}/${parseLink(product[0]?.attributes.subcategories.data[0].attributes.title)}`}
+              >
+                {product[0]?.attributes.subcategories.data[0].attributes.title}
+              </Link>
+              <Link to={`/product/${parseLink(product[0]?.attributes.title)}`}>
                 {product[0]?.attributes.title.charAt(0).toUpperCase() +
                   product[0]?.attributes.title.slice(1)}
               </Link>
@@ -173,9 +161,9 @@ function Product() {
                   {product[0]?.attributes.brand.data.attributes.name}
                 </p>
                 <h2 className="text-xl text-secondary-content font-bold">
-                  {product[0].attributes.title}
+                  {product[0]?.attributes.title}
                 </h2>
-                {product[0].attributes.quantity === 0 ? (
+                {product[0]?.attributes.quantity === 0 ? (
                   <p className="line-through text-xs lg:text-sm">
                     Out Of Stock
                   </p>
@@ -185,11 +173,11 @@ function Product() {
 
                 <div className="w-full h-1 rounded-full bg-base-100"></div>
                 <p className="text-xl text-primary font-semibold tracking-wide">
-                  {price}
+                  {product[0]?.attributes.price}
                   {"$"}
                 </p>
                 <p className="text-secondary-content">
-                  {product[0].attributes.shortDescription}
+                  {product[0]?.attributes.shortDescription}
                 </p>
                 {product[0].attributes.options.length &&
                   product[0].attributes.options?.map((item, index) => (
@@ -221,11 +209,11 @@ function Product() {
                     >
                       -
                     </button>
-                    {product[0].attributes.quantity === 0 ? 0 : quantity}
+                    {product[0]?.attributes.quantity === 0 ? 0 : quantity}
                     <button
                       onClick={() =>
                         setQuantity((prev) =>
-                          prev == product[0].attributes.quantity
+                          prev == product[0]?.attributes.quantity
                             ? prev
                             : prev + 1
                         )
@@ -236,6 +224,7 @@ function Product() {
                   </div>
                   <button
                     className={
+
                       (product[0].attributes.quantity === 0 && !isAvailable) ||
                       canCheckout === false
                         ? "btn btn-disabled btn-primary w-full max-w-[250px]"
@@ -279,7 +268,7 @@ function Product() {
               </h3>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
               <ReactMakrdown className="">
-                {product[0].attributes.longDescription}
+                {product[0]?.attributes.longDescription}
               </ReactMakrdown>
               <p className="link">Cick here for the whole product info</p>
             </div>

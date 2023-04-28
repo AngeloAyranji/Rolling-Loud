@@ -9,10 +9,12 @@ import ListProduct from "../components/ListProduct";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
+import { parseLink } from "../utils/utils";
 
 function Products() {
   const { category, subcategory } = useParams();
   const location = useLocation();
+
   const queryParams = new URLSearchParams(location.search);
   const queryFilter = queryParams.get("filter");
   const querySearch = queryParams.get("search");
@@ -113,7 +115,7 @@ function Products() {
               <Link to="/">Home</Link>
               <Link to="/products">Products</Link>
               {category ? (
-                <Link to={`/products/${category}`}>
+                <Link to={`/products/${parseLink(category)}`}>
                   {category.charAt(0).toUpperCase() + category.slice(1)}
                 </Link>
               ) : querySearch ? (
@@ -124,7 +126,7 @@ function Products() {
                 <Link to={`/products`}>All Products</Link>
               )}
               {subcategory && (
-                <Link to={`/products/${category}/${subcategory}`}>
+                <Link to={`/products/${parseLink(category)}/${parseLink(subcategory)}`}>
                   {subcategory}
                 </Link>
               )}
@@ -168,6 +170,7 @@ function Products() {
                   className="!ml-0"
                   onChange={setSortBy}
                 >
+                  <Option value={"0"}>Default</Option>
                   <Option value={"1"}>Highest Price First</Option>
                   <Option value={"2"}>Lowest Price First</Option>
                 </Select>
