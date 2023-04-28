@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Fragment, useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { parseLink } from "../utils/utils";
 
 function Dropdown({ title, href, subCategories }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +12,7 @@ function Dropdown({ title, href, subCategories }) {
   //   else x = x.filter((item) => item != id);
   //   setCategories(x);
   // };
-  
+
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
@@ -35,7 +35,9 @@ function Dropdown({ title, href, subCategories }) {
       {isTouchDevice ? (
         <div className="relative overflow-visible">
           <div className="relative flex flex-row lg:justify-between items-center space-x-2 hover:text-primary lg:hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
-            <Link to={href} className=" text-sm font-medium">{title}</Link>
+            <Link to={href} className=" text-sm font-medium">
+              {title}
+            </Link>
             {subCategories.length > 0 && (
               <FiChevronDown
                 className={
@@ -60,10 +62,10 @@ function Dropdown({ title, href, subCategories }) {
                   {subCategories?.map((sub, index) => (
                     <Link
                       key={index}
-                      to={`/products/${title}/${sub?.attributes.title}`}
+                      to={`/products/${parseLink(title)}/${parseLink(sub?.attributes.title)}`}
                       className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap"
                     >
-                      {sub.attributes.title}
+                      {sub?.attributes.title}
                     </Link>
                   ))}
                 </div>
@@ -78,7 +80,9 @@ function Dropdown({ title, href, subCategories }) {
           onMouseLeave={handleOpen}
         >
           <div className="relative flex flex-row lg:justify-between items-center space-x-2 hover:text-primary lg:hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
-            <Link to={href} className=" text-sm font-medium">{title}</Link>
+            <Link to={href} className=" text-sm font-medium">
+              {title}
+            </Link>
             {subCategories.length > 0 && (
               <FiChevronDown
                 className={
@@ -102,7 +106,7 @@ function Dropdown({ title, href, subCategories }) {
                   {subCategories?.map((sub, index) => (
                     <Link
                       key={index}
-                      to={`/products/${title}/${sub.attributes.title}`}
+                      to={`/products/${parseLink(title)}/${parseLink(sub.attributes.title)}`}
                       className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap"
                     >
                       {sub.attributes.title}

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Brand from "../components/Brand";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
+import { parseLink } from "../utils/utils";
 
 function Brands() {
 
@@ -25,7 +26,7 @@ function Brands() {
             <div className="w-full flex flex-row flex-wrap justify-center align-start gap-8 md:gap-12">
               {brands?.map((brand, index) => {
                 return (
-                  <Link to={`/products/${brand.attributes.name}`}>
+                  <Link to={`/products/${parseLink(brand.attributes.name)}`}>
                     <Brand
                       key={index}
                       imgsrc={brand.attributes.image.data ? brand.attributes.image.data.attributes.url : null}

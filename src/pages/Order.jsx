@@ -2,6 +2,7 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useParams, Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
+import { parseLink } from "../utils/utils";
 
 function Order() {
   const { orderId } = useParams();
@@ -139,7 +140,7 @@ function Order() {
                               <div className="flex justify-between text-sm lg:text-base font-medium text-white">
                                 <h3>
                                   <Link
-                                    to={`/product/${product.attributes.title}`}
+                                    to={`/product/${parseLink(product.attributes.title)}`}
                                   >
                                     {product.attributes.title}
                                   </Link>
