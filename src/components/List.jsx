@@ -13,7 +13,7 @@ function List({ type }) {
     loading,
     error,
   } = useFetch(
-    `api/products?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[type][$eq]=${type}&pagination[pageSize]=4&filters[region][$eq]=${region}`
+    `api/products?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[options][populate]=*&filters[type][$eq]=${type}&pagination[pageSize]=4&filters[region][$eq]=${region}`
   );
 
   return (

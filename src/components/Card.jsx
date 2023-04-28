@@ -1,11 +1,13 @@
 import { useState, Fragment } from "react";
 import { MdAddShoppingCart } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { addToCart } from "../redux/cartReducer";
 import { parseLink } from "../utils/utils";
 
 function Card({ item, id }) {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const [showToast, setShowToast] = useState(false);
@@ -28,17 +30,24 @@ function Card({ item, id }) {
   const checkAvailability = (quantityValue) => {
     if (item) {
       const prod = products.find((x) => x.id === id);
+      
       if (!prod && item.quantity > 0) {
-        handleToast();
-        dispatch(
-          addToCart({
-            id: id,
-            name: item.title,
-            img: item.image.data[0].attributes.url,
-            price: item.price,
-            quantity,
-          })
-        );
+        if (item.options.length > 0) {
+          navigate(`/product/${parseLink(item.title)}`)
+        } else {
+          handleToast();
+          dispatch(
+            addToCart({
+              id: id,
+              name: item.title,
+              img: item.image.data[0].attributes.url,
+              price: item.price,
+              options: {},
+              quantity,
+            })
+          );
+        }
+       
       } else {
         if (prod) {
           if (quantityValue + prod.quantity <= item.quantity) {

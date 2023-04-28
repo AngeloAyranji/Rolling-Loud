@@ -78,7 +78,8 @@ function Product() {
             id: product[0].id,
             name: product[0].attributes.title,
             img: product[0].attributes.image.data[0].attributes.url,
-            price: product[0].attributes.price,
+            price: price,
+            options: optionsMap,
             quantity,
           })
         );
@@ -90,7 +91,8 @@ function Product() {
                 id: product[0].id,
                 name: product[0].attributes.title,
                 img: product[0].attributes.image.data[0].attributes.url,
-                price: product[0].attributes.price,
+                price: price,
+                options: optionsMap,
                 quantity,
               })
             );

@@ -10,7 +10,7 @@ function Order() {
   const navigate = useNavigate();
   const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
   const products = useSelector((state) => state.cart.products);
-
+  
   const [promoCode, setPromoCode] = useState(null);
   const [loadingCheckout, setLoadingCheckout] = useState(false);
 
