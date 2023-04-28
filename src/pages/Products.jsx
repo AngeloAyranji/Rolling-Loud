@@ -13,7 +13,6 @@ import { useRegionChecker } from "../hooks/regionChecker";
 function Products() {
   const { category, subcategory } = useParams();
   const location = useLocation();
-  console.log(category, subcategory);
   const queryParams = new URLSearchParams(location.search);
   const queryFilter = queryParams.get("filter");
   const querySearch = queryParams.get("search");
@@ -135,7 +134,9 @@ function Products() {
                 ? querySearch
                   ? `Search in ${querySearch}`
                   : "All Products"
-                : subcategory ? subcategory : category}
+                : subcategory
+                ? subcategory
+                : category}
             </h2>
             <p className="max-w-[700px]">
               {category
