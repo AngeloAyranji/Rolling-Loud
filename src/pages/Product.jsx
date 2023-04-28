@@ -12,34 +12,12 @@ import Loading from "../components/Loading";
 import { Select, Option } from "@material-tailwind/react";
 
 function Product() {
-  const dummyOptions = [
-    {
-      name: "Engine Size",
-      options: {
-        "100 KV": 10,
-        "200 KV": 25,
-        "300kv": 30,
-      },
-    },
-    {
-      name: "Lens",
-      options: {
-        "lens 1": 100,
-        "lens 2": 250,
-        "lens 3": 300,
-      },
-    },
-  ];
   
   const dispatch = useDispatch();
 
   const { region } = useRegionChecker();
 
-  useEffect(() => {
-    if (dummyOptions.length === 0) {
-      setCanCheckout(true);
-    }
-  }, []);
+  const products = useSelector((state) => state.cart.products);
 
   const { productName } = useParams();
   const {
@@ -56,14 +34,18 @@ function Product() {
   const [optionsMap, setOptionsMap] = useState(new Map());
   const [canCheckout, setCanCheckout] = useState(false);
 
+
   useEffect(() => {
     if (product) {
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
       setPrice(product[0]?.attributes.price);
+      if (product[0].attributes.options.length === 0) {
+        setCanCheckout(true);
+      }
     }
   }, [product]);
 
-  const products = useSelector((state) => state.cart.products);
+  
 
   const handePriceChange = (value) => {
     setOptionsMap(new Map(optionsMap.set(value[0], value[1])));
@@ -76,10 +58,6 @@ function Product() {
       setCanCheckout(true);
     }
   };
-
-  useEffect(() => {
-    console.log(optionsMap)
-  }, [optionsMap])
 
 
   const checkAvailability = (quantityValue) => {
