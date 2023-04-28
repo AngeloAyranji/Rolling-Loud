@@ -29,9 +29,10 @@ function Order() {
         return {
           id: prd.id,
           quantity: prd.quantity,
+          options: prd.options
         };
       });
-      
+      console.log(productList)
       const payload = {
         items: productList,
         promoCode: '12345',

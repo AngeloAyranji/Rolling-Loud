@@ -42,7 +42,7 @@ function Card({ item, id }) {
               name: item.title,
               img: item.image.data[0].attributes.url,
               price: item.price,
-              options: {},
+              options: new Map(),
               quantity,
             })
           );
