@@ -168,6 +168,11 @@ function Card({ item, id }) {
                     PROMOTION
                   </div>
                 )}
+                {item.type === "preorder" && (
+                  <div className="badge badge-secondary badge-xs lg:badge-md">
+                    PRE-ORDER
+                  </div>
+                )}
               </div>
               <div className="h-4 mb-2">
                 {item.quantity > 0 ? (

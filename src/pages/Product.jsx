@@ -9,11 +9,37 @@ import { addToCart } from "../redux/cartReducer";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
+import { Select, Option } from "@material-tailwind/react";
 
 function Product() {
+  const dummyOptions = [
+    {
+      name: "Engine Size",
+      options: {
+        "100 KV": 10,
+        "200 KV": 25,
+        "300kv": 30,
+      },
+    },
+    {
+      name: "Lens",
+      options: {
+        "lens 1": 100,
+        "lens 2": 250,
+        "lens 3": 300,
+      },
+    },
+  ];
+  
   const dispatch = useDispatch();
 
   const { region } = useRegionChecker();
+
+  useEffect(() => {
+    if (dummyOptions.length === 0) {
+      setCanCheckout(true);
+    }
+  }, []);
 
   const { productName } = useParams();
   const {
@@ -21,19 +47,40 @@ function Product() {
     loading,
     error,
   } = useFetch(
-    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options][populate]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
-  console.log(product);
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isAvailable, setIsAvailable] = useState(true);
+  const [price, setPrice] = useState(0);
+  const [optionsMap, setOptionsMap] = useState(new Map());
+  const [canCheckout, setCanCheckout] = useState(false);
 
   useEffect(() => {
-    if (product)
+    if (product) {
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
+      setPrice(product[0]?.attributes.price);
+    }
   }, [product]);
 
   const products = useSelector((state) => state.cart.products);
+
+  const handePriceChange = (value) => {
+    setOptionsMap(new Map(optionsMap.set(value[0], value[1])));
+    let sum = 0;
+    optionsMap.forEach(function (value, key) {
+      sum += value;
+    });
+    setPrice(product[0]?.attributes.price + sum);
+    if (product[0].attributes.options.length === optionsMap.size) {
+      setCanCheckout(true);
+    }
+  };
+
+  useEffect(() => {
+    console.log(optionsMap)
+  }, [optionsMap])
+
 
   const checkAvailability = (quantityValue) => {
     if (product) {
@@ -100,11 +147,13 @@ function Product() {
                     1
                   )}
               </Link>
-              <Link
-                to={`/products/${product[0].attributes.categories.data[0].attributes.title}/${product[0].attributes.subcategories.data[0].attributes.title}`}
-              >
-                {product[0].attributes.subcategories.data[0].attributes.title}
-              </Link>
+              {product[0]?.attributes.subcategories.data.length > 0 && (
+                <Link
+                  to={`/products/${product[0].attributes.categories.data[0].attributes.title}/${product[0].attributes.subcategories.data[0].attributes.title}`}
+                >
+                  {product[0].attributes.subcategories.data[0].attributes.title}
+                </Link>
+              )}
               <Link to={`/product/${product[0].attributes.title}`}>
                 {product[0]?.attributes.title.charAt(0).toUpperCase() +
                   product[0]?.attributes.title.slice(1)}
@@ -158,12 +207,33 @@ function Product() {
 
                 <div className="w-full h-1 rounded-full bg-base-100"></div>
                 <p className="text-xl text-primary font-semibold tracking-wide">
-                  {product[0].attributes.price}
+                  {price}
                   {"$"}
                 </p>
                 <p className="text-secondary-content">
                   {product[0].attributes.shortDescription}
                 </p>
+                {product[0].attributes.options.length &&
+                  product[0].attributes.options?.map((item, index) => (
+                    <div key={index} className="max-w-[300px] mb-4">
+                      <Select
+                        variant="standard"
+                        label={item.option}
+                        color="cyan"
+                        className="text-secondary-content mb-4"
+                        onChange={handePriceChange}
+                      >
+                        {item.suboption.map((sub) => (
+                          <Option
+                            value={[item.option, sub.price]}
+                            key={sub.suboption}
+                          >
+                            {sub.suboption}
+                          </Option>
+                        ))}
+                        </Select>
+                    </div>
+                  ))}
                 <div className="pt-8 pb-8 flex flex-row justify-start space-x-4 items-center">
                   <div className="flex h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[90px] text-secondary-content pl-4 pr-4">
                     <button
@@ -188,7 +258,8 @@ function Product() {
                   </div>
                   <button
                     className={
-                      product[0].attributes.quantity === 0 && !isAvailable
+                      (product[0].attributes.quantity === 0 && !isAvailable) ||
+                      canCheckout === false
                         ? "btn btn-disabled btn-primary w-full max-w-[250px]"
                         : "btn btn-primary w-full max-w-[250px]"
                     }
