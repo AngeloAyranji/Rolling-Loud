@@ -41,6 +41,16 @@ function Tabs() {
               >
                 PROMOTION
               </a>
+              <a
+                className={
+                  active === "preorder"
+                    ? "tab tab-bordered tab-active"
+                    : "tab tab-bordered"
+                }
+                onClick={() => setActive("preorder")}
+              >
+                PRE-ORDER
+              </a>
             </div>
             {active === "new" && (
               <Link to={"/products?filter=new"}>
@@ -54,7 +64,16 @@ function Tabs() {
             )}
             {active === "promotion" && (
               <Link to={"/products?filter=promotion"}>
-                <button className="btn btn-primary">SEE ALL IN PROMOTION</button>
+                <button className="btn btn-primary">
+                  SEE ALL IN PROMOTION
+                </button>
+              </Link>
+            )}
+            {active === "preorder" && (
+              <Link to={"/products?filter=preorder"}>
+                <button className="btn btn-primary">
+                  SEE ALL IN PRE-ORDER
+                </button>
               </Link>
             )}
           </div>
