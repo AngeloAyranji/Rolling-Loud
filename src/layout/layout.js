@@ -56,16 +56,18 @@ const Layout = ({ children }) => {
         <Loading />
       ) : (
         <>
-          {location.pathname !== "/country" && (
-            <>
-              <Navbar navigation={navigation} setNavigation={setNavigation} />
-              <SearchBar />
-            </>
-          )}
+          {location.pathname !== "/country" &&
+            location.pathname !== "/soon" && (
+              <>
+                <Navbar navigation={navigation} setNavigation={setNavigation} />
+                <SearchBar />
+              </>
+            )}
           {children}
           {location.pathname !== "/login" &&
             location.pathname !== "/country" &&
-            location.pathname !== "/register" && (
+            location.pathname !== "/register" &&
+            location.pathname !== "/soon" && (
               <>
                 <SocialsMenu />
                 <Banner />
