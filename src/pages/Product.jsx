@@ -4,7 +4,8 @@ import { CiDeliveryTruck, CiLock } from "react-icons/ci";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import ReactMakrdown from "react-markdown";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { addToCart } from "../redux/cartReducer";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
@@ -12,9 +13,7 @@ import Loading from "../components/Loading";
 import { parseLink } from "../utils/utils";
 import { Select, Option } from "@material-tailwind/react";
 
-
 function Product() {
-  
   const dispatch = useDispatch();
 
   const { region } = useRegionChecker();
@@ -37,10 +36,11 @@ function Product() {
   const [price, setPrice] = useState(0);
   const [optionsMap, setOptionsMap] = useState(new Map());
   const [canCheckout, setCanCheckout] = useState(false);
-
+  const [markdown, setMarkdown] = useState("");
 
   useEffect(() => {
     if (product) {
+      setMarkdown(product[0]?.attributes.longDescription);
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
       setPrice(product[0]?.attributes.price);
       if (product[0].attributes.options.length === 0) {
@@ -49,25 +49,18 @@ function Product() {
     }
   }, [product]);
 
-  useEffect(() => {
-    console.log(optionsMap)
-  }, [optionsMap])
-
-  
-
   const handePriceChange = (value) => {
     setOptionsMap(new Map(optionsMap.set(value[0], value[1])));
     let sum = 0;
     optionsMap.forEach(function (value, key) {
       sum += value;
     });
-    console.log("sum: ", sum, product[0]?.attributes.price)
+    console.log("sum: ", sum, product[0]?.attributes.price);
     setPrice(product[0]?.attributes.price + sum);
     if (product[0].attributes.options.length === optionsMap.size) {
       setCanCheckout(true);
     }
   };
-
 
   const checkAvailability = (quantityValue) => {
     if (product) {
@@ -113,7 +106,9 @@ function Product() {
             >
               <Link to="/">Home</Link>
               <Link
-                to={`/products/${parseLink(product[0]?.attributes.categories.data[0].attributes.title)}`}
+                to={`/products/${parseLink(
+                  product[0]?.attributes.categories.data[0].attributes.title
+                )}`}
               >
                 {product[0]?.attributes.categories.data[0].attributes.title
                   .charAt(0)
@@ -123,7 +118,11 @@ function Product() {
                   )}
               </Link>
               <Link
-                to={`/products/${parseLink(product[0]?.attributes.categories.data[0].attributes.title)}/${parseLink(product[0]?.attributes.subcategories.data[0].attributes.title)}`}
+                to={`/products/${parseLink(
+                  product[0]?.attributes.categories.data[0].attributes.title
+                )}/${parseLink(
+                  product[0]?.attributes.subcategories.data[0].attributes.title
+                )}`}
               >
                 {product[0]?.attributes.subcategories.data[0].attributes.title}
               </Link>
@@ -204,7 +203,7 @@ function Product() {
                             {sub.suboption}
                           </Option>
                         ))}
-                        </Select>
+                      </Select>
                     </div>
                   ))}
                 <div className="pt-8 pb-8 flex flex-row justify-start space-x-4 items-center">
@@ -231,7 +230,6 @@ function Product() {
                   </div>
                   <button
                     className={
-
                       (product[0].attributes.quantity === 0 && !isAvailable) ||
                       canCheckout === false
                         ? "btn btn-disabled btn-primary w-full max-w-[250px]"
@@ -274,9 +272,12 @@ function Product() {
                 Technical Characteristics
               </h3>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
-              <ReactMakrdown className="">
-                {product[0]?.attributes.longDescription}
-              </ReactMakrdown>
+              <ReactMarkdown
+                className="prose prose-lg"
+                remarkPlugins={[remarkGfm]}
+              >
+                {markdown}
+              </ReactMarkdown>
               <p className="link">Cick here for the whole product info</p>
             </div>
           </div>
