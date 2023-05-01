@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import _ from "lodash";
 
 const initialState = {
   products: [],
@@ -9,7 +10,8 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const item = state.products.find((item) => item.id === action.payload.id);
+
+      const item = state.products.find((item) => item.id === action.payload.id && _.isEqual(item.options, action.payload.options));
 
       if (item) {
         item.quantity += action.payload.quantity;
