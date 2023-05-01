@@ -29,7 +29,7 @@ function Product() {
   } = useFetch(
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options][populate]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
-  
+
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isAvailable, setIsAvailable] = useState(true);
@@ -37,7 +37,6 @@ function Product() {
   const [optionsMap, setOptionsMap] = useState(new Map());
   const [canCheckout, setCanCheckout] = useState(false);
   const [markdown, setMarkdown] = useState("");
-
 
   useEffect(() => {
     if (product) {
@@ -51,7 +50,11 @@ function Product() {
   }, [product]);
 
   const handePriceChange = (value) => {
-    setOptionsMap(new Map(optionsMap.set(value[0], {suboption: value[1], price: value[2]})));
+    setOptionsMap(
+      new Map(
+        optionsMap.set(value[0], { suboption: value[1], price: value[2] })
+      )
+    );
     let sum = 0;
     optionsMap.forEach(function (value, key) {
       sum += value.price;
@@ -284,7 +287,7 @@ function Product() {
               </h3>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
               <ReactMarkdown
-                className="prose prose-lg"
+                className="prose text-secondary-content"
                 remarkPlugins={[remarkGfm]}
               >
                 {markdown}

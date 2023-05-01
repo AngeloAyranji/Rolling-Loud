@@ -40,7 +40,6 @@ export default function Example({ handleOpen }) {
       }
     }
   };
-  console.log(products);
 
   return (
     <>
@@ -156,36 +155,6 @@ export default function Example({ handleOpen }) {
                       </div>
 
                       <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
-                        <div className="form-control w-full">
-                          <label className="label">
-                            <span className="label-text">Enter PROMO Code</span>
-                          </label>
-                          <div className="relative">
-                            <input
-                              id="promoCode"
-                              type="text"
-                              placeholder="CODE"
-                              className="input input-bordered w-full pr-16"
-                            />
-                            {promoCode != null ? (
-                              <p className="text-sm mt-2">
-                                {promoCode[0].attributes.code} Added!
-                              </p>
-                            ) : (
-                              <></>
-                            )}
-                            <button
-                              className={
-                                promoCode === null
-                                  ? "btn btn-primary absolute top-0 right-0 rounded-l-none"
-                                  : "btn btn-primary btn-disabled absolute top-0 right-0 rounded-l-none"
-                              }
-                              onClick={handlePromoCode}
-                            >
-                              ADD
-                            </button>
-                          </div>
-                        </div>
                         <div className="flex justify-between text-base font-medium text-white mt-4">
                           <p>Subtotal</p>
                           <p>{totalPrice()} $</p>
