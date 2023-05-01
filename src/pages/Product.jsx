@@ -292,7 +292,6 @@ function Product() {
               >
                 {markdown}
               </ReactMarkdown>
-              <p className="link">Cick here for the whole product info</p>
             </div>
           </div>
         </div>
