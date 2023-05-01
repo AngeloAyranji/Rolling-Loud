@@ -131,7 +131,7 @@ export default function Example({ handleOpen }) {
                                       <div className="flex">
                                         <button
                                           onClick={() =>
-                                            dispatch(removeItem(product.id))
+                                            dispatch(removeItem({id: product.id, options: product.options}))
                                           }
                                           type="button"
                                           className="font-medium text-secondary hover:text-secondary-focus"
