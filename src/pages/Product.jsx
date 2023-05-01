@@ -40,9 +40,9 @@ function Product() {
     if (product) {
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
       setPrice(product[0]?.attributes.price);
-      // if (product[0].attributes.options.length === 0) {
-      //   setCanCheckout(true);
-      // }
+      if (product[0].attributes.options.length === 0) {
+        setCanCheckout(true);
+      }
     }
   }, [product]);
 
@@ -192,7 +192,7 @@ function Product() {
                   {product[0]?.attributes.shortDescription}
                 </p>
 
-                {/* {product[0].attributes.options.length &&
+                {product[0].attributes.options.length &&
                   product[0].attributes.options?.map((item, index) => (
                     <div key={index} className="max-w-[300px] mb-4">
                       <Select
@@ -212,7 +212,7 @@ function Product() {
                         ))}
                       </Select>
                     </div>
-                  ))} */}
+                  ))}
                 <div className="pt-8 pb-8 flex flex-row justify-start space-x-4 items-center">
                   <div className="flex h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[90px] text-secondary-content pl-4 pr-4">
                     <button
