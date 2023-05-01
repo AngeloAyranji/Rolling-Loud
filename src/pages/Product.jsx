@@ -166,9 +166,11 @@ function Product() {
               </div>
 
               <div className="flex flex-col space-y-4 mt-12 lg:mt-0 max-w-[520px] lg:max-w-none">
-                <p className="uppercase font-bold text-xs">
-                  {product[0]?.attributes.brand.data.attributes.name}
-                </p>
+                {product[0]?.attributes.brand.data !== null && (
+                  <p className="uppercase font-bold text-xs">
+                    {product[0]?.attributes.brand.data.attributes.name}
+                  </p>
+                )}
                 <h2 className="text-xl text-secondary-content font-bold">
                   {product[0]?.attributes.title}
                 </h2>
