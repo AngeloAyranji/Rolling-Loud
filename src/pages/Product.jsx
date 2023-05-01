@@ -50,12 +50,12 @@ function Product() {
   }, [product]);
 
   const handePriceChange = (value) => {
-    setOptionsMap(new Map(optionsMap.set(value[0], value[1])));
+    setOptionsMap(new Map(optionsMap.set(value[0], {suboption: value[1], price: value[2]})));
     let sum = 0;
     optionsMap.forEach(function (value, key) {
-      sum += value;
+      sum += value.price;
     });
-    console.log("sum: ", sum, product[0]?.attributes.price);
+
     setPrice(product[0]?.attributes.price + sum);
     if (product[0].attributes.options.length === optionsMap.size) {
       setCanCheckout(true);
@@ -72,7 +72,7 @@ function Product() {
             name: product[0].attributes.title,
             img: product[0].attributes.image.data[0].attributes.url,
             price: price,
-            options: optionsMap,
+            options: Array.from(optionsMap),
             quantity,
           })
         );
@@ -85,7 +85,7 @@ function Product() {
                 name: product[0].attributes.title,
                 img: product[0].attributes.image.data[0].attributes.url,
                 price: price,
-                options: optionsMap,
+                options: Array.from(optionsMap),
                 quantity,
               })
             );
@@ -197,7 +197,7 @@ function Product() {
                       >
                         {item.suboption.map((sub) => (
                           <Option
-                            value={[item.option, sub.price]}
+                            value={[item.option, sub.suboption, sub.price]}
                             key={sub.suboption}
                           >
                             {sub.suboption}
