@@ -12,9 +12,7 @@ import Loading from "../components/Loading";
 import { parseLink } from "../utils/utils";
 import { Select, Option } from "@material-tailwind/react";
 
-
 function Product() {
-  
   const dispatch = useDispatch();
 
   const { region } = useRegionChecker();
@@ -30,7 +28,7 @@ function Product() {
   } = useFetch(
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options][populate]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
-
+  console.log(product);
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isAvailable, setIsAvailable] = useState(true);
@@ -38,22 +36,15 @@ function Product() {
   const [optionsMap, setOptionsMap] = useState(new Map());
   const [canCheckout, setCanCheckout] = useState(false);
 
-
   useEffect(() => {
     if (product) {
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
       setPrice(product[0]?.attributes.price);
-      if (product[0].attributes.options.length === 0) {
-        setCanCheckout(true);
-      }
+      // if (product[0].attributes.options.length === 0) {
+      //   setCanCheckout(true);
+      // }
     }
   }, [product]);
-
-  useEffect(() => {
-    console.log(optionsMap)
-  }, [optionsMap])
-
-  
 
   const handePriceChange = (value) => {
     setOptionsMap(new Map(optionsMap.set(value[0], value[1])));
@@ -61,13 +52,12 @@ function Product() {
     optionsMap.forEach(function (value, key) {
       sum += value;
     });
-    console.log("sum: ", sum, product[0]?.attributes.price)
+    console.log("sum: ", sum, product[0]?.attributes.price);
     setPrice(product[0]?.attributes.price + sum);
     if (product[0].attributes.options.length === optionsMap.size) {
       setCanCheckout(true);
     }
   };
-
 
   const checkAvailability = (quantityValue) => {
     if (product) {
@@ -113,7 +103,9 @@ function Product() {
             >
               <Link to="/">Home</Link>
               <Link
-                to={`/products/${parseLink(product[0]?.attributes.categories.data[0].attributes.title)}`}
+                to={`/products/${parseLink(
+                  product[0]?.attributes.categories.data[0].attributes.title
+                )}`}
               >
                 {product[0]?.attributes.categories.data[0].attributes.title
                   .charAt(0)
@@ -122,11 +114,21 @@ function Product() {
                     1
                   )}
               </Link>
-              <Link
-                to={`/products/${parseLink(product[0]?.attributes.categories.data[0].attributes.title)}/${parseLink(product[0]?.attributes.subcategories.data[0].attributes.title)}`}
-              >
-                {product[0]?.attributes.subcategories.data[0].attributes.title}
-              </Link>
+              {product[0]?.attributes.subcategories.data.length > 0 && (
+                <Link
+                  to={`/products/${parseLink(
+                    product[0]?.attributes.categories.data[0].attributes.title
+                  )}/${parseLink(
+                    product[0]?.attributes.subcategories.data[0].attributes
+                      .title
+                  )}`}
+                >
+                  {
+                    product[0]?.attributes.subcategories.data[0].attributes
+                      .title
+                  }
+                </Link>
+              )}
               <Link to={`/product/${parseLink(product[0]?.attributes.title)}`}>
                 {product[0]?.attributes.title.charAt(0).toUpperCase() +
                   product[0]?.attributes.title.slice(1)}
@@ -183,10 +185,12 @@ function Product() {
                   {price}
                   {"$"}
                 </p>
+
                 <p className="text-secondary-content">
                   {product[0]?.attributes.shortDescription}
                 </p>
-                {product[0].attributes.options.length &&
+
+                {/* {product[0].attributes.options.length &&
                   product[0].attributes.options?.map((item, index) => (
                     <div key={index} className="max-w-[300px] mb-4">
                       <Select
@@ -204,9 +208,9 @@ function Product() {
                             {sub.suboption}
                           </Option>
                         ))}
-                        </Select>
+                      </Select>
                     </div>
-                  ))}
+                  ))} */}
                 <div className="pt-8 pb-8 flex flex-row justify-start space-x-4 items-center">
                   <div className="flex h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[90px] text-secondary-content pl-4 pr-4">
                     <button
@@ -231,7 +235,6 @@ function Product() {
                   </div>
                   <button
                     className={
-
                       (product[0].attributes.quantity === 0 && !isAvailable) ||
                       canCheckout === false
                         ? "btn btn-disabled btn-primary w-full max-w-[250px]"
