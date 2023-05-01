@@ -1,13 +1,16 @@
+import React from "react";
 
-function Footer() {
+function Footer({ navigation }) {
+  console.log(navigation);
   return (
     <footer className="footer px-4 md:px-10 py-12 bg-[#121212] text-base-content">
       <div>
-        <span className="footer-title">Services</span>
-        <a className="link link-hover">Branding</a>
-        <a className="link link-hover">Design</a>
-        <a className="link link-hover">Marketing</a>
-        <a className="link link-hover">Advertisement</a>
+        <span className="footer-title">Categories</span>
+        {navigation.map((item) => (
+          <a className="link link-hover uppercase" href={item.href}>
+            {item.name}
+          </a>
+        ))}
       </div>
       <div>
         <span className="footer-title">Company</span>

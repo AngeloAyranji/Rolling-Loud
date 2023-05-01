@@ -21,6 +21,7 @@ module.exports = withMT({
     require("tailwind-scrollbar"),
     require("flowbite/plugin"),
     require("@tailwindcss/line-clamp"),
+    require("@tailwindcss/typography"),
   ],
   variants: {
     scrollbar: ["rounded"],
