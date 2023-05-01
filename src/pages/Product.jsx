@@ -4,7 +4,8 @@ import { CiDeliveryTruck, CiLock } from "react-icons/ci";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import ReactMakrdown from "react-markdown";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { addToCart } from "../redux/cartReducer";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
@@ -35,9 +36,12 @@ function Product() {
   const [price, setPrice] = useState(0);
   const [optionsMap, setOptionsMap] = useState(new Map());
   const [canCheckout, setCanCheckout] = useState(false);
+  const [markdown, setMarkdown] = useState("");
+
 
   useEffect(() => {
     if (product) {
+      setMarkdown(product[0]?.attributes.longDescription);
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
       setPrice(product[0]?.attributes.price);
       if (product[0].attributes.options.length === 0) {
@@ -47,12 +51,12 @@ function Product() {
   }, [product]);
 
   const handePriceChange = (value) => {
-    setOptionsMap(new Map(optionsMap.set(value[0], value[1])));
+    setOptionsMap(new Map(optionsMap.set(value[0], {suboption: value[1], price: value[2]})));
     let sum = 0;
     optionsMap.forEach(function (value, key) {
-      sum += value;
+      sum += value.price;
     });
-    
+
     setPrice(product[0]?.attributes.price + sum);
     if (product[0].attributes.options.length === optionsMap.size) {
       setCanCheckout(true);
@@ -69,7 +73,7 @@ function Product() {
             name: product[0].attributes.title,
             img: product[0].attributes.image.data[0].attributes.url,
             price: price,
-            options: optionsMap,
+            options: Array.from(optionsMap),
             quantity,
           })
         );
@@ -82,7 +86,7 @@ function Product() {
                 name: product[0].attributes.title,
                 img: product[0].attributes.image.data[0].attributes.url,
                 price: price,
-                options: optionsMap,
+                options: Array.from(optionsMap),
                 quantity,
               })
             );
@@ -204,7 +208,7 @@ function Product() {
                       >
                         {item.suboption.map((sub) => (
                           <Option
-                            value={[item.option, sub.price]}
+                            value={[item.option, sub.suboption, sub.price]}
                             key={sub.suboption}
                           >
                             {sub.suboption}
@@ -279,9 +283,12 @@ function Product() {
                 Technical Characteristics
               </h3>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
-              <ReactMakrdown className="">
-                {product[0]?.attributes.longDescription}
-              </ReactMakrdown>
+              <ReactMarkdown
+                className="prose prose-lg"
+                remarkPlugins={[remarkGfm]}
+              >
+                {markdown}
+              </ReactMarkdown>
               <p className="link">Cick here for the whole product info</p>
             </div>
           </div>

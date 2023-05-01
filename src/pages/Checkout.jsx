@@ -25,6 +25,7 @@ function Order() {
   const handleCheckout = async () => {
     if (sessionStorage.getItem("jwt")) {
       setLoadingCheckout(true);
+      
       const productList = products.map((prd) => {
         return {
           id: prd.id,
@@ -35,7 +36,7 @@ function Order() {
       
       const payload = {
         items: productList,
-        promoCode: '12345',
+        promoCode: null,
         userId: decodedToken?.id
       };
 
