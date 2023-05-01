@@ -22,9 +22,6 @@ export default function Example({ handleOpen }) {
     total = total.toFixed(2);
     return total;
   };
-  useEffect(() => {
-    console.log(promoCode);
-  }, [promoCode]);
 
   const handlePromoCode = async () => {
     if (promoCode === null) {
@@ -36,7 +33,6 @@ export default function Example({ handleOpen }) {
         );
         if (res.data.data.length) {
           dispatch(addPromo(res.data.data));
-          console.log(promoCode);
         }
       } catch (err) {
         console.log("Error: ", err);

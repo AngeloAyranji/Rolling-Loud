@@ -28,7 +28,7 @@ function Product() {
   } = useFetch(
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options][populate]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
-  console.log(product);
+  
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isAvailable, setIsAvailable] = useState(true);
@@ -52,7 +52,7 @@ function Product() {
     optionsMap.forEach(function (value, key) {
       sum += value;
     });
-    console.log("sum: ", sum, product[0]?.attributes.price);
+    
     setPrice(product[0]?.attributes.price + sum);
     if (product[0].attributes.options.length === optionsMap.size) {
       setCanCheckout(true);
