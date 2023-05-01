@@ -23,14 +23,14 @@ function Order() {
 
   const getPrice = (product) => {
     if (order) {
-      const productOrder = order[0]?.attributes.quantities.find(x => x.id === product.id)
+      const productOrder = order[0]?.attributes.product_data.find(x => x.id === product.id)
       return productOrder.price * productOrder.quantity;
     }
   }
 
   const getSubTotal = (order) => {
     let total = 0;
-    order?.quantities.forEach(product => {
+    order?.product_data.forEach(product => {
       total += getPrice(product)
     });
 
@@ -155,7 +155,7 @@ function Order() {
                               <p className="">
                                 Qty :{" "}
                                 {
-                                  order[0]?.attributes.quantities.find(
+                                  order[0]?.attributes.product_data.find(
                                     (x) => x.id === product.id
                                   ).quantity
                                 }
@@ -173,7 +173,7 @@ function Order() {
                   <p className="text-secondary-content font-medium text-lg mb-2">
                     Payment Method:
                   </p>
-                  <p className="">Visa {'************' + order[0]?.attributes.card_number.substring(14)}</p>
+                  <p className="">Visa </p>
                 </div>
                 <div className="w-full lg:w-[50%]">
                   <p className="text-secondary-content font-medium text-lg mb-2">
