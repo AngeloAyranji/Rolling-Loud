@@ -30,10 +30,10 @@ function Card({ item, id }) {
   const checkAvailability = (quantityValue) => {
     if (item) {
       const prod = products.find((x) => x.id === id);
-      
+
       if (!prod && item.quantity > 0) {
         if (item.options.length > 0) {
-          navigate(`/product/${parseLink(item.title)}`)
+          navigate(`/product/${parseLink(item.title)}`);
         } else {
           handleToast();
           dispatch(
@@ -47,7 +47,6 @@ function Card({ item, id }) {
             })
           );
         }
-       
       } else {
         if (prod) {
           if (quantityValue + prod.quantity <= item.quantity) {
@@ -123,7 +122,7 @@ function Card({ item, id }) {
         </div>
       </div>{" "}
       {/* card */}
-      <div className="flex flex-col rounded-xl w-[150px] md:w-[190px] shadow-xl h-full lg:w-[320px] md:h-[350px] lg:h-[520px] cursor-pointer group relative bg-secondary-content">
+      <div className="flex flex-col rounded-xl w-[150px] md:w-[190px] shadow-xl h-full lg:w-[320px] md:h-[350px] lg:h-[560px] cursor-pointer group relative bg-secondary-content">
         <Link to={`/product/${parseLink(item.title)}`}>
           <figure>
             {item && (

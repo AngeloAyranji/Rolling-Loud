@@ -40,6 +40,7 @@ export default function Example({ handleOpen }) {
       }
     }
   };
+  console.log(products);
 
   return (
     <>
@@ -109,29 +110,35 @@ export default function Example({ handleOpen }) {
 
                                   <div className="ml-4 flex flex-1 flex-col">
                                     <div>
-                                      <div className="flex justify-between text-sm lg:text-base font-medium text-white">
-                                        <h3>
+                                      <div className="flex justify-between text-sm lg:text-base font-medium">
+                                        <h3 className="line-clamp-3 max-w-[200px] text-white mb-2">
                                           <a href={product.href}>
                                             {product.name}
                                           </a>
                                         </h3>
-                                        <p className="ml-4">
+                                        <p className="ml-4 text-white">
                                           {product.price * product.quantity} $
                                         </p>
                                       </div>
-                                      <p className="mt-1 text-sm text-gray-500">
-                                        {product.color}
-                                      </p>
+                                      {product.options.map((item) => (
+                                        <p className="text-sm">
+                                          {item[0]} :{" "}
+                                          <span>{item[1].suboption}</span>
+                                        </p>
+                                      ))}
                                     </div>
-                                    <div className="flex flex-1 items-end justify-between text-sm">
-                                      <p className="text-gray-500">
-                                        Qty {product.quantity}
-                                      </p>
+                                    <div className="flex flex-1 items-end justify-between text-sm mt-2">
+                                      <p>Qty {product.quantity}</p>
 
                                       <div className="flex">
                                         <button
                                           onClick={() =>
-                                            dispatch(removeItem({id: product.id, options: product.options}))
+                                            dispatch(
+                                              removeItem({
+                                                id: product.id,
+                                                options: product.options,
+                                              })
+                                            )
                                           }
                                           type="button"
                                           className="font-medium text-secondary hover:text-secondary-focus"
