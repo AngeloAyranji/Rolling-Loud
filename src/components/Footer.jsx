@@ -1,7 +1,7 @@
 import React from "react";
 
 function Footer({ navigation }) {
-  console.log(navigation);
+  
   return (
     <footer className="footer px-4 md:px-10 py-12 bg-[#121212] text-base-content">
       <div>

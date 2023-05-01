@@ -1,7 +1,7 @@
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useJwt } from "react-jwt";
 import Loading from "../components/Loading";
@@ -10,17 +10,28 @@ function Order() {
   const navigate = useNavigate();
   const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
   const products = useSelector((state) => state.cart.products);
+  const promoCodeRedux = useSelector((state) => state.promo.promoCode);
   
   const [promoCode, setPromoCode] = useState(null);
   const [loadingCheckout, setLoadingCheckout] = useState(false);
 
-  const totalPrice = () => {
+  useEffect(() => {
+    if(promoCodeRedux) {
+      setPromoCode(promoCodeRedux[0].attributes)
+    }
+  }, [promoCodeRedux])
+
+  const totalPrice = (withPromo = false) => {
     let total = 0;
     products.forEach((item) => (total += item.price * item.quantity));
-    if (promoCode) total = total * (1 - promoCode[0].attributes.discount / 100);
+    if (promoCode && withPromo) total = total * (1 - promoCode.discount / 100);
     total = total.toFixed(2);
     return total;
   };
+
+  const discountedPrice = () => {
+    return promoCode !== null ? (totalPrice() * ( 1- (1 - promoCode?.discount / 100))).toFixed(2) : 0;
+  }
 
   const handleCheckout = async () => {
     if (sessionStorage.getItem("jwt")) {
@@ -36,7 +47,7 @@ function Order() {
       
       const payload = {
         items: productList,
-        promoCode: null,
+        promoCode: promoCode !== null ? promoCode.code : null,
         userId: decodedToken?.id
       };
 
@@ -160,7 +171,7 @@ function Order() {
               </div>
               <div className="flex flex-row justify-between items-center w-full">
                 <p>Discount</p>
-                <p>0.00 $</p>
+                <p>{discountedPrice()} $</p>
               </div>
 
               <div className="flex flex-row justify-between items-center w-full">
@@ -175,7 +186,7 @@ function Order() {
 
               <div className="flex flex-row w-full justify-between items-center text-secondary-content">
                 <p className="text-xl font-semibold">Total</p>
-                <p className="text-xl font-semibold">{totalPrice()} $</p>
+                <p className="text-xl font-semibold">{totalPrice(true)} $</p>
               </div>
             </div>
           </div>
