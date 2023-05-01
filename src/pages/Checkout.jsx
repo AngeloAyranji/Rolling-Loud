@@ -33,7 +33,7 @@ function Order() {
           options: prd.options
         };
       });
-      console.log(productList)
+      
       const payload = {
         items: productList,
         promoCode: null,
@@ -51,7 +51,7 @@ function Order() {
           payload,
           config
         );
-        console.log(res.data.session);
+        
         window.open(res.data.session.url);
       } catch (err) {
         console.log(err)

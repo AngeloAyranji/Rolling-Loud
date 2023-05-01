@@ -29,7 +29,7 @@ function Product() {
   } = useFetch(
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options][populate]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
-
+  
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isAvailable, setIsAvailable] = useState(true);
@@ -37,6 +37,7 @@ function Product() {
   const [optionsMap, setOptionsMap] = useState(new Map());
   const [canCheckout, setCanCheckout] = useState(false);
   const [markdown, setMarkdown] = useState("");
+
 
   useEffect(() => {
     if (product) {
@@ -117,15 +118,21 @@ function Product() {
                     1
                   )}
               </Link>
-              <Link
-                to={`/products/${parseLink(
-                  product[0]?.attributes.categories.data[0].attributes.title
-                )}/${parseLink(
-                  product[0]?.attributes.subcategories.data[0].attributes.title
-                )}`}
-              >
-                {product[0]?.attributes.subcategories.data[0].attributes.title}
-              </Link>
+              {product[0]?.attributes.subcategories.data.length > 0 && (
+                <Link
+                  to={`/products/${parseLink(
+                    product[0]?.attributes.categories.data[0].attributes.title
+                  )}/${parseLink(
+                    product[0]?.attributes.subcategories.data[0].attributes
+                      .title
+                  )}`}
+                >
+                  {
+                    product[0]?.attributes.subcategories.data[0].attributes
+                      .title
+                  }
+                </Link>
+              )}
               <Link to={`/product/${parseLink(product[0]?.attributes.title)}`}>
                 {product[0]?.attributes.title.charAt(0).toUpperCase() +
                   product[0]?.attributes.title.slice(1)}
@@ -163,9 +170,11 @@ function Product() {
               </div>
 
               <div className="flex flex-col space-y-4 mt-12 lg:mt-0 max-w-[520px] lg:max-w-none">
-                <p className="uppercase font-bold text-xs">
-                  {product[0]?.attributes.brand.data.attributes.name}
-                </p>
+                {product[0]?.attributes.brand.data !== null && (
+                  <p className="uppercase font-bold text-xs">
+                    {product[0]?.attributes.brand.data.attributes.name}
+                  </p>
+                )}
                 <h2 className="text-xl text-secondary-content font-bold">
                   {product[0]?.attributes.title}
                 </h2>
@@ -182,9 +191,11 @@ function Product() {
                   {price}
                   {"$"}
                 </p>
+
                 <p className="text-secondary-content">
                   {product[0]?.attributes.shortDescription}
                 </p>
+
                 {product[0].attributes.options.length &&
                   product[0].attributes.options?.map((item, index) => (
                     <div key={index} className="max-w-[300px] mb-4">
