@@ -74,7 +74,7 @@ function Team() {
               key={index}
               className="flex flex-col justify-center items-center snap-center"
             >
-              <div className="aspect-[2/3] h-[400px] mb-8 overflow-hidden rounded-lg border border-primary relative bg-none">
+              <div className="aspect-[2/3] h-[300px] md:h-[400px] mb-8 overflow-hidden rounded-lg border border-primary relative bg-none">
                 <div className="screen-overlay"></div>
                 <img
                   src="https://pps.whatsapp.net/v/t61.24694-24/312284303_1589603764833120_652241131497997353_n.jpg?ccb=11-4&oh=01_AdTwTlhN0cWvSoYfCeToLOOt7o1M7VVqawlVtfkSraqcwg&oe=645D00C1"
