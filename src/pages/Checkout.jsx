@@ -217,17 +217,31 @@ function Order() {
                 </div>
               </div>
               <div className="flex flex-col w-full items-center justify-center lg:flex-row lg:justify-between lg:space-x-8">
-                <div className="form-control w-full max-w-[400px]">
-                  <label className="label">
-                    <span className="label-text">Enter PROMO Code</span>
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="promoCode"
-                      type="text"
-                      placeholder="CODE"
-                      className="input input-bordered w-full pr-16"
-                    />
+                <div className="flex flex-col space-y-2 w-full max-w-[400px]">
+                  <div className="form-control w-full">
+                    <label className="label">
+                      <span className="label-text">Enter PROMO Code</span>
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="promoCode"
+                        type="text"
+                        placeholder="CODE"
+                        className="input input-bordered w-full pr-16"
+                      />
+                      <button
+                        className={
+                          promoCode === null
+                            ? "btn btn-primary absolute top-0 right-0 rounded-l-none"
+                            : "btn btn-primary btn-disabled absolute top-0 right-0 rounded-l-none"
+                        }
+                        onClick={handlePromoCode}
+                      >
+                        ADD
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex w-full justify-between pr-1 items-center">
                     {promoCode != null ? (
                       <p className="text-sm mt-2">
                         {promoCode[0].attributes.code} Added!
@@ -235,16 +249,15 @@ function Order() {
                     ) : (
                       <></>
                     )}
-                    <button
-                      className={
-                        promoCode === null
-                          ? "btn btn-primary absolute top-0 right-0 rounded-l-none"
-                          : "btn btn-primary btn-disabled absolute top-0 right-0 rounded-l-none"
-                      }
-                      onClick={handlePromoCode}
-                    >
-                      ADD
-                    </button>
+                    <div className="flex flex-1 justify-end">
+                      <button
+                        onClick={() => dispatch(removePromo())}
+                        type="button"
+                        className="font-light text-sm text-secondary hover:text-secondary-focus"
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <div className="pt-2 max-w-[400px] w-full mt-4 lg:mt-0">
