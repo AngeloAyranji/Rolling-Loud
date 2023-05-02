@@ -1,22 +1,20 @@
+import { useEffect, useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useParams, Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
+import { useRegionChecker } from "../hooks/regionChecker";
 import { parseLink } from "../utils/utils";
-import { useEffect, useState } from "react";
 
 function Order() {
   const { orderId } = useParams();
+
+  const { currency } = useRegionChecker();
 
   const { data: order, loading } = useFetch(
     `api/orders/?populate[products][populate][image]=*&populate[promotion]=*&filters[stripe_id][$eq]=${orderId}`,
     true
   );
-  const [currency, setCurrency] = useState("$");
-
-  useEffect(() => {
-    if (order) setCurrency(order[0].attributes.currency === "usd" ? "$" : "€");
-  }, [order]);
 
   const convertDate = (date) => {
     const tmpDate = new Date(date);

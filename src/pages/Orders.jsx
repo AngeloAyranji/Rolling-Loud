@@ -4,6 +4,7 @@ import { useLocation, Link } from "react-router-dom";
 import { useJwt } from "react-jwt";
 import { useDispatch } from "react-redux";
 import useFetch from "../hooks/useFetch";
+import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
 import { parseLink } from "../utils/utils";
 import { removeAll } from "../redux/cartReducer";
@@ -11,6 +12,8 @@ import { removeAll } from "../redux/cartReducer";
 function Orders() {
   const dispatch = useDispatch();
 
+  const { currency } = useRegionChecker();
+  
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
@@ -94,7 +97,7 @@ function Orders() {
                       order id: {order?.attributes.stripe_id}
                     </h2>
                     <p className="text-secondary-content font-semibold tracking-wide uppercase lg:text-lg">
-                      {order.attributes.amount_total}$
+                      {order.attributes.amount_total}{" "}{currency}
                     </p>
                   </div>
                   <div className="flex w-full justify-between">
