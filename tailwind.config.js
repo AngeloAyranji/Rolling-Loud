@@ -13,6 +13,7 @@ module.exports = withMT({
       sans: ["Montserrat", "sans-serif"],
       poppins: ["Poppins", "sans-serif"],
       planet: ["PlanetKosmos", "serif"],
+      genos: ["Genos", "sans-serif"],
     },
     extend: {},
   },

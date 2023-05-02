@@ -16,7 +16,7 @@ function SocialsMenu() {
         onClick={handleOpen}
       />
       <a
-        href=""
+        href="https://m.me/Skyshop.fpv"
         className={
           open
             ? "text-secondary-content w-6 h-6 cursor-pointer hover:text-blue-500"
@@ -26,7 +26,7 @@ function SocialsMenu() {
         <BsMessenger className="w-full h-full" />
       </a>
       <a
-        href=""
+        href="https://wa.me/+96170124129"
         className={
           open
             ? "text-secondary-content w-6 h-6 cursor-pointer hover:text-green-400"

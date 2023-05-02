@@ -19,13 +19,16 @@ function ParallaxCard() {
         >
           <div className="flex flex-col space-y-4 w-full lg:w-[60%] p-8">
             <h2 className="font-extrabold text-white text-3xl">
-              DIRECT DEPENDECIES <span className="text-primary">FRAMER</span>
+              FIRST-PERSON <span className="text-primary">VIEW</span>
             </h2>
             <p className="text-white">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Accusantium, quod commodi aspernatur saepe quibusdam libero, minus
-              magnam dolor voluptates nulla dignissimos, ipsam exercitationem!
-              Architecto, quaerat nostrum? Eos nulla accusamus a!
+              FPV flying serves up an incredible real-time experience, and the
+              perspective has several big advantages. You get more precision,
+              which is crucial for racing drones, and a cinematic perspective
+              that you don’t get from the ground. Plus, it’s just a lot of fun.
+              Photographers and videographers take advantage of FPV’s immersive,
+              exciting experience to capture shots they’d never be able to get
+              from terra firma.
             </p>
             <button className="btn btn-primary w-[120px] text-white">
               EXPLORE

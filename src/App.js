@@ -20,7 +20,7 @@ function App() {
   const location = useLocation();
 
   return (
-    <div className="bg-[#121212]">
+    <div className="bg-[#121212] main-scrollbar">
       <ScrollToTop>
         <Layout>
           <Routes>
