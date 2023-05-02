@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
 function Footer({ navigation }) {
   return (
@@ -17,7 +17,7 @@ function Footer({ navigation }) {
       </div>
       <div>
         <span className="footer-title">Company</span>
-        <a className="link link-hover">About us</a>
+        <Link to="/footer/about" className="link link-hover">About us</Link>
         <a className="link link-hover">Contact</a>
       </div>
       <div>
