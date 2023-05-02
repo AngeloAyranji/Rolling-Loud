@@ -6,6 +6,7 @@ import axios from "axios";
 import { useJwt } from "react-jwt";
 import Loading from "../components/Loading";
 import { addPromo, removePromo } from "../redux/promoCodeReducer";
+import { parseLink } from "../utils/utils";
 
 function Order() {
   const navigate = useNavigate();
@@ -124,12 +125,12 @@ function Order() {
                         <div className="ml-4 flex flex-1 flex-col">
                           <div>
                             <div className="flex justify-between text-sm lg:text-base font-medium text-white">
-                              <a
-                                href={product.href}
+                              <Link
+                                to={`/product/${parseLink(product.name)}`}
                                 className="line-clamp-3 text-white mb-2"
                               >
                                 {product.name}
-                              </a>
+                              </Link>
                               <p className="ml-4 text-base lg:text-xl min-w-[50px]">
                                 {product.price * product.quantity} $
                               </p>
