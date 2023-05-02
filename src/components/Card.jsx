@@ -53,17 +53,21 @@ function Card({ item, id }) {
       } else {
         if (prod) {
           if (quantityValue + prod.quantity <= item.quantity) {
-            handleToast();
-            dispatch(
-              addToCart({
-                id: id,
-                name: item.title,
-                img: item.image.data[0].attributes.url,
-                price: item.price,
-                options: [],
-                quantity,
-              })
-            );
+            if (item.options.length > 0) {
+              navigate(`/product/${parseLink(item.title)}`);
+            } else {
+              handleToast();
+              dispatch(
+                addToCart({
+                  id: id,
+                  name: item.title,
+                  img: item.image.data[0].attributes.url,
+                  price: item.price,
+                  options: [],
+                  quantity,
+                })
+              );
+            }
           }
         }
       }
