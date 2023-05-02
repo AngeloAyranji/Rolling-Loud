@@ -30,24 +30,32 @@ function Order() {
 
   const getPrice = (product) => {
     if (order) {
-      const productOrder = order[0]?.attributes.product_data.find(x => x.id === product.id)
+      const productOrder = order[0]?.attributes.product_data.find(
+        (x) => x.id === product.id
+      );
       return productOrder.price * productOrder.quantity;
     }
-  }
+  };
+
+  useEffect(() => {
+    if (order) {
+      console.log(order[0].attributes.product_data);
+    }
+  }, []);
 
   const getSubTotal = (order) => {
     let total = 0;
-    order?.product_data.forEach(product => {
-      total += getPrice(product)
+    order?.product_data.forEach((product) => {
+      total += getPrice(product);
     });
 
     return total;
-  }
+  };
 
   const getDiscount = () => {
     if (order[0]?.attributes.promotion.data) return -((order[0]?.attributes.promotion.data.attributes.discount / 100) * getSubTotal(order[0]?.attributes)).toFixed(2);
     else return 0;
-  }
+  };
 
   const orderStatus = () => {
     if (order[0]?.attributes.status === "order submitted") {
@@ -107,7 +115,6 @@ function Order() {
       return prd;
     }
   }
-
 
   return (
     <>
