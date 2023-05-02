@@ -66,7 +66,12 @@ function Order() {
 
         window.open(res.data.session.url);
       } catch (err) {
-        console.log(err);
+        console.log(err.response.data.error);
+        if(err.response.data.error === "Promo Code Expired") {
+          console.log(2)
+          dispatch(removePromo())
+
+        }
       }
       setLoadingCheckout(false);
     } else {
