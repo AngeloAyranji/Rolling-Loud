@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 function Footer({ navigation }) {
+  console.log(navigation);
   return (
     <footer className="footer px-4 md:px-10 py-12 bg-[#121212] text-base-content">
       <div>
@@ -17,7 +18,9 @@ function Footer({ navigation }) {
       </div>
       <div>
         <span className="footer-title">Company</span>
-        <Link to="/footer/about" className="link link-hover">About us</Link>
+        <Link to="/footer/about" className="link link-hover">
+          About us
+        </Link>
         <a className="link link-hover">Contact</a>
       </div>
       <div>
