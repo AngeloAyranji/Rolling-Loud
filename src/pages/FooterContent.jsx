@@ -1,7 +1,6 @@
 import { Breadcrumbs } from "@mui/material";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import useFetch from "../hooks/useFetch";
 import Loading from "../components/Loading";
 
@@ -26,14 +25,9 @@ function FooterContent({ name }) {
                 {name}
               </h2>
               <div className="h-[2px] w-full bg-primary"></div>
-              <p className="text-secondary-content text-lg tracking-wide">
-              <ReactMarkdown
-                className="prose prose-lg"
-                remarkPlugins={[remarkGfm]}
-              >
+              <ReactMarkdown className="prose text-secondary-content text-lg tracking-wide min-w-full">
                 {data.attributes?.description}
               </ReactMarkdown>
-              </p>
             </div>
           </div>
         </div>
