@@ -10,10 +10,12 @@ import { addPromo, removePromo } from "../redux/promoCodeReducer";
 function Order() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
+  
   const products = useSelector((state) => state.cart.products);
   const promoCode = useSelector((state) => state.promo.promoCode);
-  console.log("promoCode: ", promoCode)
+  
   const [loadingCheckout, setLoadingCheckout] = useState(false);
 
   const totalPrice = (withPromo = false) => {
