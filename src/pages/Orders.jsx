@@ -38,7 +38,7 @@ function Orders() {
 
   useEffect(() => {
     if (success === "true") {
-      dispatch(removeAll())
+      dispatch(removeAll());
     }
   }, [success]);
 
@@ -59,19 +59,6 @@ function Orders() {
     const year = tmpDate.getFullYear();
 
     return `${month} ${day}, ${year}`;
-  };
-
-  const getPrice = (order) => {
-    let totalPrice = 0;
-    order?.attributes.product_data.forEach((product) => {
-      totalPrice += product.price * product.quantity;
-    });
-
-    if (order?.attributes.promotion.data !== null)
-      totalPrice =
-        totalPrice *
-        (1 - order.attributes.promotion.data.attributes.discount / 100);
-    return totalPrice;
   };
 
   return (
@@ -107,7 +94,7 @@ function Orders() {
                       order id: {order?.attributes.stripe_id}
                     </h2>
                     <p className="text-secondary-content font-semibold tracking-wide uppercase lg:text-lg">
-                      {getPrice(order)}$
+                      {order.attributes.amount_total}$
                     </p>
                   </div>
                   <div className="flex w-full justify-between">

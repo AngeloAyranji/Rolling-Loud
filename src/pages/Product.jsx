@@ -22,17 +22,12 @@ function Product() {
 
   const { productName } = useParams();
 
-  const {
-    data: product,
-    loading,
-    error,
-  } = useFetch(
+  const { data: product, loading } = useFetch(
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options][populate]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
 
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [isAvailable, setIsAvailable] = useState(true);
   const [price, setPrice] = useState(0);
   const [optionsMap, setOptionsMap] = useState(new Map());
   const [canCheckout, setCanCheckout] = useState(false);
@@ -147,7 +142,7 @@ function Product() {
                 <div className="relative w-full aspect-square border-primary border rounded-lg overflow-hidden">
                   <img
                     src={mainImg}
-                    alt="Product Image"
+                    alt={product[0]?.attributes.title}
                     className="object-cover object-center w-full h-full"
                   />
                   <div className="flex flex-row space-x-2 justify-end items-center absolute top-4 right-4 hover:text-black  duration-150 ease-in cursor-pointer">
@@ -209,10 +204,10 @@ function Product() {
                         className="text-secondary-content mb-4"
                         onChange={handePriceChange}
                       >
-                        {item.suboption.map((sub) => (
+                        {item.suboption.map((sub, index) => (
                           <Option
                             value={[item.option, sub.suboption, sub.price]}
-                            key={sub.suboption}
+                            key={index}
                           >
                             {sub.suboption}
                           </Option>
@@ -233,7 +228,7 @@ function Product() {
                     <button
                       onClick={() =>
                         setQuantity((prev) =>
-                          prev == product[0]?.attributes.quantity
+                          prev === product[0]?.attributes.quantity
                             ? prev
                             : prev + 1
                         )
@@ -244,7 +239,7 @@ function Product() {
                   </div>
                   <button
                     className={
-                      (product[0].attributes.quantity === 0 && !isAvailable) ||
+                      product[0].attributes.quantity === 0 ||
                       canCheckout === false
                         ? "btn btn-disabled btn-primary w-full max-w-[250px]"
                         : "btn btn-primary w-full max-w-[250px]"

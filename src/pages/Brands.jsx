@@ -5,7 +5,6 @@ import useFetch from "../hooks/useFetch";
 import { parseLink } from "../utils/utils";
 
 function Brands() {
-
   const { data: brands, loading } = useFetch(`api/brands?populate[image]=*`);
 
   return (
@@ -17,22 +16,29 @@ function Brands() {
               our brands
             </h1>
             <p className="mt-8">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid quod
-              error incidunt fugiat, expedita corporis soluta rerum architecto, quae
-              possimus ab perferendis maiores quam odit dicta reiciendis, tempore
-              cupiditate nostrum.
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid
+              quod error incidunt fugiat, expedita corporis soluta rerum
+              architecto, quae possimus ab perferendis maiores quam odit dicta
+              reiciendis, tempore cupiditate nostrum.
             </p>
             <div className="w-full h-[1px] bg-gray-700 mt-8 mb-10 md:mb-14"></div>
             <div className="w-full flex flex-row flex-wrap justify-center align-start gap-8 md:gap-12">
               {brands?.map((brand, index) => {
                 return (
-                  <Link to={`/products/${parseLink(brand.attributes.name)}`}>
+                  <Link
+                    to={`/products/${parseLink(brand.attributes.name)}`}
+                    key={index}
+                  >
                     <Brand
-                      key={index}
-                      imgsrc={brand.attributes.image.data ? brand.attributes.image.data.attributes.url : null}
+                      imgsrc={
+                        brand.attributes.image.data
+                          ? brand.attributes.image.data.attributes.url
+                          : null
+                      }
                       name={brand.attributes.name}
                     />
-                  </Link>)
+                  </Link>
+                );
               })}
             </div>
           </div>

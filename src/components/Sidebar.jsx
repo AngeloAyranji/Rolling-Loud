@@ -2,7 +2,6 @@ import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Slider from "@mui/material/Slider";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import useFetch from "../hooks/useFetch";
 
 const theme = createTheme({
   palette: {
