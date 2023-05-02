@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineInstagram } from "react-icons/ai";
 import useFetch from "../hooks/useFetch";
 
@@ -27,7 +27,7 @@ function Team() {
     }
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [scrollPercent]);
 
   function handleScroll(event) {
     const element = event.target;
@@ -85,7 +85,7 @@ function Team() {
               <h3 className="text-lg md:text-xl text-center text-secondary-content max-w-[150px] md:max-w-sm mb-2 font-genos font-normal">
                 {team.attributes.title}
               </h3>
-              <a href={team.attributes.url} target={"_blank"}>
+              <a href={team.attributes.url} rel="noreferrer" target={"_blank"}>
                 <div className="flex flex-row justify-center space-x-2 items-center w-full hover:text-secondary duration-150 ease-in cursor-pointer font-genos font-light">
                   <AiOutlineInstagram className="text-xl md:text-2xl" />
                   <p className=" text-md md:text-lg">

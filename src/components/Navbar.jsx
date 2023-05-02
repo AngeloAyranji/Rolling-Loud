@@ -22,7 +22,6 @@ export default function Navbar({ navigation, setNavigation }) {
   const location = useLocation();
 
   const [opena, setOpena] = useState(false);
-  const [searchText, setSearchText] = useState("moto");
 
   const products = useSelector((state) => state.cart.products);
 
@@ -94,6 +93,7 @@ export default function Navbar({ navigation, setNavigation }) {
                   <div className="flex space-x-4 items-center ove">
                     {navigation.map((item) => (
                       <Dropdown
+                        key={item.name}
                         title={item.name}
                         href={item.href}
                         subCategories={item.sub}
@@ -223,8 +223,9 @@ export default function Navbar({ navigation, setNavigation }) {
 
           <Disclosure.Panel className="lg:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map((item) => (
+              {navigation.map((item, index) => (
                 <Dropdown
+                  key={index}
                   title={item.name}
                   href={item.href}
                   subCategories={item.sub}
