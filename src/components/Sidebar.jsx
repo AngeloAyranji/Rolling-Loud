@@ -2,7 +2,6 @@ import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Slider from "@mui/material/Slider";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import useFetch from "../hooks/useFetch";
 
 const theme = createTheme({
   palette: {
@@ -33,7 +32,7 @@ function Sidebar({
   function valuetext(value) {
     return `${value} $`;
   }
-  const [value, setValue] = useState([0, 2000]);
+  const [value, setValue] = useState([0, 10000]);
 
   const handleChangeSlider = (event, newValue) => {
     setValue(newValue);
@@ -127,7 +126,7 @@ function Sidebar({
                 onChangeCommitted={(e, p) => setPrice(p)}
                 valueLabelDisplay="auto"
                 getAriaValueText={valuetext}
-                max={2000}
+                max={10000}
                 min={0}
               />
             </ThemeProvider>

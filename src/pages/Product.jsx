@@ -4,76 +4,90 @@ import { CiDeliveryTruck, CiLock } from "react-icons/ci";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import ReactMakrdown from "react-markdown";
+import ReactMarkdown from "react-markdown";
+import { Select, Option } from "@material-tailwind/react";
+import remarkGfm from "remark-gfm";
 import { addToCart } from "../redux/cartReducer";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
+import { parseLink } from "../utils/utils";
 
 function Product() {
   const dispatch = useDispatch();
 
-  const { region } = useRegionChecker();
-
-  const { productName } = useParams();
-  const {
-    data: product,
-    loading,
-    error,
-  } = useFetch(
-    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
-  );
-  console.log(product);
-  const [mainImg, setMainImg] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const [isAvailable, setIsAvailable] = useState(true);
-
-  useEffect(() => {
-    if (product)
-      setMainImg(product[0]?.attributes.image.data[0].attributes.url);
-  }, [product]);
+  const { region, currency } = useRegionChecker();
 
   const products = useSelector((state) => state.cart.products);
+
+  const { productName } = useParams();
+
+  const { data: product, loading } = useFetch(
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options][populate]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
+  );
+
+  const [mainImg, setMainImg] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [price, setPrice] = useState(0);
+  const [optionsMap, setOptionsMap] = useState(new Map());
+  const [canCheckout, setCanCheckout] = useState(false);
+  const [markdown, setMarkdown] = useState("");
+
+  useEffect(() => {
+    if (product) {
+      setMarkdown(product[0]?.attributes.longDescription);
+      setMainImg(product[0]?.attributes.image.data[0].attributes.url);
+      setPrice(product[0]?.attributes.price);
+      if (product[0].attributes.options.length === 0) {
+        setCanCheckout(true);
+      }
+    }
+  }, [product]);
+
+  const handePriceChange = (value) => {
+    setOptionsMap(
+      new Map(
+        optionsMap.set(value[0], { suboption: value[1], price: value[2] })
+      )
+    );
+    let sum = 0;
+    optionsMap.forEach(function (value, key) {
+      sum += value.price;
+    });
+
+    setPrice(product[0]?.attributes.price + sum);
+    if (product[0].attributes.options.length === optionsMap.size) {
+      setCanCheckout(true);
+    }
+  };
 
   const checkAvailability = (quantityValue) => {
     if (product) {
       const prod = products.find((x) => x.id === product[0].id);
       if (!prod && product[0].attributes.quantity > 0) {
-        console.log(
-          "added to cart: " + quantityValue,
-          "total quantity",
-          quantityValue
-        );
         dispatch(
           addToCart({
             id: product[0].id,
             name: product[0].attributes.title,
             img: product[0].attributes.image.data[0].attributes.url,
-            price: product[0].attributes.price,
+            price: price,
+            options: Array.from(optionsMap),
             quantity,
           })
         );
       } else {
-        if (!prod) {
-          console.log("Item out of Stock");
-        } else {
+        if (prod) {
           if (quantityValue + prod.quantity <= product[0].attributes.quantity) {
-            console.log(
-              "added to cart: " + quantityValue,
-              "total quantity",
-              prod.quantity + quantityValue
-            );
             dispatch(
               addToCart({
                 id: product[0].id,
                 name: product[0].attributes.title,
                 img: product[0].attributes.image.data[0].attributes.url,
-                price: product[0].attributes.price,
+                price: price,
+                options: Array.from(optionsMap),
                 quantity,
               })
             );
-          } else {
-            console.log("cart is full");
           }
         }
       }
@@ -91,23 +105,33 @@ function Product() {
             >
               <Link to="/">Home</Link>
               <Link
-                to={`/products/${product[0].attributes.categories.data[0].attributes.title}`}
+                to={`/products/${parseLink(
+                  product[0]?.attributes.categories.data[0].attributes.title
+                )}`}
               >
-                {product[0].attributes.categories.data[0].attributes.title
+                {product[0]?.attributes.categories.data[0].attributes.title
                   .charAt(0)
                   .toUpperCase() +
-                  product[0].attributes.categories.data[0].attributes.title.slice(
+                  product[0]?.attributes.categories.data[0].attributes.title.slice(
                     1
                   )}
               </Link>
               {product[0]?.attributes.subcategories.data.length > 0 && (
                 <Link
-                  to={`/products/${product[0].attributes.categories.data[0].attributes.title}/${product[0].attributes.subcategories.data[0].attributes.title}`}
+                  to={`/products/${parseLink(
+                    product[0]?.attributes.categories.data[0].attributes.title
+                  )}/${parseLink(
+                    product[0]?.attributes.subcategories.data[0].attributes
+                      .title
+                  )}`}
                 >
-                  {product[0].attributes.subcategories.data[0].attributes.title}
+                  {
+                    product[0]?.attributes.subcategories.data[0].attributes
+                      .title
+                  }
                 </Link>
               )}
-              <Link to={`/product/${product[0].attributes.title}`}>
+              <Link to={`/product/${parseLink(product[0]?.attributes.title)}`}>
                 {product[0]?.attributes.title.charAt(0).toUpperCase() +
                   product[0]?.attributes.title.slice(1)}
               </Link>
@@ -118,7 +142,7 @@ function Product() {
                 <div className="relative w-full aspect-square border-primary border rounded-lg overflow-hidden">
                   <img
                     src={mainImg}
-                    alt="Product Image"
+                    alt={product[0]?.attributes.title}
                     className="object-cover object-center w-full h-full"
                   />
                   <div className="flex flex-row space-x-2 justify-end items-center absolute top-4 right-4 hover:text-black  duration-150 ease-in cursor-pointer">
@@ -144,13 +168,15 @@ function Product() {
               </div>
 
               <div className="flex flex-col space-y-4 mt-12 lg:mt-0 max-w-[520px] lg:max-w-none">
-                <p className="uppercase font-bold text-xs">
-                  {product[0]?.attributes.brand.data.attributes.name}
-                </p>
+                {product[0]?.attributes.brand.data !== null && (
+                  <p className="uppercase font-bold text-xs">
+                    {product[0]?.attributes.brand.data.attributes.name}
+                  </p>
+                )}
                 <h2 className="text-xl text-secondary-content font-bold">
-                  {product[0].attributes.title}
+                  {product[0]?.attributes.title}
                 </h2>
-                {product[0].attributes.quantity === 0 ? (
+                {product[0]?.attributes.quantity === 0 ? (
                   <p className="line-through text-xs lg:text-sm">
                     Out Of Stock
                   </p>
@@ -160,12 +186,35 @@ function Product() {
 
                 <div className="w-full h-1 rounded-full bg-base-100"></div>
                 <p className="text-xl text-primary font-semibold tracking-wide">
-                  {product[0].attributes.price}
-                  {"$"}
+                  {price}
+                  {currency}
                 </p>
+
                 <p className="text-secondary-content">
-                  {product[0].attributes.shortDescription}
+                  {product[0]?.attributes.shortDescription}
                 </p>
+
+                {product[0].attributes.options.length &&
+                  product[0].attributes.options?.map((item, index) => (
+                    <div key={index} className="max-w-[300px] mb-4">
+                      <Select
+                        variant="standard"
+                        label={item.option}
+                        color="cyan"
+                        className="text-secondary-content mb-4"
+                        onChange={handePriceChange}
+                      >
+                        {item.suboption.map((sub, index) => (
+                          <Option
+                            value={[item.option, sub.suboption, sub.price]}
+                            key={index}
+                          >
+                            {sub.suboption}
+                          </Option>
+                        ))}
+                      </Select>
+                    </div>
+                  ))}
                 <div className="pt-8 pb-8 flex flex-row justify-start space-x-4 items-center">
                   <div className="flex h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[90px] text-secondary-content pl-4 pr-4">
                     <button
@@ -175,11 +224,11 @@ function Product() {
                     >
                       -
                     </button>
-                    {product[0].attributes.quantity === 0 ? 0 : quantity}
+                    {product[0]?.attributes.quantity === 0 ? 0 : quantity}
                     <button
                       onClick={() =>
                         setQuantity((prev) =>
-                          prev == product[0].attributes.quantity
+                          prev === product[0]?.attributes.quantity
                             ? prev
                             : prev + 1
                         )
@@ -190,7 +239,8 @@ function Product() {
                   </div>
                   <button
                     className={
-                      product[0].attributes.quantity === 0 && !isAvailable
+                      product[0].attributes.quantity === 0 ||
+                      canCheckout === false
                         ? "btn btn-disabled btn-primary w-full max-w-[250px]"
                         : "btn btn-primary w-full max-w-[250px]"
                     }
@@ -231,10 +281,12 @@ function Product() {
                 Technical Characteristics
               </h3>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
-              <ReactMakrdown className="">
-                {product[0].attributes.longDescription}
-              </ReactMakrdown>
-              <p className="link">Cick here for the whole product info</p>
+              <ReactMarkdown
+                className="prose text-secondary-content"
+                remarkPlugins={[remarkGfm]}
+              >
+                {markdown}
+              </ReactMarkdown>
             </div>
           </div>
         </div>

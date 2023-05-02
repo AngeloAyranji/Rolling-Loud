@@ -9,11 +9,12 @@ import ListProduct from "../components/ListProduct";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
+import { parseLink } from "../utils/utils";
 
 function Products() {
   const { category, subcategory } = useParams();
   const location = useLocation();
-  console.log(category, subcategory);
+
   const queryParams = new URLSearchParams(location.search);
   const queryFilter = queryParams.get("filter");
   const querySearch = queryParams.get("search");
@@ -29,7 +30,7 @@ function Products() {
     queryFilter === "featured" ? true : false
   );
   const [isInStock, setIsInStock] = useState(false);
-  const [price, setPrice] = useState([0, 2000]);
+  const [price, setPrice] = useState([0, 10000]);
   const [url, setUrl] = useState("");
   const [page, setPage] = useState(1);
   const [products, setProducts] = useState([]);
@@ -70,7 +71,7 @@ function Products() {
   }, [productsDB]);
 
   const handleFilters = () => {
-    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}&pagination[pageSize]=25&filters[region][$eq]=${region}`;
+    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[options][populate]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}&pagination[pageSize]=25&filters[region][$eq]=${region}`;
 
     if (querySearch) filter += `&filters[title][$containsi]=${querySearch}`;
     if (category && categoryDB?.length)
@@ -114,7 +115,7 @@ function Products() {
               <Link to="/">Home</Link>
               <Link to="/products">Products</Link>
               {category ? (
-                <Link to={`/products/${category}`}>
+                <Link to={`/products/${parseLink(category)}`}>
                   {category.charAt(0).toUpperCase() + category.slice(1)}
                 </Link>
               ) : querySearch ? (
@@ -125,7 +126,7 @@ function Products() {
                 <Link to={`/products`}>All Products</Link>
               )}
               {subcategory && (
-                <Link to={`/products/${category}/${subcategory}`}>
+                <Link to={`/products/${parseLink(category)}/${parseLink(subcategory)}`}>
                   {subcategory}
                 </Link>
               )}
@@ -135,7 +136,9 @@ function Products() {
                 ? querySearch
                   ? `Search in ${querySearch}`
                   : "All Products"
-                : subcategory ? subcategory : category}
+                : subcategory
+                ? subcategory
+                : category}
             </h2>
             <p className="max-w-[700px]">
               {category
@@ -167,6 +170,7 @@ function Products() {
                   className="!ml-0"
                   onChange={setSortBy}
                 >
+                  <Option value={"0"}>Default</Option>
                   <Option value={"1"}>Highest Price First</Option>
                   <Option value={"2"}>Lowest Price First</Option>
                 </Select>

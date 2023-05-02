@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import _ from "lodash";
 
 const initialState = {
   products: [],
@@ -9,7 +10,11 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const item = state.products.find((item) => item.id === action.payload.id);
+      const item = state.products.find(
+        (item) =>
+          item.id === action.payload.id &&
+          _.isEqual(item.options, action.payload.options)
+      );
 
       if (item) {
         item.quantity += action.payload.quantity;
@@ -19,13 +24,19 @@ export const cartSlice = createSlice({
     },
     removeItem: (state, action) => {
       state.products = state.products.filter(
-        (item) => item.id !== action.payload
+        (item) =>
+          item.id !== action.payload.id ||
+          (item.id === action.payload.id &&
+            !_.isEqual(item.options, action.payload.options))
       );
     },
+    removeAll: (state, action) => {
+      state.products = []
+    }
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addToCart, removeItem } = cartSlice.actions;
+export const { addToCart, removeItem, removeAll } = cartSlice.actions;
 
 export default cartSlice.reducer;

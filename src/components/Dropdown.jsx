@@ -1,17 +1,10 @@
-import { useState } from "react";
-import { Fragment, useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { parseLink } from "../utils/utils";
 
 function Dropdown({ title, href, subCategories }) {
   const [isOpen, setIsOpen] = useState(false);
-
-  // const handleCategories = (checked, id) => {
-  //   let x = categories;
-  //   if (checked) x.push(id);
-  //   else x = x.filter((item) => item != id);
-  //   setCategories(x);
-  // };
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
@@ -62,7 +55,9 @@ function Dropdown({ title, href, subCategories }) {
                   {subCategories?.map((sub, index) => (
                     <Link
                       key={index}
-                      to={`/products/${title}/${sub?.attributes.title}`}
+                      to={`/products/${parseLink(title)}/${parseLink(
+                        sub?.attributes.title
+                      )}`}
                       className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap"
                     >
                       {sub?.attributes.title}
@@ -106,7 +101,9 @@ function Dropdown({ title, href, subCategories }) {
                   {subCategories?.map((sub, index) => (
                     <Link
                       key={index}
-                      to={`/products/${title}/${sub.attributes.title}`}
+                      to={`/products/${parseLink(title)}/${parseLink(
+                        sub.attributes.title
+                      )}`}
                       className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap"
                     >
                       {sub.attributes.title}

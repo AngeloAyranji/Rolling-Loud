@@ -22,7 +22,6 @@ export default function Navbar({ navigation, setNavigation }) {
   const location = useLocation();
 
   const [opena, setOpena] = useState(false);
-  const [searchText, setSearchText] = useState("moto");
 
   const products = useSelector((state) => state.cart.products);
 
@@ -94,6 +93,7 @@ export default function Navbar({ navigation, setNavigation }) {
                   <div className="flex space-x-4 items-center ove">
                     {navigation.map((item) => (
                       <Dropdown
+                        key={item.name}
                         title={item.name}
                         href={item.href}
                         subCategories={item.sub}
@@ -156,6 +156,19 @@ export default function Navbar({ navigation, setNavigation }) {
                     <Menu.Items className="absolute right-0 z-[100] mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
+                          <a
+                            href="/country"
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
+                          >
+                            Change Region
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
                           <>
                             {sessionStorage.getItem("jwt") !== null && (
                               <a
@@ -171,6 +184,7 @@ export default function Navbar({ navigation, setNavigation }) {
                           </>
                         )}
                       </Menu.Item>
+
                       <Menu.Item>
                         {({ active }) => (
                           <>
@@ -209,8 +223,9 @@ export default function Navbar({ navigation, setNavigation }) {
 
           <Disclosure.Panel className="lg:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map((item) => (
+              {navigation.map((item, index) => (
                 <Dropdown
+                  key={index}
                   title={item.name}
                   href={item.href}
                   subCategories={item.sub}

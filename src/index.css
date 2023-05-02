@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Genos:wght@200;300;400;500&family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
 
 @tailwind base;
@@ -6,6 +7,38 @@
 @tailwind utilities;
 
 @layer base {
+  .scrollbar-custom::-webkit-scrollbar {
+    height: 6px;
+    width: 10px !important;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background-color: rgb(2, 219, 224);
+    border-radius: 20px;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(2 219 224/0.5);
+  }
+
+  .main-scrollbar::-webkit-scrollbar {
+    width: 12px;
+    height: 6px;
+  }
+
+  .main-scrollbar::-webkit-scrollbar-track {
+    background: #313131;
+  }
+
+  .main-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgb(2, 219, 224);
+    border-radius: 20px;
+    border: 3px solid #313131;
+  }
 }
 
 @font-face {
@@ -19,5 +52,31 @@
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+  .screen-overlay {
+    background: linear-gradient(
+      rgb(2 219 224/0.1),
+      rgb(2 219 224/0.1) 2px,
+      transparent 2px,
+      transparent 12px
+    );
+    background-size: 100% 12px;
+    height: 100%;
+    width: 100%;
+    animation: pan-overlay 40s infinite linear;
+    position: absolute;
+    z-index: 2;
+    left: 0px;
+    top: 0px;
+  }
+
+  @keyframes pan-overlay {
+    from {
+      background-position: 0% 0%;
+    }
+
+    to {
+      background-position: 0% -100%;
+    }
   }
 }

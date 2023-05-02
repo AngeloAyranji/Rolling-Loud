@@ -13,6 +13,7 @@ module.exports = withMT({
       sans: ["Montserrat", "sans-serif"],
       poppins: ["Poppins", "sans-serif"],
       planet: ["PlanetKosmos", "serif"],
+      genos: ["Genos", "sans-serif"],
     },
     extend: {},
   },
@@ -21,6 +22,7 @@ module.exports = withMT({
     require("tailwind-scrollbar"),
     require("flowbite/plugin"),
     require("@tailwindcss/line-clamp"),
+    require("@tailwindcss/typography"),
   ],
   variants: {
     scrollbar: ["rounded"],

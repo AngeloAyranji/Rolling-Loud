@@ -13,16 +13,19 @@ import ScrollToTop from "./layout/scrollToTop";
 import Layout from "./layout/layout";
 import Brands from "./pages/Brands";
 import SelectCountry from "./pages/SelectCountry";
+import FooterContent from "./pages/FooterContent";
+import ComingSoon from "./pages/ComingSoon";
 
 function App() {
   const location = useLocation();
 
   return (
-    <div className="bg-[#121212]">
+    <div className="bg-[#121212] main-scrollbar">
       <ScrollToTop>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/soon" element={<ComingSoon />} />
             <Route path="/country" element={<SelectCountry />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -32,6 +35,10 @@ function App() {
             <Route path="/product/:productName" element={<Product />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:category" element={<Products />} />
+            <Route
+              path="/footer/about"
+              element={<FooterContent name={"About Us"} />}
+            />
             <Route
               path="/products/:category/:subcategory"
               element={<Products />}

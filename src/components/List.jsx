@@ -5,15 +5,10 @@ import Card from "./Card";
 import Loading from "./Loading";
 
 function List({ type }) {
-  
   const { region } = useRegionChecker();
 
-  const {
-    data: products,
-    loading,
-    error,
-  } = useFetch(
-    `api/products?populate[image]=*&populate[brand]=*&populate[categories]=*&filters[type][$eq]=${type}&pagination[pageSize]=4&filters[region][$eq]=${region}`
+  const { data: products, loading } = useFetch(
+    `api/products?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[options][populate]=*&filters[type][$eq]=${type}&pagination[pageSize]=4&filters[region][$eq]=${region}`
   );
 
   return (
