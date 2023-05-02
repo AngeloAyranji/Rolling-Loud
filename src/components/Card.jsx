@@ -2,11 +2,14 @@ import { useState, Fragment } from "react";
 import { MdAddShoppingCart } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { useRegionChecker } from "../hooks/regionChecker";
 import { addToCart } from "../redux/cartReducer";
 import { parseLink } from "../utils/utils";
 
 function Card({ item, id }) {
   const navigate = useNavigate();
+
+  const { currency } = useRegionChecker();
 
   const dispatch = useDispatch();
 
@@ -184,16 +187,16 @@ function Card({ item, id }) {
             {item.type == "promotion" ? (
               <div className="card-actions justify-start">
                 <div className="badge badge-xs lg:badge-md line-through text-gray-400">
-                  $ {item.oldPrice}
+                  {currency} {item.oldPrice}
                 </div>
                 <div className="badge badge-xs lg:badge-md text-secondary-content">
-                  $ {item.price}
+                  {currency} {item.price}
                 </div>
               </div>
             ) : (
               <div className="card-actions justify-start">
                 <div className="badge badge-xs lg:badge-md text-secondary-content">
-                  ${item.price}
+                  {currency} {item.price}
                 </div>
               </div>
             )}

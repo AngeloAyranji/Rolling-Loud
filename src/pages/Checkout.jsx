@@ -1,15 +1,18 @@
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useJwt } from "react-jwt";
+import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
 import { addPromo, removePromo } from "../redux/promoCodeReducer";
 
 function Order() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { currency } = useRegionChecker();
 
   const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
   
@@ -131,7 +134,7 @@ function Order() {
                                 {product.name}
                               </a>
                               <p className="ml-4 text-base lg:text-xl min-w-[50px]">
-                                {product.price * product.quantity} $
+                                {product.price * product.quantity} {" "}{currency}
                               </p>
                             </div>
                             {product.options.map((item) => (
@@ -194,27 +197,22 @@ function Order() {
                   </p>
                   <div className="flex flex-row w-full justify-between items-center mb-2">
                     <p className="text-xl font-semibold">Subtotal</p>
-                    <p className="text-xl font-semibold">{totalPrice()} $</p>
+                    <p className="text-xl font-semibold">{totalPrice()} {" "}{currency}</p>
                   </div>
                   <div className="flex flex-row justify-between items-center w-full">
                     <p>Discount</p>
-                    <p>{discountedPrice()} $</p>
+                    <p>{discountedPrice()} {" "}{currency}</p>
                   </div>
 
                   <div className="flex flex-row justify-between items-center w-full">
                     <p>Delivery</p>
-                    <p>0.00 $</p>
-                  </div>
-
-                  <div className="flex flex-row justify-between items-center w-full border-b-[1px] border-gray-600 border-dashed pb-4 mb-4">
-                    <p>Tax</p>
-                    <p>0.00 $</p>
+                    <p>0.00 {" "}{currency}</p>
                   </div>
 
                   <div className="flex flex-row w-full justify-between items-center text-secondary-content">
                     <p className="text-xl font-semibold">Total</p>
                     <p className="text-xl font-semibold">
-                      {totalPrice(true)} $
+                      {totalPrice(true)} {" "}{currency}
                     </p>
                   </div>
                 </div>

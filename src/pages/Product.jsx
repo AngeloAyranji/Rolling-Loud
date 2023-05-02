@@ -5,18 +5,18 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import { Select, Option } from "@material-tailwind/react";
 import remarkGfm from "remark-gfm";
 import { addToCart } from "../redux/cartReducer";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
 import { parseLink } from "../utils/utils";
-import { Select, Option } from "@material-tailwind/react";
 
 function Product() {
   const dispatch = useDispatch();
 
-  const { region } = useRegionChecker();
+  const { region, currency } = useRegionChecker();
 
   const products = useSelector((state) => state.cart.products);
 
@@ -192,7 +192,7 @@ function Product() {
                 <div className="w-full h-1 rounded-full bg-base-100"></div>
                 <p className="text-xl text-primary font-semibold tracking-wide">
                   {price}
-                  {"$"}
+                  {currency}
                 </p>
 
                 <p className="text-secondary-content">
