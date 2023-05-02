@@ -12,7 +12,7 @@ function Order() {
     `api/orders/?populate[products][populate][image]=*&populate[promotion]=*&filters[stripe_id][$eq]=${orderId}`,
     true
   );
-
+  console.log(order)
   const [currency, setCurrency] = useState("$");
 
   useEffect(() => {
@@ -101,6 +101,13 @@ function Order() {
     }
   };
 
+  const fetchProduct = (productId) => {
+    if(order[0].attributes.products.data.length) {
+      const prd = order[0].attributes.products.data.find(product => product.id === productId)
+      return prd;
+    }
+  }
+
 
   return (
     <>
@@ -130,12 +137,12 @@ function Order() {
                 <div className="flow-root">
                   <ul role="list" className="-my-6 divide-y divide-gray-200">
                     {order.length &&
-                      order[0]?.attributes.products.data.map((product) => (
+                      order[0]?.attributes.product_data.map((product) => (
                         <li key={product.id} className="flex py-6">
                           <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                             <img
                               src={
-                                product.attributes.image.data[0].attributes.url
+                                fetchProduct(product.id).attributes.image.data[0].attributes.url
                               }
                               alt={"product image"}
                               className="h-full w-full object-cover object-center"
@@ -147,13 +154,13 @@ function Order() {
                               <div className="flex justify-between text-sm lg:text-base font-medium text-white">
                                 <h3>
                                   <Link
-                                    to={`/product/${parseLink(product.attributes.title)}`}
+                                    to={`/product/${parseLink(fetchProduct(product.id).attributes.title)}`}
                                   >
-                                    {product.attributes.title}
+                                    {fetchProduct(product.id).attributes.title}
                                   </Link>
                                 </h3>
                                 <p className="ml-4 text-base lg:text-xl">
-                                  {getPrice(product)}{" "}
+                                  {product.price}{" "}
                                   {currency}
                                 </p>
                               </div>
@@ -162,9 +169,7 @@ function Order() {
                               <p className="">
                                 Qty :{" "}
                                 {
-                                  order[0]?.attributes.product_data.find(
-                                    (x) => x.id === product.id
-                                  ).quantity
+                                  product.quantity
                                 }
                               </p>
                             </div>
@@ -188,7 +193,7 @@ function Order() {
                   </p>
                   <p className="text-sm text-gray-600">Address</p>
                   <p className="text-lg tracking-wide">
-                    {`${order[0].attributes.shipping_details.address.city}, ${order[0].attributes.shipping_details.address.line1}, ${order[0].attributes.shipping_details.address.line2}`}
+                    {`${order[0].attributes.shipping_details.address.city}, ${order[0].attributes.shipping_details.address.line1} ${order[0].attributes.shipping_details.address.line2 !== null ? ", " + order[0].attributes.shipping_details.address.line2 : ""}`}
                   </p>
                   <p className="text-lg tracking-wide">
                     {`${order[0]?.attributes.shipping_details.address.state.length ? order[0]?.attributes.shipping_details.address.state + "," : ""} ${order[0]?.attributes.shipping_details.address.country}`}

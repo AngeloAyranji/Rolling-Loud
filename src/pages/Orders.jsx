@@ -63,7 +63,6 @@ function Orders() {
 
   const getPrice = (order) => {
     let totalPrice = 0;
-    console.log(order?.attributes.product_data);
     order?.attributes.product_data.forEach((product) => {
       totalPrice += product.price * product.quantity;
     });
