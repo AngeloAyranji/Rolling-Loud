@@ -1,12 +1,21 @@
 import { useEffect, useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { Link } from "react-router-dom";
-import { useJwt } from 'react-jwt';
+import { useLocation, Link } from "react-router-dom";
+import { useJwt } from "react-jwt";
+import { useDispatch } from "react-redux";
 import useFetch from "../hooks/useFetch";
 import Loading from "../components/Loading";
 import { parseLink } from "../utils/utils";
+import { removeAll } from "../redux/cartReducer";
 
 function Orders() {
+  const dispatch = useDispatch();
+
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  const success = queryParams.get("success");
+
   const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
 
   const [page, setPage] = useState(1);
@@ -16,14 +25,22 @@ function Orders() {
     data: ordersDB,
     metadata,
     loading,
-  } = useFetch(decodedToken ? `api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=${page}&pagination[pageSize]=10&filters[user][id][$eq]=${decodedToken?.id}` : '',
+  } = useFetch(
+    decodedToken
+      ? `api/orders/?populate[products]=*&populate[promotion]=*&sort[0]=date:desc&pagination[page]=${page}&pagination[pageSize]=10&filters[user][id][$eq]=${decodedToken?.id}`
+      : "",
     true
   );
-
 
   useEffect(() => {
     handleAddMore();
   }, [ordersDB]);
+
+  useEffect(() => {
+    if (success === "true") {
+      dispatch(removeAll())
+    }
+  }, [success]);
 
   const handleAddMore = () => {
     let tmpOrders = orders.slice();
@@ -34,7 +51,6 @@ function Orders() {
 
     if (ordersDB) setOrders(tmpOrders);
   };
-
 
   const convertDate = (date) => {
     const tmpDate = new Date(date);
@@ -47,15 +63,16 @@ function Orders() {
 
   const getPrice = (order) => {
     let totalPrice = 0;
-    console.log(order?.attributes.product_data)
-    order?.attributes.product_data.forEach(product => {
-      totalPrice += product.price * product.quantity
-    })
+    order?.attributes.product_data.forEach((product) => {
+      totalPrice += product.price * product.quantity;
+    });
 
     if (order?.attributes.promotion.data !== null)
-      totalPrice = totalPrice * (1 - order.attributes.promotion.data.attributes.discount / 100);
+      totalPrice =
+        totalPrice *
+        (1 - order.attributes.promotion.data.attributes.discount / 100);
     return totalPrice;
-  }
+  };
 
   return (
     <>

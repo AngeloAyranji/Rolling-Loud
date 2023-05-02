@@ -10,22 +10,25 @@ import { addPromo, removePromo } from "../redux/promoCodeReducer";
 function Order() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
+  
   const products = useSelector((state) => state.cart.products);
   const promoCode = useSelector((state) => state.promo.promoCode);
+  
   const [loadingCheckout, setLoadingCheckout] = useState(false);
 
   const totalPrice = (withPromo = false) => {
     let total = 0;
     products.forEach((item) => (total += item.price * item.quantity));
-    if (promoCode && withPromo) total = total * (1 - promoCode.discount / 100);
+    if (promoCode && withPromo) total = total * (1 - promoCode[0].attributes?.discount / 100);
     total = total.toFixed(2);
     return total;
   };
 
   const discountedPrice = () => {
     return promoCode !== null
-      ? (totalPrice() * (1 - (1 - promoCode?.discount / 100))).toFixed(2)
+      ? (totalPrice() * (1 - (1 - promoCode[0].attributes?.discount / 100))).toFixed(2)
       : 0;
   };
 
@@ -43,7 +46,7 @@ function Order() {
 
       const payload = {
         items: productList,
-        promoCode: promoCode !== null ? promoCode.code : null,
+        promoCode: promoCode !== null ? promoCode[0].attributes?.code : null,
         userId: decodedToken?.id,
       };
 

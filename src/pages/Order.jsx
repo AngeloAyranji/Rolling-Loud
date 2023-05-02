@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 import { parseLink } from "../utils/utils";
+import { useEffect, useState } from "react";
 
 function Order() {
   const { orderId } = useParams();
@@ -11,6 +12,12 @@ function Order() {
     `api/orders/?populate[products][populate][image]=*&populate[promotion]=*&filters[stripe_id][$eq]=${orderId}`,
     true
   );
+  console.log(order)
+  const [currency, setCurrency] = useState("$");
+
+  useEffect(() => {
+    if(order) setCurrency(order[0].attributes.currency === "usd" ? "$" : "€")
+  }, [order])
 
   const convertDate = (date) => {
     const tmpDate = new Date(date);
@@ -38,7 +45,7 @@ function Order() {
   }
 
   const getDiscount = () => {
-    if (order[0]?.attributes.promotion.data) return ((order[0]?.attributes.promotion.data.attributes.discount / 100) * getSubTotal(order[0]?.attributes)).toFixed(0);
+    if (order[0]?.attributes.promotion.data) return -((order[0]?.attributes.promotion.data.attributes.discount / 100) * getSubTotal(order[0]?.attributes)).toFixed(2);
     else return 0;
   }
 
@@ -94,6 +101,13 @@ function Order() {
     }
   };
 
+  const fetchProduct = (productId) => {
+    if(order[0].attributes.products.data.length) {
+      const prd = order[0].attributes.products.data.find(product => product.id === productId)
+      return prd;
+    }
+  }
+
 
   return (
     <>
@@ -123,12 +137,12 @@ function Order() {
                 <div className="flow-root">
                   <ul role="list" className="-my-6 divide-y divide-gray-200">
                     {order.length &&
-                      order[0]?.attributes.products.data.map((product) => (
+                      order[0]?.attributes.product_data.map((product) => (
                         <li key={product.id} className="flex py-6">
                           <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                             <img
                               src={
-                                product.attributes.image.data[0].attributes.url
+                                fetchProduct(product.id).attributes.image.data[0].attributes.url
                               }
                               alt={"product image"}
                               className="h-full w-full object-cover object-center"
@@ -140,14 +154,14 @@ function Order() {
                               <div className="flex justify-between text-sm lg:text-base font-medium text-white">
                                 <h3>
                                   <Link
-                                    to={`/product/${parseLink(product.attributes.title)}`}
+                                    to={`/product/${parseLink(fetchProduct(product.id).attributes.title)}`}
                                   >
-                                    {product.attributes.title}
+                                    {fetchProduct(product.id).attributes.title}
                                   </Link>
                                 </h3>
                                 <p className="ml-4 text-base lg:text-xl">
-                                  {getPrice(product)}{" "}
-                                  $
+                                  {product.price}{" "}
+                                  {currency}
                                 </p>
                               </div>
                             </div>
@@ -155,9 +169,7 @@ function Order() {
                               <p className="">
                                 Qty :{" "}
                                 {
-                                  order[0]?.attributes.product_data.find(
-                                    (x) => x.id === product.id
-                                  ).quantity
+                                  product.quantity
                                 }
                               </p>
                             </div>
@@ -181,10 +193,13 @@ function Order() {
                   </p>
                   <p className="text-sm text-gray-600">Address</p>
                   <p className="text-lg tracking-wide">
-                    847 Jewess Bridge Apt.174
+                    {`${order[0].attributes.shipping_details.address.city}, ${order[0].attributes.shipping_details.address.line1} ${order[0].attributes.shipping_details.address.line2 !== null ? ", " + order[0].attributes.shipping_details.address.line2 : ""}`}
                   </p>
                   <p className="text-lg tracking-wide">
-                    {order[0]?.attributes.address}
+                    {`${order[0]?.attributes.shipping_details.address.state.length ? order[0]?.attributes.shipping_details.address.state + "," : ""} ${order[0]?.attributes.shipping_details.address.country}`}
+                  </p>
+                  <p className="text-lg tracking-wide">
+                    postal code: {order[0].attributes.shipping_details.address.postal_code}
                   </p>
                 </div>
               </div>
@@ -210,26 +225,21 @@ function Order() {
                   </p>
                   <div className="flex flex-row w-full justify-between items-center mb-2">
                     <p className="text-xl font-semibold">Subtotal</p>
-                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes)} $</p>
+                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes)} {currency}</p>
                   </div>
                   <div className="flex flex-row justify-between items-center w-full">
                     <p>Discount</p>
-                    <p>-{getDiscount()} $</p>
+                    <p>{getDiscount()} {currency}</p>
                   </div>
 
                   <div className="flex flex-row justify-between items-center w-full">
                     <p>Delivery</p>
-                    <p>0.00 $</p>
-                  </div>
-
-                  <div className="flex flex-row justify-between items-center w-full border-b-[1px] border-gray-600 border-dashed pb-4 mb-4">
-                    <p>Tax</p>
-                    <p>0.00 $</p>
+                    <p>{order[0]?.attributes.shipping_cost} {currency}</p>
                   </div>
 
                   <div className="flex flex-row w-full justify-between items-center text-secondary-content">
                     <p className="text-xl font-semibold">Total</p>
-                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes) - getDiscount()} $</p>
+                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes) + getDiscount() + order[0]?.attributes.shipping_cost} {currency}</p>
                   </div>
                 </div>
               </div>
