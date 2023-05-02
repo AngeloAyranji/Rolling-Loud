@@ -7,6 +7,7 @@ import { useJwt } from "react-jwt";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
 import { addPromo, removePromo } from "../redux/promoCodeReducer";
+import { parseLink } from "../utils/utils";
 
 function Order() {
   const navigate = useNavigate();
@@ -15,23 +16,27 @@ function Order() {
   const { currency } = useRegionChecker();
 
   const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
-  
+
   const products = useSelector((state) => state.cart.products);
   const promoCode = useSelector((state) => state.promo.promoCode);
-  
+
   const [loadingCheckout, setLoadingCheckout] = useState(false);
 
   const totalPrice = (withPromo = false) => {
     let total = 0;
     products.forEach((item) => (total += item.price * item.quantity));
-    if (promoCode && withPromo) total = total * (1 - promoCode[0].attributes?.discount / 100);
+    if (promoCode && withPromo)
+      total = total * (1 - promoCode[0].attributes?.discount / 100);
     total = total.toFixed(2);
     return total;
   };
 
   const discountedPrice = () => {
     return promoCode !== null
-      ? (totalPrice() * (1 - (1 - promoCode[0].attributes?.discount / 100))).toFixed(2)
+      ? (
+          totalPrice() *
+          (1 - (1 - promoCode[0].attributes?.discount / 100))
+        ).toFixed(2)
       : 0;
   };
 
@@ -91,7 +96,7 @@ function Order() {
           dispatch(addPromo(res.data.data));
         }
       } catch (err) {
-        console.log("Error: ", err);
+        console.log(err);
         dispatch(removePromo());
       }
     }
@@ -118,13 +123,13 @@ function Order() {
 
               <div className="mt-8 w-full border-b-[2px] pb-8 border-b-base-100">
                 <div className="flow-root">
-                  <ul role="list" className="-my-6 divide-y divide-gray-200">
-                    {products.map((product) => (
-                      <li key={product.id} className="flex py-6">
+                  <ul className="-my-6 divide-y divide-gray-200">
+                    {products.map((product, index) => (
+                      <li key={index} className="flex py-6">
                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                           <img
                             src={product.img}
-                            alt={"product image"}
+                            alt={product.name}
                             className="h-full w-full object-cover object-center"
                           />
                         </div>
@@ -132,18 +137,18 @@ function Order() {
                         <div className="ml-4 flex flex-1 flex-col">
                           <div>
                             <div className="flex justify-between text-sm lg:text-base font-medium text-white">
-                              <a
-                                href={product.href}
+                              <Link
+                                to={`/product/${parseLink(product.name)}`}
                                 className="line-clamp-3 text-white mb-2"
                               >
                                 {product.name}
-                              </a>
+                              </Link>
                               <p className="ml-4 text-base lg:text-xl min-w-[50px]">
                                 {product.price * product.quantity} {" "}{currency}
                               </p>
                             </div>
-                            {product.options.map((item) => (
-                              <p className="text-sm">
+                            {product.options.map((item, index) => (
+                              <p className="text-sm" key={index}>
                                 {item[0]} : <span>{item[1].suboption}</span>
                               </p>
                             ))}
@@ -209,7 +214,7 @@ function Order() {
                     <p>{discountedPrice()} {" "}{currency}</p>
                   </div>
 
-                  <div className="flex flex-row justify-between items-center w-full">
+                  <div className="flex flex-row justify-between items-center w-full border-b-[1px] border-gray-600 border-dashed pb-4 mb-4">
                     <p>Delivery</p>
                     <p>0.00 {" "}{currency}</p>
                   </div>

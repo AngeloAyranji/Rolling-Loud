@@ -15,7 +15,6 @@ function Order() {
     `api/orders/?populate[products][populate][image]=*&populate[promotion]=*&filters[stripe_id][$eq]=${orderId}`,
     true
   );
-  
 
   const convertDate = (date) => {
     const tmpDate = new Date(date);
@@ -26,29 +25,8 @@ function Order() {
     return `${month} ${day}, ${year}`;
   };
 
-  const getPrice = (product) => {
-    if (order) {
-      const productOrder = order[0]?.attributes.product_data.find(x => x.id === product.id)
-      return productOrder.price * productOrder.quantity;
-    }
-  }
-
-  const getSubTotal = (order) => {
-    let total = 0;
-    order?.product_data.forEach(product => {
-      total += getPrice(product)
-    });
-
-    return total;
-  }
-
-  const getDiscount = () => {
-    if (order[0]?.attributes.promotion.data) return -((order[0]?.attributes.promotion.data.attributes.discount / 100) * getSubTotal(order[0]?.attributes)).toFixed(2);
-    else return 0;
-  }
-
   const orderStatus = () => {
-    if (order[0]?.attributes.status === "order submitted") {
+    if (order[0]?.attributes.status === "submitted") {
       return (
         <div className="flex justify-center items-center w-full mx-auto max-w-[900px] lg:mt-20 mt-12 ">
           <ul className="steps w-full">
@@ -100,12 +78,13 @@ function Order() {
   };
 
   const fetchProduct = (productId) => {
-    if(order[0].attributes.products.data.length) {
-      const prd = order[0].attributes.products.data.find(product => product.id === productId)
+    if (order[0].attributes.products.data.length) {
+      const prd = order[0].attributes.products.data.find(
+        (product) => product.id === productId
+      );
       return prd;
     }
-  }
-
+  };
 
   return (
     <>
@@ -133,47 +112,52 @@ function Order() {
 
               <div className="mt-8 w-full border-b-[2px] pb-8 border-b-base-100">
                 <div className="flow-root">
-                  <ul role="list" className="-my-6 divide-y divide-gray-200">
+                  <ul className="-my-6 divide-y divide-gray-200">
                     {order.length &&
-                      order[0]?.attributes.product_data.map((product) => (
-                        <li key={product.id} className="flex py-6">
-                          <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                            <img
-                              src={
-                                fetchProduct(product.id).attributes.image.data[0].attributes.url
-                              }
-                              alt={"product image"}
-                              className="h-full w-full object-cover object-center"
-                            />
-                          </div>
+                      order[0]?.attributes.product_data.map(
+                        (product, index) => (
+                          <li key={index} className="flex py-6">
+                            <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                              <img
+                                src={
+                                  fetchProduct(product.id).attributes.image
+                                    .data[0].attributes.url
+                                }
+                                alt={fetchProduct(product.id).attributes.title}
+                                className="h-full w-full object-cover object-center"
+                              />
+                            </div>
 
-                          <div className="ml-4 flex flex-1 flex-col">
-                            <div>
-                              <div className="flex justify-between text-sm lg:text-base font-medium text-white">
-                                <h3>
+                            <div className="ml-4 flex flex-1 flex-col">
+                              <div>
+                                <div className="flex justify-between text-sm lg:text-base font-medium text-white">
                                   <Link
-                                    to={`/product/${parseLink(fetchProduct(product.id).attributes.title)}`}
+                                    to={`/product/${parseLink(
+                                      fetchProduct(product.id).attributes.title
+                                    )}`}
+                                    className="line-clamp-3 text-white mb-2"
                                   >
                                     {fetchProduct(product.id).attributes.title}
                                   </Link>
-                                </h3>
-                                <p className="ml-4 text-base lg:text-xl">
-                                  {product.price}{" "}
-                                  {currency}
-                                </p>
+                                  <p className="ml-4 text-base lg:text-xl min-w-[50px]">
+                                    {product.price * product.quantity}{" "}
+                                    {currency}
+                                  </p>
+                                </div>
+                                {product.option.map((item, index) => (
+                                  <p className="text-sm" key={index}>
+                                    {item.option} :{" "}
+                                    <span>{item.suboption}</span>
+                                  </p>
+                                ))}
+                              </div>
+                              <div className="flex flex-1 items-end justify-between text-sm">
+                                <p className="">Qty : {product.quantity}</p>
                               </div>
                             </div>
-                            <div className="flex flex-1 items-end justify-between text-sm">
-                              <p className="">
-                                Qty :{" "}
-                                {
-                                  product.quantity
-                                }
-                              </p>
-                            </div>
-                          </div>
-                        </li>
-                      ))}
+                          </li>
+                        )
+                      )}
                   </ul>
                 </div>
               </div>
@@ -191,13 +175,27 @@ function Order() {
                   </p>
                   <p className="text-sm text-gray-600">Address</p>
                   <p className="text-lg tracking-wide">
-                    {`${order[0].attributes.shipping_details.address.city}, ${order[0].attributes.shipping_details.address.line1} ${order[0].attributes.shipping_details.address.line2 !== null ? ", " + order[0].attributes.shipping_details.address.line2 : ""}`}
+                    {`${order[0].attributes.shipping_details.address.city}, ${
+                      order[0].attributes.shipping_details.address.line1
+                    } ${
+                      order[0].attributes.shipping_details.address.line2 !==
+                      null
+                        ? ", " +
+                          order[0].attributes.shipping_details.address.line2
+                        : ""
+                    }`}
                   </p>
                   <p className="text-lg tracking-wide">
-                    {`${order[0]?.attributes.shipping_details.address.state.length ? order[0]?.attributes.shipping_details.address.state + "," : ""} ${order[0]?.attributes.shipping_details.address.country}`}
+                    {`${
+                      order[0]?.attributes.shipping_details.address.state.length
+                        ? order[0]?.attributes.shipping_details.address.state +
+                          ","
+                        : ""
+                    } ${order[0]?.attributes.shipping_details.address.country}`}
                   </p>
                   <p className="text-lg tracking-wide">
-                    postal code: {order[0].attributes.shipping_details.address.postal_code}
+                    postal code:{" "}
+                    {order[0].attributes.shipping_details.address.postal_code}
                   </p>
                 </div>
               </div>
@@ -213,7 +211,7 @@ function Order() {
                   <a href="">
                     <p className="link">Delivery Issues</p>
                   </a>
-                  <a href="">
+                  <a>
                     <p className="link">Return Policy</p>
                   </a>
                 </div>
@@ -223,21 +221,32 @@ function Order() {
                   </p>
                   <div className="flex flex-row w-full justify-between items-center mb-2">
                     <p className="text-xl font-semibold">Subtotal</p>
-                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes)} {currency}</p>
+                    <p className="text-xl font-semibold">
+                      {order[0]?.attributes.amount_total -
+                        order[0].attributes.shipping_cost +
+                        order[0]?.attributes.discounted_amount}{" "}
+                      {currency}
+                    </p>
                   </div>
                   <div className="flex flex-row justify-between items-center w-full">
                     <p>Discount</p>
-                    <p>{getDiscount()} {currency}</p>
+                    <p>
+                      {order[0]?.attributes.discounted_amount} {currency}
+                    </p>
                   </div>
 
-                  <div className="flex flex-row justify-between items-center w-full">
+                  <div className="flex flex-row justify-between items-center w-full border-b-[1px] border-gray-600 border-dashed pb-4 mb-4">
                     <p>Delivery</p>
-                    <p>{order[0]?.attributes.shipping_cost} {currency}</p>
+                    <p>
+                      {order[0]?.attributes.shipping_cost} {currency}
+                    </p>
                   </div>
 
                   <div className="flex flex-row w-full justify-between items-center text-secondary-content">
                     <p className="text-xl font-semibold">Total</p>
-                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes) + getDiscount() + order[0]?.attributes.shipping_cost} {currency}</p>
+                    <p className="text-xl font-semibold">
+                      {order[0]?.attributes.amount_total} {currency}
+                    </p>
                   </div>
                 </div>
               </div>

@@ -7,18 +7,17 @@ function SelectCountry() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { region, setRegion } = useRegionChecker();
-  
+  const { setRegion } = useRegionChecker();
+
   const [regionTmp, setRegionTmp] = useState("");
 
   const handleChange = () => {
     if (regionTmp === "") return;
     else {
-        localStorage.setItem("region", regionTmp.toLowerCase());
-        setRegion(regionTmp.toLowerCase())
-        console.log(location.state)
-        if(location.state !== null) navigate(location.state.from)
-        else navigate("/")
+      localStorage.setItem("region", regionTmp.toLowerCase());
+      setRegion(regionTmp.toLowerCase());
+      if (location.state !== null) navigate(location.state.from);
+      else navigate("/");
     }
   };
 

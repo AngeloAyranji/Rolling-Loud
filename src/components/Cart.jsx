@@ -1,44 +1,21 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import Loading from "./Loading";
 import { removeItem } from "../redux/cartReducer";
 import { Link } from "react-router-dom";
-import { addPromo, removePromo } from "../redux/promoCodeReducer";
+import { parseLink } from "../utils/utils";
 
 export default function Example({ handleOpen }) {
   const [open, setOpen] = useState(true);
-
-  const promoCode = useSelector((state) => state.promo.promoCode);
   const products = useSelector((state) => state.cart.products);
   const dispatch = useDispatch();
 
   const totalPrice = () => {
     let total = 0;
     products.forEach((item) => (total += item.price * item.quantity));
-    if (promoCode) total = total * (1 - promoCode[0].attributes.discount / 100);
     total = total.toFixed(2);
     return total;
-  };
-
-  const handlePromoCode = async () => {
-    if (promoCode === null) {
-      try {
-        const code = document.getElementById("promoCode").value;
-        const res = await axios.get(
-          process.env.REACT_APP_BACKEND_URL +
-            `api/promotions/?filters[code][$eq]=${code}`
-        );
-        if (res.data.data.length) {
-          dispatch(addPromo(res.data.data));
-        }
-      } catch (err) {
-        console.log("Error: ", err);
-        dispatch(removePromo());
-      }
-    }
   };
 
   return (
@@ -93,10 +70,7 @@ export default function Example({ handleOpen }) {
 
                         <div className="mt-8">
                           <div className="flow-root">
-                            <ul
-                              role="list"
-                              className="-my-6 divide-y divide-gray-200"
-                            >
+                            <ul className="-my-6 divide-y divide-gray-200">
                               {products.map((product) => (
                                 <li key={product.id} className="flex py-6">
                                   <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -110,17 +84,21 @@ export default function Example({ handleOpen }) {
                                   <div className="ml-4 flex flex-1 flex-col">
                                     <div>
                                       <div className="flex justify-between text-sm lg:text-base font-medium">
-                                        <h3 className="line-clamp-3 max-w-[200px] text-white mb-2">
-                                          <a href={product.href}>
-                                            {product.name}
-                                          </a>
-                                        </h3>
+                                        <Link
+                                          to={`/product/${parseLink(
+                                            product.name
+                                          )}`}
+                                          className="line-clamp-3 text-white mb-2"
+                                          onClick={() => handleOpen()}
+                                        >
+                                          {product.name}
+                                        </Link>
                                         <p className="ml-4 text-white">
                                           {product.price * product.quantity} $
                                         </p>
                                       </div>
-                                      {product.options.map((item) => (
-                                        <p className="text-sm">
+                                      {product.options.map((item, index) => (
+                                        <p className="text-sm" key={index}>
                                           {item[0]} :{" "}
                                           <span>{item[1].suboption}</span>
                                         </p>
