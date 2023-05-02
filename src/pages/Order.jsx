@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 import { parseLink } from "../utils/utils";
+import { useEffect } from "react";
 
 function Order() {
   const { orderId } = useParams();
@@ -23,24 +24,36 @@ function Order() {
 
   const getPrice = (product) => {
     if (order) {
-      const productOrder = order[0]?.attributes.product_data.find(x => x.id === product.id)
+      const productOrder = order[0]?.attributes.product_data.find(
+        (x) => x.id === product.id
+      );
       return productOrder.price * productOrder.quantity;
     }
-  }
+  };
+
+  useEffect(() => {
+    if (order) {
+      console.log(order[0].attributes.product_data);
+    }
+  }, []);
 
   const getSubTotal = (order) => {
     let total = 0;
-    order?.product_data.forEach(product => {
-      total += getPrice(product)
+    order?.product_data.forEach((product) => {
+      total += getPrice(product);
     });
 
     return total;
-  }
+  };
 
   const getDiscount = () => {
-    if (order[0]?.attributes.promotion.data) return ((order[0]?.attributes.promotion.data.attributes.discount / 100) * getSubTotal(order[0]?.attributes)).toFixed(0);
+    if (order[0]?.attributes.promotion.data)
+      return (
+        (order[0]?.attributes.promotion.data.attributes.discount / 100) *
+        getSubTotal(order[0]?.attributes)
+      ).toFixed(0);
     else return 0;
-  }
+  };
 
   const orderStatus = () => {
     if (order[0]?.attributes.status === "order submitted") {
@@ -94,7 +107,6 @@ function Order() {
     }
   };
 
-
   return (
     <>
       {!loading && order ? (
@@ -140,14 +152,15 @@ function Order() {
                               <div className="flex justify-between text-sm lg:text-base font-medium text-white">
                                 <h3>
                                   <Link
-                                    to={`/product/${parseLink(product.attributes.title)}`}
+                                    to={`/product/${parseLink(
+                                      product.attributes.title
+                                    )}`}
                                   >
                                     {product.attributes.title}
                                   </Link>
                                 </h3>
                                 <p className="ml-4 text-base lg:text-xl">
-                                  {getPrice(product)}{" "}
-                                  $
+                                  {getPrice(product)} $
                                 </p>
                               </div>
                             </div>
@@ -210,7 +223,9 @@ function Order() {
                   </p>
                   <div className="flex flex-row w-full justify-between items-center mb-2">
                     <p className="text-xl font-semibold">Subtotal</p>
-                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes)} $</p>
+                    <p className="text-xl font-semibold">
+                      {getSubTotal(order[0]?.attributes)} $
+                    </p>
                   </div>
                   <div className="flex flex-row justify-between items-center w-full">
                     <p>Discount</p>
@@ -229,7 +244,9 @@ function Order() {
 
                   <div className="flex flex-row w-full justify-between items-center text-secondary-content">
                     <p className="text-xl font-semibold">Total</p>
-                    <p className="text-xl font-semibold">{getSubTotal(order[0]?.attributes) - getDiscount()} $</p>
+                    <p className="text-xl font-semibold">
+                      {getSubTotal(order[0]?.attributes) - getDiscount()} $
+                    </p>
                   </div>
                 </div>
               </div>

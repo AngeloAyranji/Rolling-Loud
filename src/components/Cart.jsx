@@ -7,6 +7,7 @@ import Loading from "./Loading";
 import { removeItem } from "../redux/cartReducer";
 import { Link } from "react-router-dom";
 import { addPromo, removePromo } from "../redux/promoCodeReducer";
+import { parseLink } from "../utils/utils";
 
 export default function Example({ handleOpen }) {
   const [open, setOpen] = useState(true);
@@ -18,7 +19,6 @@ export default function Example({ handleOpen }) {
   const totalPrice = () => {
     let total = 0;
     products.forEach((item) => (total += item.price * item.quantity));
-    if (promoCode) total = total * (1 - promoCode[0].attributes.discount / 100);
     total = total.toFixed(2);
     return total;
   };
@@ -110,11 +110,15 @@ export default function Example({ handleOpen }) {
                                   <div className="ml-4 flex flex-1 flex-col">
                                     <div>
                                       <div className="flex justify-between text-sm lg:text-base font-medium">
-                                        <h3 className="line-clamp-3 max-w-[200px] text-white mb-2">
-                                          <a href={product.href}>
-                                            {product.name}
-                                          </a>
-                                        </h3>
+                                        <Link
+                                          to={`/product/${parseLink(
+                                            product.name
+                                          )}`}
+                                          className="line-clamp-3 text-white mb-2"
+                                          onClick={() => handleOpen()}
+                                        >
+                                          {product.name}
+                                        </Link>
                                         <p className="ml-4 text-white">
                                           {product.price * product.quantity} $
                                         </p>
