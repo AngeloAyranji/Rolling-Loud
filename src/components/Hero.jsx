@@ -15,13 +15,9 @@ function Hero() {
             loop
             muted
             playsInline
+            type="video/mp4"
             className="w-full object-cover object-center brightness-[0.4]"
-          >
-            <source
-              src={videoUrl?.attributes.video.data.attributes.url}
-              type="video/mp4"
-            />
-          </video>
+          ></video>
           <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
             <a href="#slide3" className="btn btn-circle hidden md:flex">
               ❮
