@@ -20,13 +20,13 @@ function Footerlogo() {
       </div>
       <div>
         <div className="grid grid-flow-col gap-4">
-          <a href="https://www.instagram.com/skyshop.fpv/">
+          <a href="https://www.instagram.com/skyshop.fpv/" target="_blank">
             <AiOutlineInstagram className="w-[28px] h-[28px] text-white hover:scale-105 ease-in duration-150 cursor-pointer" />
           </a>
-          <a href="https://www.facebook.com/skyshop.fpv">
+          <a href="https://www.facebook.com/skyshop.fpv" target="_blank">
             <AiFillFacebook className="w-[28px] h-[28px] text-white hover:scale-105 ease-in duration-150 cursor-pointer" />
           </a>
-          <a href="https://wa.me/+96170124129">
+          <a href="https://wa.me/+96170124129" target="_blank">
             <AiOutlineWhatsApp className="w-[28px] h-[28px] text-white hover:scale-105 ease-in duration-150 cursor-pointer" />
           </a>
         </div>
