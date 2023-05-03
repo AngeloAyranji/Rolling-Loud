@@ -28,7 +28,7 @@ function Dropdown({ title, href, subCategories }) {
       {isTouchDevice ? (
         <div className="relative overflow-visible">
           <div className="relative flex flex-row lg:justify-between items-center space-x-2 hover:text-primary lg:hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
-            <Link to={href} className=" text-sm font-medium">
+            <Link to={href} className=" text-xs font-bold">
               {title}
             </Link>
             {subCategories.length > 0 && (
@@ -74,8 +74,8 @@ function Dropdown({ title, href, subCategories }) {
           onMouseEnter={handleOpen}
           onMouseLeave={handleOpen}
         >
-          <div className="relative flex flex-row lg:justify-between items-center space-x-2 hover:text-primary lg:hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
-            <Link to={href} className=" text-sm font-medium">
+          <div className="relative flex flex-row lg:justify-between items-center space-x-1 hover:text-primary lg:hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
+            <Link to={href} className=" text-xs font-bold">
               {title}
             </Link>
             {subCategories.length > 0 && (
