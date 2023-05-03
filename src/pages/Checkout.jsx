@@ -8,6 +8,7 @@ import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
 import { addPromo, removePromo } from "../redux/promoCodeReducer";
 import { parseLink } from "../utils/utils";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 function Order() {
   const navigate = useNavigate();
@@ -192,7 +193,22 @@ function Order() {
                               ))}
                             </div>
                             <div className="flex flex-1 items-end justify-between text-sm">
-                              <p className="">Qty : {product.quantity}</p>
+                              <div className="flex items-center">
+                                <p className="">Qty : </p>
+                                <div
+                                  role="button"
+                                  className="hover:text-primary duration-100 ease-in mx-2"
+                                >
+                                  <AiOutlineMinus className="" />
+                                </div>
+                                <p>{product.quantity}</p>
+                                <div
+                                  role="button"
+                                  className="hover:text-primary duration-100 ease-in mx-2"
+                                >
+                                  <AiOutlinePlus className="" />
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </li>
