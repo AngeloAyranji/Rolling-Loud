@@ -5,8 +5,8 @@ function Footer({ navigation }) {
   return (
     <footer className="footer px-4 md:px-10 py-12 bg-[#121212] text-base-content">
       <div>
-        <span className="footer-title">Categories</span>
-        {navigation.map((item) => (
+        <span className="footer-title">Products</span>
+        {navigation.slice(0, -1).map((item) => (
           <a
             key={item.name}
             className="link link-hover uppercase"
@@ -22,6 +22,9 @@ function Footer({ navigation }) {
           About us
         </Link>
         <a className="link link-hover">Contact</a>
+        <Link to="/brands" className="link link-hover">
+          Brands
+        </Link>
       </div>
       <div>
         <span className="footer-title">Legal</span>
