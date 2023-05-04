@@ -195,8 +195,8 @@ function Product() {
                   {product[0]?.attributes.shortDescription}
                 </p>
 
-                {product[0].attributes.options.length &&
-                  product[0].attributes.options?.map((item, index) => (
+                {product[0]?.attributes.options.length !== 0 ? (
+                  product[0]?.attributes.options?.map((item, index) => (
                     <div key={index} className="max-w-[300px] mb-4">
                       <Select
                         variant="standard"
@@ -215,8 +215,11 @@ function Product() {
                         ))}
                       </Select>
                     </div>
-                  ))}
-                <div className="pt-8 pb-8 flex flex-row justify-start space-x-4 items-center">
+                  ))
+                ) : (
+                  <></>
+                )}
+                <div className="pt-4 pb-4 flex flex-row justify-start space-x-4 items-center">
                   <div className="flex h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[90px] text-secondary-content pl-4 pr-4">
                     <button
                       onClick={() =>
