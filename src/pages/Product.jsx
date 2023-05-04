@@ -140,7 +140,7 @@ function Product() {
             <div className=" flex flex-col lg:flex-row lg:justify-start justify-center lg:items-start items-center mt-8 lg:mt-12 lg:space-x-8 xl:space-x-14">
               {/*image div*/}
               <div className="flex flex-col space-y-4 md:items-start justify-center items-center w-full max-w-[520px] lg:max-w-[440px]">
-                <div className="relative w-full aspect-square border-primary border rounded-lg overflow-hidden">
+                <div className="relative w-full aspect-square border-primary border rounded-lg overflow-hidden bg-secondary-content">
                   <img
                     src={mainImg}
                     alt={product[0]?.attributes.title}
@@ -154,7 +154,7 @@ function Product() {
                 <div className="flex w-full mx-auto space-x-2 overflow-x-auto lg:scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-full scrollbar-track-gray-600 scrollbar-track-rounded-full pb-4">
                   {product[0]?.attributes.image.data.map((item, index) => (
                     <div
-                      className="w-[100px] h-[100px] aspect-square border-primary border rounded-lg cursor-pointer"
+                      className="w-[100px] h-[100px] aspect-square border-primary border rounded-lg cursor-pointer bg-secondary-content"
                       key={index}
                     >
                       <img
