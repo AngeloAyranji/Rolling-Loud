@@ -48,7 +48,7 @@ export default function Example({ handleOpen }) {
                 >
                   <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
                     <div className="flex h-full flex-col overflow-y-scroll bg-[#121212] shadow-xl">
-                      <div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
+                      <div className="flex-1 overflow-y-auto scrollbar-cart py-6 px-4 sm:px-6">
                         <div className="flex items-start justify-between">
                           <Dialog.Title className="text-lg font-medium text-white">
                             Shopping cart

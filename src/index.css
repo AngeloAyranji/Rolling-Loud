@@ -39,6 +39,25 @@
     border-radius: 20px;
     border: 3px solid #313131;
   }
+
+  .scrollbar-cart::-webkit-scrollbar {
+    height: 6px;
+    width: 10px !important;
+  }
+
+  .scrollbar-cart::-webkit-scrollbar-track {
+    background: #313131;
+  }
+
+  .scrollbar-cart::-webkit-scrollbar-thumb {
+    background-color: rgb(2, 219, 224);
+    border-radius: 5px;
+    border: 2px solid #313131;
+  }
+
+  .scrollbar-cart::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(2 219 224/0.5);
+  }
 }
 
 @font-face {

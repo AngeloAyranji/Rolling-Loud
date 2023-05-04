@@ -12,6 +12,7 @@ import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
 import { parseLink } from "../utils/utils";
+import { MdAddShoppingCart } from "react-icons/md";
 
 function Product() {
   const dispatch = useDispatch();
@@ -241,18 +242,19 @@ function Product() {
                     className={
                       product[0].attributes.quantity === 0 ||
                       canCheckout === false
-                        ? "btn btn-disabled btn-primary w-full max-w-[250px]"
-                        : "btn btn-primary w-full max-w-[250px]"
+                        ? "btn btn-disabled btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
+                        : "btn btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
                     }
                     onClick={() => checkAvailability(quantity)}
                   >
-                    Add to Cart
+                    <p> Add to Cart</p>
+                    <MdAddShoppingCart className="w-5 h-5 font-extralight" />
                   </button>
                 </div>
                 <div className="w-full h-1 rounded-full bg-base-100"></div>
                 <div className="flex flex-row space-x-4 items-center pt-4">
                   <CiLock className="w-10 h-10 text-secondary-content text-sm" />
-                  <div className="flex flex-col space-y-2">
+                  <div className="flex flex-col space-y-1">
                     <p className="uppercase text-secondary-content">
                       Secure payments
                     </p>
@@ -282,7 +284,7 @@ function Product() {
               </h3>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
               <ReactMarkdown
-                className="prose text-secondary-content"
+                className="prose text-secondary-content lg:text-lg tracking-wide min-w-full"
                 remarkPlugins={[remarkGfm]}
               >
                 {markdown}
