@@ -187,7 +187,7 @@ function Product() {
                   <p className="text-green-500 text-xs lg:text-sm">In Stock</p>
                 )}
 
-                <div className="w-full h-1 rounded-full bg-base-100"></div>
+                <div className="divider"></div>
                 <p className="text-xl text-primary font-semibold tracking-wide">
                   {price}
                   {currency}
@@ -256,7 +256,7 @@ function Product() {
                     <MdAddShoppingCart className="w-5 h-5 font-extralight" />
                   </button>
                 </div>
-                <div className="w-full h-1 rounded-full bg-base-100"></div>
+                <div className="divider"></div>
                 <div className="flex flex-row space-x-4 items-center pt-4">
                   <CiLock className="w-10 h-10 text-secondary-content text-sm" />
                   <div className="flex flex-col space-y-1">
