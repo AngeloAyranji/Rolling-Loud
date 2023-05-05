@@ -3,12 +3,16 @@ import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import useFetch from "../hooks/useFetch";
 import Loading from "../components/Loading";
+import { Helmet } from "react-helmet";
 
 function FooterContent({ name }) {
   const { data, loading } = useFetch("api/aboutus");
 
   return (
     <>
+      <Helmet>
+        <title>{name}</title>
+      </Helmet>
       {!loading && data ? (
         <div className="w-full mx-auto flex justify-center items-center">
           <div className="max-w-[1400px] w-full">

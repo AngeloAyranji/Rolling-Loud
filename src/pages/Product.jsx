@@ -15,6 +15,7 @@ import { parseLink } from "../utils/utils";
 import { MdAddShoppingCart } from "react-icons/md";
 import Rating from "../components/Rating";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { Helmet } from "react-helmet";
 
 function Product() {
   const dispatch = useDispatch();
@@ -98,6 +99,9 @@ function Product() {
   };
   return (
     <>
+      <Helmet>
+        <title>{productName}</title>
+      </Helmet>
       {!loading && product ? (
         <div className="flex w-full mx-auto p-4 pt-8 md:p-8">
           <div className="flex flex-col space-y-8 w-full mx-auto max-w-[1400px]">

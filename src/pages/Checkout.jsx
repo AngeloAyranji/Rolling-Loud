@@ -9,7 +9,8 @@ import Loading from "../components/Loading";
 import { addPromo, removePromo } from "../redux/promoCodeReducer";
 import { parseLink } from "../utils/utils";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
-import useFetch from "../hooks/useFetch";
+import { Helmet } from "react-helmet";
+import { Input, Button } from "@material-tailwind/react";
 
 function Order() {
   const navigate = useNavigate();
@@ -21,7 +22,9 @@ function Order() {
 
   const products = useSelector((state) => state.cart.products);
   const promoCode = useSelector((state) => state.promo.promoCode);
-  const [showToast, setShowToast] = useState(true);
+  const [showToast, setShowToast] = useState(false);
+  const [promoInput, setPromoInput] = useState("");
+  const onChange = ({ target }) => setPromoInput(target.value);
 
   const [loadingCheckout, setLoadingCheckout] = useState(false);
 
@@ -121,6 +124,9 @@ function Order() {
 
   return (
     <>
+      <Helmet>
+        <title>Checkout</title>
+      </Helmet>
       {!loadingCheckout ? (
         <Fragment>
           {/* Toast here */}
@@ -294,30 +300,30 @@ function Order() {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col w-full items-center justify-center lg:flex-row lg:justify-between lg:space-x-8">
+                <div className="flex flex-col w-full items-center lg:items-start justify-center lg:flex-row lg:justify-between lg:space-x-8 pt-4">
                   <div className="flex flex-col space-y-2 w-full max-w-[400px]">
-                    <div className="form-control w-full">
-                      <label className="label">
-                        <span className="label-text">Enter PROMO Code</span>
-                      </label>
-                      <div className="relative">
-                        <input
-                          id="promoCode"
-                          type="text"
-                          placeholder="CODE"
-                          className="input input-bordered w-full pr-16"
-                        />
-                        <button
-                          className={
-                            promoCode === null
-                              ? "btn btn-primary absolute top-0 right-0 rounded-l-none"
-                              : "btn btn-primary btn-disabled absolute top-0 right-0 rounded-l-none"
-                          }
-                          onClick={handlePromoCode}
-                        >
-                          ADD
-                        </button>
-                      </div>
+                    <div className="relative flex w-full ">
+                      <Input
+                        id="promocode"
+                        label="Promo Code"
+                        value={promoInput}
+                        color="cyan"
+                        onChange={onChange}
+                        className="pr-20 text-secondary-content "
+                        containerProps={{
+                          className:
+                            "min-w-0 appearance-none focus:outline-none focus:border h-12",
+                        }}
+                      />
+                      <Button
+                        size="sm"
+                        color="cyan"
+                        disabled={!promoInput || promoCode !== null}
+                        className="!absolute right-1 top-1 rounded h-10"
+                        onClick={handlePromoCode}
+                      >
+                        Add
+                      </Button>
                     </div>
                     <div className="flex w-full justify-between pr-1 items-center">
                       {promoCode != null ? (
@@ -338,7 +344,7 @@ function Order() {
                       </div>
                     </div>
                   </div>
-                  <div className="pt-2 max-w-[400px] w-full mt-4 lg:mt-0">
+                  <div className=" max-w-[400px] w-full mt-4 lg:mt-0">
                     <button
                       className={
                         products.length

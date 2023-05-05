@@ -5,6 +5,7 @@ import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
 import { parseLink } from "../utils/utils";
+import { Helmet } from "react-helmet";
 
 function Order() {
   const { orderId } = useParams();
@@ -88,6 +89,9 @@ function Order() {
 
   return (
     <>
+      <Helmet>
+        <title>Order-{orderId}</title>
+      </Helmet>
       {!loading && order ? (
         <div className="w-full mx-auto flex justify-center items-center">
           <div className="max-w-[1400px] w-full">

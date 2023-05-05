@@ -3,12 +3,16 @@ import Brand from "../components/Brand";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 import { parseLink } from "../utils/utils";
+import { Helmet } from "react-helmet";
 
 function Brands() {
   const { data: brands, loading } = useFetch(`api/brands?populate[image]=*`);
 
   return (
     <>
+      <Helmet>
+        <title>Brands</title>
+      </Helmet>
       {!loading && brands ? (
         <div className="w-full mx-auto flex justify-center items-center">
           <div className="max-w-[1400px] w-full p-4 md:p-8">
