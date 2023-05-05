@@ -13,6 +13,8 @@ import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
 import { parseLink } from "../utils/utils";
 import { MdAddShoppingCart } from "react-icons/md";
+import Rating from "../components/Rating";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 function Product() {
   const dispatch = useDispatch();
@@ -220,13 +222,13 @@ function Product() {
                   <></>
                 )}
                 <div className="pt-4 pb-4 flex flex-row justify-start space-x-4 items-center">
-                  <div className="flex h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[90px] text-secondary-content pl-4 pr-4">
+                  <div className="flex text-xl h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[100px] text-secondary-content px-3">
                     <button
                       onClick={() =>
                         setQuantity((prev) => (prev === 1 ? 1 : prev - 1))
                       }
                     >
-                      -
+                      <AiOutlineMinus />
                     </button>
                     {product[0]?.attributes.quantity === 0 ? 0 : quantity}
                     <button
@@ -238,7 +240,7 @@ function Product() {
                         )
                       }
                     >
-                      +
+                      <AiOutlinePlus />
                     </button>
                   </div>
                   <button
@@ -280,9 +282,22 @@ function Product() {
               </div>
             </div>
 
+            {/* Ratings */}
+            <div className="w-full mx-auto flex flex-col space-y-4 pt-8">
+              <h3 className="text-secondary-content text-xl font-semibold tracking-wide uppercase">
+                Reviews
+              </h3>
+              <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
+              <Rating />
+              <Rating />
+              <Rating />
+              <Rating />
+              <Rating />
+            </div>
+
             {/* extra infos and related products */}
             <div className="w-full mx-auto p-4 md:p-8 border-2 border-primary rounded-lg flex flex-col space-y-4 pt-8">
-              <h3 className="text-secondary-content text-lg text-semibold tracking-wide uppercase">
+              <h3 className="text-secondary-content text-lg font-semibold tracking-wide uppercase">
                 Technical Characteristics
               </h3>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>

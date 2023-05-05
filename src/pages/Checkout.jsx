@@ -9,12 +9,13 @@ import Loading from "../components/Loading";
 import { addPromo, removePromo } from "../redux/promoCodeReducer";
 import { parseLink } from "../utils/utils";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import useFetch from "../hooks/useFetch";
 
 function Order() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { currency } = useRegionChecker();
+  const { region, currency } = useRegionChecker();
 
   const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
 
@@ -90,6 +91,13 @@ function Order() {
     } else {
       navigate("/login");
     }
+  };
+
+  const checkAvailability = (item) => {
+    // const { data: product } = useFetch(
+    //   `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options][populate]=*&filters[region][$eq]=${region}&filters[title][$eq]=${item.name}`
+    // );
+    // console.log(product);
   };
 
   const handlePromoCode = async () => {
@@ -205,6 +213,7 @@ function Order() {
                                 <div
                                   role="button"
                                   className="hover:text-primary duration-100 ease-in mx-2"
+                                  onClick={() => checkAvailability(product)}
                                 >
                                   <AiOutlinePlus className="" />
                                 </div>
