@@ -325,24 +325,24 @@ function Order() {
                         Add
                       </Button>
                     </div>
-                    <div className="flex w-full justify-between pr-1 items-center">
-                      {promoCode != null ? (
+                    {promoCode != null ? (
+                      <div className="flex w-full justify-between pr-1 items-center">
                         <p className="text-sm mt-2">
                           {promoCode[0].attributes.code} Added!
                         </p>
-                      ) : (
-                        <></>
-                      )}
-                      <div className="flex flex-1 justify-end">
-                        <button
-                          onClick={() => dispatch(removePromo())}
-                          type="button"
-                          className="font-light text-sm text-secondary hover:text-secondary-focus"
-                        >
-                          Remove
-                        </button>
+                        <div className="flex flex-1 justify-end">
+                          <button
+                            onClick={() => dispatch(removePromo())}
+                            type="button"
+                            className="font-light text-sm text-secondary hover:text-secondary-focus"
+                          >
+                            Remove
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                   <div className=" max-w-[400px] w-full mt-4 lg:mt-0">
                     <button
