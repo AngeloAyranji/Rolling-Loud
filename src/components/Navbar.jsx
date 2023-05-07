@@ -2,7 +2,6 @@ import { useState, Fragment, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BsPerson } from "react-icons/bs";
-import { FiHeart } from "react-icons/fi";
 import {
   Bars3Icon,
   XMarkIcon,
@@ -103,20 +102,6 @@ export default function Navbar({ navigation, setNavigation }) {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 2xl:static 2xl:inset-auto 2xl:ml-6 2xl:pr-0">
-                <button
-                  type="button"
-                  className="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                  onClick={() => {
-                    handleOpen();
-                  }}
-                >
-                  <span className="sr-only">View cart</span>
-                  <FiHeart
-                    className="h-5 w-5 sm:h-6 sm:w-6"
-                    aria-hidden="true"
-                  />
-                </button>
-
                 <button
                   type="button"
                   className=" ml-3 relative rounded-full bg-[#121212] p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"

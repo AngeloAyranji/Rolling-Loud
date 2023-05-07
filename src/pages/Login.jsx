@@ -61,10 +61,7 @@ function Login() {
       <Helmet>
         <title>SkyShop - Login</title>
       </Helmet>
-      <div
-        className="w-full h-full relative"
-        style={{ height: logHeight - 64 }}
-      >
+      <div className="w-full h-full relative" style={{ height: logHeight }}>
         <div className="absolute w-full h-full left-0 top-0 overflow-hidden z-0">
           <video
             src={videoUrl?.attributes.video.data.attributes.url}

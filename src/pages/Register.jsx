@@ -25,8 +25,16 @@ function Register() {
     const username = document.getElementById("registerUsername").value;
     const email = document.getElementById("registerEmail").value;
     const password = document.getElementById("registerPassword").value;
-    const confirmPassword = document.getElementById("registerConfirmPassword").value;
-    if (email !== '' && password !== '' && username !== '' && confirmPassword !== '' && password === confirmPassword) {
+    const confirmPassword = document.getElementById(
+      "registerConfirmPassword"
+    ).value;
+    if (
+      email !== "" &&
+      password !== "" &&
+      username !== "" &&
+      confirmPassword !== "" &&
+      password === confirmPassword
+    ) {
       setError(false);
 
       try {
@@ -60,10 +68,7 @@ function Register() {
         <title>SkyShop - Register</title>
       </Helmet>
 
-      <div
-        className="w-full h-full relative"
-        style={{ height: logHeight - 64 }}
-      >
+      <div className="w-full h-full relative" style={{ height: logHeight }}>
         <div className="absolute w-full h-full left-0 top-0 overflow-hidden z-0">
           <video
             src={videoUrl?.attributes.video.data.attributes.url}
@@ -92,10 +97,10 @@ function Register() {
                 className="mt-8 mb-2 w-70 max-w-screen-lg sm:w-96"
               >
                 <div className="mb-4 flex flex-col gap-6">
-                <Input
+                  <Input
                     id="registerUsername"
                     size="lg"
-                    label="Email"
+                    label="Username"
                     color="cyan"
                     className="text-secondary-content"
                     error={error}
