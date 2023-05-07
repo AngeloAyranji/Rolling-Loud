@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import Card from "./Card";
-import Loading from "./Loading";
 import CardSkeleton from "./CardSkeleton";
 
 function ListProduct({ products, loading }) {

@@ -2,7 +2,6 @@ import { Fragment } from "react";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Card from "./Card";
-import Loading from "./Loading";
 import CardSkeleton from "./CardSkeleton";
 
 function List({ type }) {
