@@ -56,9 +56,7 @@ function Banner() {
             <div className="h-10 w-full flex items-center justify-center">
               <SiKlarna className="text-primary w-8 h-8" />
             </div>
-            <h3 className="uppercase text-white font-bold text-lg h-10">
-              Klarna
-            </h3>
+            <h3 className="uppercase text-white font-bold text-lg">Klarna</h3>
           </div>
           <div className="flex flex-col flex-1">
             <p className="text-center text-sm text-gray-400 pb-4">

@@ -15,6 +15,7 @@ import Brands from "./pages/Brands";
 import SelectCountry from "./pages/SelectCountry";
 import FooterContent from "./pages/FooterContent";
 import ComingSoon from "./pages/ComingSoon";
+import AddReview from "./pages/AddReview";
 
 function App() {
   const location = useLocation();
@@ -39,6 +40,7 @@ function App() {
               path="/footer/about"
               element={<FooterContent name={"About Us"} />}
             />
+            <Route path="/review" element={<AddReview />} />
             <Route
               path="/products/:category/:subcategory"
               element={<Products />}
