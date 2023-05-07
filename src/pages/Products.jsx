@@ -107,34 +107,38 @@ function Products() {
         <title>Skyshop</title>
       </Helmet>
       <div className="w-full md:mb-[200px] mb-20">
-        <div className="flex flex-col justify-center items-start p-4 md:p-6 lg:p-8 2xl:pl-14 space-y-8">
-          <Breadcrumbs
-            separator="›"
-            aria-label="breadcrumb"
-            className="!text-white !text-sm !breadcrumbs !scrollbar-thumb-rounded-full !scrollbar-thumb-base-100 !pb-4 !scrollbar-thumb-sm"
-          >
-            <Link to="/">Home</Link>
-            <Link to="/products">Products</Link>
-            {category ? (
-              <Link to={`/products/${parseLink(category)}`}>
-                {category.charAt(0).toUpperCase() + category.slice(1)}
-              </Link>
-            ) : querySearch ? (
-              <Link to={`/products?search=${querySearch}`}>{querySearch}</Link>
-            ) : (
-              <Link to={`/products`}>All Products</Link>
-            )}
-            {subcategory && (
-              <Link
-                to={`/products/${parseLink(category)}/${parseLink(
-                  subcategory
-                )}`}
-              >
-                {subcategory}
-              </Link>
-            )}
-          </Breadcrumbs>
-          <h2 className="text-xl xl:text-3xl font-bold text-white uppercase">
+        <div className="flex flex-col justify-center items-start p-4 md:p-6 lg:p-8 2xl:pl-14">
+          <div className="mb-4">
+            <Breadcrumbs
+              separator="›"
+              aria-label="breadcrumb"
+              className="!text-white !text-sm !breadcrumbs !scrollbar-thumb-rounded-full !scrollbar-thumb-base-100 !pb-4 !scrollbar-thumb-sm"
+            >
+              <Link to="/">Home</Link>
+              <Link to="/products">Products</Link>
+              {category ? (
+                <Link to={`/products/${parseLink(category)}`}>
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </Link>
+              ) : querySearch ? (
+                <Link to={`/products?search=${querySearch}`}>
+                  {querySearch}
+                </Link>
+              ) : (
+                <Link to={`/products`}>All Products</Link>
+              )}
+              {subcategory && (
+                <Link
+                  to={`/products/${parseLink(category)}/${parseLink(
+                    subcategory
+                  )}`}
+                >
+                  {subcategory}
+                </Link>
+              )}
+            </Breadcrumbs>
+          </div>
+          <h2 className="text-xl xl:text-3xl font-bold text-white uppercase mb-4">
             {!category
               ? querySearch
                 ? `Search in ${querySearch}`
@@ -143,21 +147,24 @@ function Products() {
               ? subcategory
               : category}
           </h2>
-          <p className="max-w-[700px]">
-            {category
-              ? categoryDB.length
-                ? categoryDB[0]?.attributes.description
-                : brandDB.length
-                ? brandDB[0]?.attributes.description
-                : ""
-              : querySearch
-              ? ""
-              : `ALL PRODUCTS Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia
-          veritatis placeat id soluta incidunt provident nostrum quibusdam amet
-          dolor, excepturi eius, nihil quisquam. Debitis reprehenderit atque,
-          suscipit quaerat impedit minima!`}
-          </p>
-          <div className="flex flex-row justify-between md:justify-start items-center w-full border-t-2 border-t-base-100 pt-6 space-x-8 md:space-x-0">
+          {category && categoryDB && brandDB ? (
+            categoryDB?.length ? (
+              <p className="max-w-[700px] mb-4">
+                {categoryDB[0]?.attributes.description}
+              </p>
+            ) : brandDB.length ? (
+              <p className="max-w-[700px] mb-4">
+                {brandDB[0]?.attributes.description}
+              </p>
+            ) : (
+              <></>
+            )
+          ) : querySearch ? (
+            <></>
+          ) : (
+            <></>
+          )}
+          <div className="flex flex-row justify-between md:justify-start items-center w-full border-t-2 border-t-base-100 pt-6 space-x-8 md:space-x-0 mb-4">
             <BsSliders
               className="w-6 h-6 font-thin text-[#A6ADBB] md:hidden"
               onClick={() => setIsSidebar(!isSidebar)}
