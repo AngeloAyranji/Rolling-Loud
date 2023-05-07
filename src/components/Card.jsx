@@ -178,7 +178,7 @@ function Card({ item, id }) {
               <div className="h-4 mb-2">
                 {item.type !== "preorder" && (
                   <>
-                    {item.quantity > 0 ? (
+                    {item.options[0].quantity > 0 ? (
                       <p className="text-green-500 text-xs lg:text-sm">
                         In Stock
                       </p>
@@ -197,16 +197,18 @@ function Card({ item, id }) {
             {item.type == "promotion" ? (
               <div className="card-actions justify-start">
                 <div className="badge badge-xs lg:badge-md line-through text-gray-400">
-                  {currency} {item.oldPrice}
+                  {currency} {item.options[0].price}
                 </div>
                 <div className="badge badge-xs lg:badge-md text-secondary-content">
-                  {currency} {item.price}
+                  {currency}{" "}
+                  {item.options[0].price -
+                    (item.options[0].price * item.discountPercentage) / 100}
                 </div>
               </div>
             ) : (
               <div className="card-actions justify-start">
                 <div className="badge badge-xs lg:badge-md text-secondary-content">
-                  {currency} {item.price}
+                  {currency} {item.options[0].price}
                 </div>
               </div>
             )}

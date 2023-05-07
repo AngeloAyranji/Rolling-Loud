@@ -27,7 +27,7 @@ function Product() {
   const { productName } = useParams();
 
   const { data: product, loading } = useFetch(
-    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
 
   const [mainImg, setMainImg] = useState(null);
@@ -36,9 +36,14 @@ function Product() {
   const [optionsMap, setOptionsMap] = useState(new Map());
   const [canCheckout, setCanCheckout] = useState(false);
   const [markdown, setMarkdown] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     if (product) {
+      setSelectedProduct({
+        price: product[0]?.attributes.options[0].price,
+        quantity: product[0]?.attributes.options[0].quantity,
+      });
       setMarkdown(product[0]?.attributes.longDescription);
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
       setPrice(product[0]?.attributes.price);
@@ -97,6 +102,7 @@ function Product() {
       }
     }
   };
+  console.log(product);
   return (
     <>
       <Helmet>
@@ -207,29 +213,25 @@ function Product() {
                   {product[0]?.attributes.shortDescription}
                 </p>
 
-                {product[0]?.attributes.options.length !== 0 ? (
-                  product[0]?.attributes.options?.map((item, index) => (
-                    <div key={index} className="max-w-[300px] mb-4">
-                      <Select
-                        variant="standard"
-                        label={item.option}
-                        color="cyan"
-                        className="text-secondary-content mb-4"
-                        onChange={handePriceChange}
-                      >
-                        {item.suboption.map((sub, index) => (
-                          <Option
-                            value={[item.option, sub.suboption, sub.price]}
-                            key={index}
-                          >
-                            {sub.suboption}
-                          </Option>
-                        ))}
-                      </Select>
-                    </div>
-                  ))
-                ) : (
+                {product[0]?.attributes.options.length === 1 &&
+                product[0]?.attributes.options[0].title === "Default" ? (
                   <></>
+                ) : (
+                  <div className="max-w-[300px] mb-4">
+                    <Select
+                      variant="standard"
+                      label={product[0]?.attributes.option_name}
+                      color="cyan"
+                      className="text-secondary-content mb-4"
+                      onChange={handePriceChange}
+                    >
+                      {product[0]?.attributes.options.map((sub, index) => (
+                        <Option value={[sub.price]} key={index}>
+                          {sub.title}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
                 )}
                 <div className="pt-4 pb-4 flex flex-row justify-start space-x-4 items-center">
                   <div className="flex text-xl h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[100px] text-secondary-content px-3">

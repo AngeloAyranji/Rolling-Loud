@@ -72,7 +72,7 @@ function Products() {
   }, [productsDB]);
 
   const handleFilters = () => {
-    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[options]=*&filters[price][$gte]=${price[0]}&filters[price][$lte]=${price[1]}&pagination[pageSize]=25&filters[region][$eq]=${region}`;
+    let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[options]=*&pagination[pageSize]=25&filters[region][$eq]=${region}`;
 
     if (querySearch) filter += `&filters[title][$containsi]=${querySearch}`;
     if (category && categoryDB?.length)
@@ -104,13 +104,16 @@ function Products() {
   return (
     <>
       <Helmet>
-        <title>Skyshop - {!category
-          ? querySearch
+        <title>
+          Skyshop -{" "}
+          {!category
             ? querySearch
-            : "All Products"
-          : subcategory
+              ? querySearch
+              : "All Products"
+            : subcategory
             ? subcategory
-            : category}</title>
+            : category}
+        </title>
       </Helmet>
       <div className="w-full md:mb-[200px] mb-20">
         <div className="flex flex-col justify-center items-start p-4 md:p-6 lg:p-8 2xl:pl-14">
