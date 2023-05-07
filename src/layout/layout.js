@@ -60,6 +60,14 @@ const Layout = ({ children }) => {
             location.pathname !== "/soon" && (
               <>
                 <Navbar navigation={navigation} setNavigation={setNavigation} />
+              </>
+            )}
+
+          {location.pathname !== "/login" &&
+            location.pathname !== "/country" &&
+            location.pathname !== "/register" &&
+            location.pathname !== "/soon" && (
+              <>
                 <SearchBar />
               </>
             )}

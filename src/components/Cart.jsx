@@ -2,14 +2,17 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { removeItem } from "../redux/cartReducer";
 import { Link } from "react-router-dom";
+import { removeItem } from "../redux/cartReducer";
+import { useRegionChecker } from "../hooks/regionChecker";
 import { parseLink } from "../utils/utils";
 
 export default function Example({ handleOpen }) {
   const [open, setOpen] = useState(true);
   const products = useSelector((state) => state.cart.products);
   const dispatch = useDispatch();
+
+  const { currency } = useRegionChecker();
 
   const totalPrice = () => {
     let total = 0;
@@ -94,7 +97,7 @@ export default function Example({ handleOpen }) {
                                           {product.name}
                                         </Link>
                                         <p className="ml-4 text-white">
-                                          {product.price * product.quantity} $
+                                          {product.price * product.quantity} {currency}
                                         </p>
                                       </div>
                                       {product.options.map((item, index) => (

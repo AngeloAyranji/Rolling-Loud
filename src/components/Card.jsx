@@ -176,12 +176,18 @@ function Card({ item, id }) {
                 )}
               </div>
               <div className="h-4 mb-2">
-                {item.quantity > 0 ? (
-                  <p className="text-green-500 text-xs lg:text-sm">In Stock</p>
-                ) : (
-                  <p className="text-gray-600 line-through text-xs lg:text-sm">
-                    Out Of Stock
-                  </p>
+                {item.type !== "preorder" && (
+                  <>
+                    {item.quantity > 0 ? (
+                      <p className="text-green-500 text-xs lg:text-sm">
+                        In Stock
+                      </p>
+                    ) : (
+                      <p className="text-gray-600 line-through text-xs lg:text-sm">
+                        Out Of Stock
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
               {/* <p className="hidden group-hover:text-black text-base-100 ease-in-out duration-150 text-sm line-clamp-4 lg:line-clamp-3 mb-4 lg:mb-8 lg:inline-block">

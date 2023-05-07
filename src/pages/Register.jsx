@@ -20,16 +20,17 @@ function Register() {
   };
 
   const handleRegister = async () => {
+    const username = document.getElementById("registerUsername").value;
     const email = document.getElementById("registerEmail").value;
     const password = document.getElementById("registerPassword").value;
     const confirmPassword = document.getElementById("registerConfirmPassword").value;
-    if (email !== '' && password !== '' && confirmPassword !== '' && password === confirmPassword) {
+    if (email !== '' && password !== '' && username !== '' && confirmPassword !== '' && password === confirmPassword) {
       setError(false);
 
       try {
         const res = await axios.post(process.env.REACT_APP_BACKEND_URL + 'api/auth/local/register',
           {
-            username: email,
+            username: username,
             email: email,
             password: password,
             region: localStorage.getItem("region")
@@ -67,6 +68,20 @@ function Register() {
             <h1 className="text-secondary-content text-2xl font-extrabold mb- 8tracking-wide font-sans">
               Register now
             </h1>
+
+            <div className="form-control w-full mb-4">
+              <label className="label">
+                <span className="label-text text-lg font-bold tracking-wide text-secondary-content">
+                  Username
+                </span>
+              </label>
+              <input
+                id="registerUsername"
+                type="text"
+                placeholder="Type here"
+                className="input input-bordered w-full input-primary bg-white"
+              />
+            </div>
 
             <div className="form-control w-full mb-4">
               <label className="label">

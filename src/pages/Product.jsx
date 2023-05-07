@@ -176,14 +176,19 @@ function Product() {
                 <h2 className="text-xl text-secondary-content font-bold">
                   {product[0]?.attributes.title}
                 </h2>
-                {product[0]?.attributes.quantity === 0 ? (
-                  <p className="line-through text-xs lg:text-sm">
-                    Out Of Stock
-                  </p>
-                ) : (
-                  <p className="text-green-500 text-xs lg:text-sm">In Stock</p>
+                {product[0]?.attributes.type !== "preorder" && (
+                  <>
+                    {product[0]?.attributes.quantity === 0 ? (
+                      <p className="line-through text-xs lg:text-sm">
+                        Out Of Stock
+                      </p>
+                    ) : (
+                      <p className="text-green-500 text-xs lg:text-sm">
+                        In Stock
+                      </p>
+                    )}
+                  </>
                 )}
-
                 <div className="w-full h-1 rounded-full bg-base-100"></div>
                 <p className="text-xl text-primary font-semibold tracking-wide">
                   {price}
@@ -194,7 +199,7 @@ function Product() {
                   {product[0]?.attributes.shortDescription}
                 </p>
 
-                {product[0].attributes.options.length &&
+                {product[0].attributes.options.length > 0 &&
                   product[0].attributes.options?.map((item, index) => (
                     <div key={index} className="max-w-[300px] mb-4">
                       <Select
