@@ -8,7 +8,7 @@ function List({ type }) {
   const { region } = useRegionChecker();
 
   const { data: products, loading } = useFetch(
-    `api/products?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[options][populate]=*&filters[type][$eq]=${type}&pagination[pageSize]=4&filters[region][$eq]=${region}`
+    `api/products?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[options]=*&filters[type][$eq]=${type}&pagination[pageSize]=4&filters[region][$eq]=${region}`
   );
 
   return (

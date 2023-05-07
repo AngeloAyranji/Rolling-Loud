@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Select, Option } from "@material-tailwind/react";
-import { useRegionChecker } from "../hooks/regionChecker";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { useDispatch } from "react-redux";
+import { removeAll } from "../redux/cartReducer";
+import { useRegionChecker } from "../hooks/regionChecker";
 
 function SelectCountry() {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { setRegion } = useRegionChecker();
 
@@ -17,6 +20,7 @@ function SelectCountry() {
     else {
       localStorage.setItem("region", regionTmp.toLowerCase());
       setRegion(regionTmp.toLowerCase());
+      dispatch(removeAll());
       if (location.state !== null) navigate(location.state.from);
       else navigate("/");
     }

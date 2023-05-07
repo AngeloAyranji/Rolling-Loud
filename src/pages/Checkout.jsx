@@ -22,6 +22,7 @@ function Order() {
 
   const products = useSelector((state) => state.cart.products);
   const promoCode = useSelector((state) => state.promo.promoCode);
+  
   const [showToast, setShowToast] = useState(false);
   const [promoInput, setPromoInput] = useState("");
   const onChange = ({ target }) => setPromoInput(target.value);
