@@ -22,23 +22,18 @@ function Register() {
   };
 
   const handleRegister = async () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmpassword").value;
-
-    if (
-      email !== "" &&
-      password !== "" &&
-      confirmPassword !== "" &&
-      password === confirmPassword
-    ) {
+    const username = document.getElementById("registerUsername").value;
+    const email = document.getElementById("registerEmail").value;
+    const password = document.getElementById("registerPassword").value;
+    const confirmPassword = document.getElementById("registerConfirmPassword").value;
+    if (email !== '' && password !== '' && username !== '' && confirmPassword !== '' && password === confirmPassword) {
       setError(false);
 
       try {
         const res = await axios.post(
           process.env.REACT_APP_BACKEND_URL + "api/auth/local/register",
           {
-            username: email,
+            username: username,
             email: email,
             password: password,
             region: localStorage.getItem("region"),
@@ -97,8 +92,8 @@ function Register() {
                 className="mt-8 mb-2 w-70 max-w-screen-lg sm:w-96"
               >
                 <div className="mb-4 flex flex-col gap-6">
-                  <Input
-                    id="email"
+                <Input
+                    id="registerUsername"
                     size="lg"
                     label="Email"
                     color="cyan"
@@ -106,7 +101,15 @@ function Register() {
                     error={error}
                   />
                   <Input
-                    id="password"
+                    id="registerEmail"
+                    size="lg"
+                    label="Email"
+                    color="cyan"
+                    className="text-secondary-content"
+                    error={error}
+                  />
+                  <Input
+                    id="registerPassword"
                     type="password"
                     size="lg"
                     label="Password"
@@ -115,7 +118,7 @@ function Register() {
                     error={error}
                   />
                   <Input
-                    id="confirmpassword"
+                    id="registerConfirmPassword"
                     type="password"
                     size="lg"
                     color="cyan"

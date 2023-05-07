@@ -183,12 +183,18 @@ function Product() {
                 <h2 className="text-xl text-secondary-content font-bold">
                   {product[0]?.attributes.title}
                 </h2>
-                {product[0]?.attributes.quantity === 0 ? (
-                  <p className="line-through text-xs lg:text-sm">
-                    Out Of Stock
-                  </p>
-                ) : (
-                  <p className="text-green-500 text-xs lg:text-sm">In Stock</p>
+                {product[0]?.attributes.type !== "preorder" && (
+                  <>
+                    {product[0]?.attributes.quantity === 0 ? (
+                      <p className="line-through text-xs lg:text-sm">
+                        Out Of Stock
+                      </p>
+                    ) : (
+                      <p className="text-green-500 text-xs lg:text-sm">
+                        In Stock
+                      </p>
+                    )}
+                  </>
                 )}
 
                 <div className="divider"></div>
