@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import useFetch from "../hooks/useFetch";
+import { Card, Input, Typography } from "@material-tailwind/react";
+import { Helmet } from "react-helmet";
 
 function Register() {
   const navigate = useNavigate();
@@ -9,7 +11,7 @@ function Register() {
   const [error, setError] = useState(false);
   const [logHeight, setLogHeight] = useState(window.innerHeight);
 
-  const {data: videoUrl} = useFetch("api/hero-video?populate=*");
+  const { data: videoUrl } = useFetch("api/hero-video?populate=*");
 
   useEffect(() => {
     window.addEventListener("resize", setDimension);
@@ -28,13 +30,15 @@ function Register() {
       setError(false);
 
       try {
-        const res = await axios.post(process.env.REACT_APP_BACKEND_URL + 'api/auth/local/register',
+        const res = await axios.post(
+          process.env.REACT_APP_BACKEND_URL + "api/auth/local/register",
           {
             username: username,
             email: email,
             password: password,
-            region: localStorage.getItem("region")
-          });
+            region: localStorage.getItem("region"),
+          }
+        );
 
         if (res) {
           sessionStorage.setItem("jwt", res.data.jwt);
@@ -48,92 +52,107 @@ function Register() {
     }
 
     setError(true);
-  }
+  };
 
   return (
-    <div className="w-full h-full relative" style={{ height: logHeight - 64 }}>
-      <div className="absolute w-full h-full left-0 top-0 overflow-hidden z-0">
-        <video
-          src={videoUrl?.attributes.video.data.attributes.url}
-          loop
-          autoPlay
-          muted
-          alt=""
-          className="h-full w-full object-cover object-center brightness-[0.4] blur-sm"
-        ></video>
-      </div>
-      <div className=" absolute left-0 top-0 w-full h-full flex items-center justify-center z-[50]">
-        <div className="w-full md:min-w-[600px] lg:min-w-[600px] h-full flex flex-col my-auto bg-transparent items-center justify-center p-4 md:p-14">
-          <div className="w-full max-w-[600px] border-2 border-primary flex flex-col p-8 rounded-lg">
-            <h1 className="text-secondary-content text-2xl font-extrabold mb- 8tracking-wide font-sans">
-              Register now
-            </h1>
+    <Fragment>
+      <Helmet>
+        <title>SkyShop - Register</title>
+      </Helmet>
 
-            <div className="form-control w-full mb-4">
-              <label className="label">
-                <span className="label-text text-lg font-bold tracking-wide text-secondary-content">
-                  Username
-                </span>
-              </label>
-              <input
-                id="registerUsername"
-                type="text"
-                placeholder="Type here"
-                className="input input-bordered w-full input-primary bg-white"
-              />
-            </div>
-
-            <div className="form-control w-full mb-4">
-              <label className="label">
-                <span className="label-text text-lg font-bold tracking-wide text-secondary-content">
-                  Email
-                </span>
-              </label>
-              <input
-                id="registerEmail"
-                type="text"
-                placeholder="Type here"
-                className="input input-bordered w-full input-primary bg-white"
-              />
-            </div>
-
-            <div className="form-control w-full mb-4">
-              <label className="label">
-                <span className="label-text text-lg font-bold tracking-wide text-secondary-content">
-                  Password
-                </span>
-              </label>
-              <input
-                id="registerPassword"
-                type="password"
-                placeholder="Type here"
-                className="input input-bordered w-full input-primary bg-white bg-transparent"
-              />
-            </div>
-
-            <div className="form-control w-full mb-4">
-              <label className="label">
-                <span className="label-text text-lg font-bold tracking-wide text-secondary-content">
-                  Confirm Password
-                </span>
-              </label>
-              <input
-                id="registerConfirmPassword"
-                type="password"
-                placeholder="Type here"
-                className="input input-bordered w-full input-primary bg-white bg-transparent"
-              />
-            </div>
-            {error && <div>Invalid Email or Password</div>}
-            <button onClick={handleRegister} className="btn btn-primary">SIGN UP</button>
-            <p className="mt-14">
-              Already have an account?{" "}
-              <Link to="/login" className="link hover:text-base-100">Log in here</Link>
-            </p>
+      <div
+        className="w-full h-full relative"
+        style={{ height: logHeight - 64 }}
+      >
+        <div className="absolute w-full h-full left-0 top-0 overflow-hidden z-0">
+          <video
+            src={videoUrl?.attributes.video.data.attributes.url}
+            loop
+            autoPlay
+            muted
+            alt=""
+            className="h-full w-full object-cover object-center brightness-[0.4] blur-sm"
+          ></video>
+        </div>
+        <div className=" absolute left-0 top-0 w-full h-full flex items-center justify-center z-[50]">
+          <div className="w-full md:min-w-[600px] lg:min-w-[600px] h-full flex flex-col my-auto bg-transparent items-center justify-center p-4 md:p-14">
+            <Card
+              color="transparent"
+              shadow={false}
+              className="border border-primary p-4 md:p-8 rounded-lg"
+            >
+              <Typography variant="h3" color="white" className="font-bold">
+                Register
+              </Typography>
+              <Typography color="white" className="mt-1 font-normal">
+                Enter your details to register.
+              </Typography>
+              <div
+                role="form"
+                className="mt-8 mb-2 w-70 max-w-screen-lg sm:w-96"
+              >
+                <div className="mb-4 flex flex-col gap-6">
+                <Input
+                    id="registerUsername"
+                    size="lg"
+                    label="Email"
+                    color="cyan"
+                    className="text-secondary-content"
+                    error={error}
+                  />
+                  <Input
+                    id="registerEmail"
+                    size="lg"
+                    label="Email"
+                    color="cyan"
+                    className="text-secondary-content"
+                    error={error}
+                  />
+                  <Input
+                    id="registerPassword"
+                    type="password"
+                    size="lg"
+                    label="Password"
+                    color="cyan"
+                    className="text-secondary-content"
+                    error={error}
+                  />
+                  <Input
+                    id="registerConfirmPassword"
+                    type="password"
+                    size="lg"
+                    color="cyan"
+                    className="text-secondary-content focus:outline-none"
+                    label="Confirm Password"
+                    error={error}
+                  />
+                </div>
+                {error && (
+                  <p className="text-secondary-content font-light mb-2">
+                    Invalid Credentials
+                  </p>
+                )}
+                <button
+                  className="btn btn-primary w-full mt-4"
+                  onClick={handleRegister}
+                >
+                  Register
+                </button>
+                <Typography className="mt-4 text-center font-normal text-secondary-content">
+                  Already have an account?{" "}
+                  <Link
+                    to="/login"
+                    className="font-medium link transition-colors hover:text-blue-gray-400"
+                  >
+                    Sign In
+                  </Link>
+                </Typography>
+              </div>
+            </Card>
           </div>
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 }
 

@@ -10,6 +10,7 @@ import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
 import { parseLink } from "../utils/utils";
+import { Helmet } from "react-helmet";
 
 function Products() {
   const { category, subcategory } = useParams();
@@ -102,6 +103,9 @@ function Products() {
 
   return (
     <>
+      <Helmet>
+        <title>Skyshop</title>
+      </Helmet>
       {!productsDB ? (
         <Loading />
       ) : (
@@ -126,7 +130,11 @@ function Products() {
                 <Link to={`/products`}>All Products</Link>
               )}
               {subcategory && (
-                <Link to={`/products/${parseLink(category)}/${parseLink(subcategory)}`}>
+                <Link
+                  to={`/products/${parseLink(category)}/${parseLink(
+                    subcategory
+                  )}`}
+                >
                   {subcategory}
                 </Link>
               )}

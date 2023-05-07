@@ -15,7 +15,23 @@ module.exports = withMT({
       planet: ["PlanetKosmos", "serif"],
       genos: ["Genos", "sans-serif"],
     },
-    extend: {},
+    extend: {
+      colors: {
+        cyan: {
+          50: "#9BFCFE",
+          100: "#87FBFE",
+          200: "#5FFAFE",
+          300: "#36F9FD",
+          400: "#0EF7FD",
+          500: "#02DBE0",
+          600: "#02A5A8",
+          700: "#016E71",
+          800: "#013839",
+          900: "#000202",
+          950: "#000000",
+        },
+      },
+    },
   },
   plugins: [
     require("daisyui"),
@@ -34,6 +50,7 @@ module.exports = withMT({
           ...require("daisyui/src/colors/themes")["[data-theme=dark]"],
           primary: "#02DBE0",
           "primary-focus": "#01b7bb",
+          "primary-selected": "#013839",
           neutral: "#2A303C",
           "secondary-content": "#FFFDFA",
         },

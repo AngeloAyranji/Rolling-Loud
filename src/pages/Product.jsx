@@ -12,6 +12,10 @@ import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
 import { parseLink } from "../utils/utils";
+import { MdAddShoppingCart } from "react-icons/md";
+import Rating from "../components/Rating";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { Helmet } from "react-helmet";
 
 function Product() {
   const dispatch = useDispatch();
@@ -95,6 +99,9 @@ function Product() {
   };
   return (
     <>
+      <Helmet>
+        <title>{productName}</title>
+      </Helmet>
       {!loading && product ? (
         <div className="flex w-full mx-auto p-4 pt-8 md:p-8">
           <div className="flex flex-col space-y-8 w-full mx-auto max-w-[1400px]">
@@ -139,7 +146,7 @@ function Product() {
             <div className=" flex flex-col lg:flex-row lg:justify-start justify-center lg:items-start items-center mt-8 lg:mt-12 lg:space-x-8 xl:space-x-14">
               {/*image div*/}
               <div className="flex flex-col space-y-4 md:items-start justify-center items-center w-full max-w-[520px] lg:max-w-[440px]">
-                <div className="relative w-full aspect-square border-primary border rounded-lg overflow-hidden">
+                <div className="relative w-full aspect-square border-primary border rounded-lg overflow-hidden bg-secondary-content">
                   <img
                     src={mainImg}
                     alt={product[0]?.attributes.title}
@@ -153,7 +160,7 @@ function Product() {
                 <div className="flex w-full mx-auto space-x-2 overflow-x-auto lg:scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-full scrollbar-track-gray-600 scrollbar-track-rounded-full pb-4">
                   {product[0]?.attributes.image.data.map((item, index) => (
                     <div
-                      className="w-[100px] h-[100px] aspect-square border-primary border rounded-lg cursor-pointer"
+                      className="w-[100px] h-[100px] aspect-square border-primary border rounded-lg cursor-pointer bg-secondary-content"
                       key={index}
                     >
                       <img
@@ -189,7 +196,8 @@ function Product() {
                     )}
                   </>
                 )}
-                <div className="w-full h-1 rounded-full bg-base-100"></div>
+
+                <div className="divider"></div>
                 <p className="text-xl text-primary font-semibold tracking-wide">
                   {price}
                   {currency}
@@ -199,8 +207,8 @@ function Product() {
                   {product[0]?.attributes.shortDescription}
                 </p>
 
-                {product[0].attributes.options.length > 0 &&
-                  product[0].attributes.options?.map((item, index) => (
+                {product[0]?.attributes.options.length !== 0 ? (
+                  product[0]?.attributes.options?.map((item, index) => (
                     <div key={index} className="max-w-[300px] mb-4">
                       <Select
                         variant="standard"
@@ -219,15 +227,18 @@ function Product() {
                         ))}
                       </Select>
                     </div>
-                  ))}
-                <div className="pt-8 pb-8 flex flex-row justify-start space-x-4 items-center">
-                  <div className="flex h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[90px] text-secondary-content pl-4 pr-4">
+                  ))
+                ) : (
+                  <></>
+                )}
+                <div className="pt-4 pb-4 flex flex-row justify-start space-x-4 items-center">
+                  <div className="flex text-xl h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[100px] text-secondary-content px-3">
                     <button
                       onClick={() =>
                         setQuantity((prev) => (prev === 1 ? 1 : prev - 1))
                       }
                     >
-                      -
+                      <AiOutlineMinus />
                     </button>
                     {product[0]?.attributes.quantity === 0 ? 0 : quantity}
                     <button
@@ -239,25 +250,26 @@ function Product() {
                         )
                       }
                     >
-                      +
+                      <AiOutlinePlus />
                     </button>
                   </div>
                   <button
                     className={
                       product[0].attributes.quantity === 0 ||
                       canCheckout === false
-                        ? "btn btn-disabled btn-primary w-full max-w-[250px]"
-                        : "btn btn-primary w-full max-w-[250px]"
+                        ? "btn btn-disabled btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
+                        : "btn btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
                     }
                     onClick={() => checkAvailability(quantity)}
                   >
-                    Add to Cart
+                    <p> Add to Cart</p>
+                    <MdAddShoppingCart className="w-5 h-5 font-extralight" />
                   </button>
                 </div>
-                <div className="w-full h-1 rounded-full bg-base-100"></div>
+                <div className="divider"></div>
                 <div className="flex flex-row space-x-4 items-center pt-4">
                   <CiLock className="w-10 h-10 text-secondary-content text-sm" />
-                  <div className="flex flex-col space-y-2">
+                  <div className="flex flex-col space-y-1">
                     <p className="uppercase text-secondary-content">
                       Secure payments
                     </p>
@@ -280,14 +292,27 @@ function Product() {
               </div>
             </div>
 
+            {/* Ratings */}
+            <div className="w-full mx-auto flex flex-col space-y-4 pt-8">
+              <h3 className="text-secondary-content text-xl font-semibold tracking-wide uppercase">
+                Reviews
+              </h3>
+              <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
+              <Rating />
+              <Rating />
+              <Rating />
+              <Rating />
+              <Rating />
+            </div>
+
             {/* extra infos and related products */}
             <div className="w-full mx-auto p-4 md:p-8 border-2 border-primary rounded-lg flex flex-col space-y-4 pt-8">
-              <h3 className="text-secondary-content text-lg text-semibold tracking-wide uppercase">
+              <h3 className="text-secondary-content text-lg font-semibold tracking-wide uppercase">
                 Technical Characteristics
               </h3>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
               <ReactMarkdown
-                className="prose text-secondary-content"
+                className="prose text-secondary-content lg:text-lg tracking-wide min-w-full"
                 remarkPlugins={[remarkGfm]}
               >
                 {markdown}

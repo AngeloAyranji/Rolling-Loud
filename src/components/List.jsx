@@ -3,6 +3,7 @@ import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Card from "./Card";
 import Loading from "./Loading";
+import CardSkeleton from "./CardSkeleton";
 
 function List({ type }) {
   const { region } = useRegionChecker();
@@ -14,7 +15,11 @@ function List({ type }) {
   return (
     <div className="gap-4 flex flex-row overflow-x-scroll items-center justify-start scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-full pb-8">
       {loading ? (
-        <Loading />
+        <Fragment>
+          {[...Array(4)].map((star, index) => {
+            return <CardSkeleton key={index} />;
+          })}
+        </Fragment>
       ) : (
         <Fragment>
           {products?.map((item, index) => (
