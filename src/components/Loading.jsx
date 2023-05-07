@@ -1,7 +1,6 @@
-
 function Loading() {
   return (
-    <div className="fixed w-screen h-screen top-0 left-0 opacity-70 flex items-center justify-center bg-black z-[2000]">
+    <div className="fixed w-screen h-screen top-0 left-0 flex items-center justify-center bg-black z-[2000]">
       <div role="status" className="">
         <svg
           aria-hidden="true"

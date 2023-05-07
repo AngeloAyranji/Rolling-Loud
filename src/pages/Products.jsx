@@ -208,7 +208,7 @@ function Products() {
               <div className="h-[2px] w-full bg-primary"></div>
               <p
                 onClick={() => handleAddMore(page + 1)}
-                className="font-semibold hover:text-primary text-center cursor-pointer text-xl whitespace-nowrap"
+                className="font-semibold tracking-widest uppercase hover:text-primary text-center cursor-pointer text-xl whitespace-nowrap"
               >
                 Load more
               </p>

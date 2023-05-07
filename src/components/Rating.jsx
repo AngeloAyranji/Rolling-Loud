@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { GrStar } from "react-icons/gr";
 
 function Rating() {
-  const [rating, setRating] = useState(3);
+  const [rating, setRating] = useState(null);
   const [hover, setHover] = useState(null);
   return (
     <div className="flex flex-col space-y-2 pt-2">
@@ -46,7 +46,7 @@ function Rating() {
                 <GrStar
                   className={
                     ratingValue <= rating
-                      ? "text-[#FDCC0D] text-2xl"
+                      ? "text-secondary text-2xl"
                       : "text-2xl"
                   }
                 />

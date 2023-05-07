@@ -16,7 +16,7 @@ function Brands() {
       {!loading && brands ? (
         <div className="w-full mx-auto flex justify-center items-center">
           <div className="max-w-[1400px] w-full p-4 md:p-8">
-            <h1 className="text-xl xl:text-3xl font-bold text-white uppercase mt-12">
+            <h1 className="text-xl xl:text-3xl font-bold text-white uppercase">
               our brands
             </h1>
             <p className="mt-8">
