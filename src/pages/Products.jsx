@@ -104,7 +104,13 @@ function Products() {
   return (
     <>
       <Helmet>
-        <title>Skyshop</title>
+        <title>Skyshop - {!category
+          ? querySearch
+            ? querySearch
+            : "All Products"
+          : subcategory
+            ? subcategory
+            : category}</title>
       </Helmet>
       {!productsDB ? (
         <Loading />
@@ -145,19 +151,19 @@ function Products() {
                   ? `Search in ${querySearch}`
                   : "All Products"
                 : subcategory
-                ? subcategory
-                : category}
+                  ? subcategory
+                  : category}
             </h2>
             <p className="max-w-[700px]">
               {category
                 ? categoryDB.length
                   ? categoryDB[0]?.attributes.description
                   : brandDB.length
-                  ? brandDB[0]?.attributes.description
-                  : ""
+                    ? brandDB[0]?.attributes.description
+                    : ""
                 : querySearch
-                ? ""
-                : `ALL PRODUCTS Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia
+                  ? ""
+                  : `ALL PRODUCTS Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia
           veritatis placeat id soluta incidunt provident nostrum quibusdam amet
           dolor, excepturi eius, nihil quisquam. Debitis reprehenderit atque,
           suscipit quaerat impedit minima!`}
