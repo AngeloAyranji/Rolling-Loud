@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FiHeart } from "react-icons/fi";
 import { CiDeliveryTruck, CiLock } from "react-icons/ci";
-import Breadcrumbs from "@mui/material/Breadcrumbs";
+import { Breadcrumbs } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
@@ -14,7 +14,7 @@ import Loading from "../components/Loading";
 import { parseLink } from "../utils/utils";
 import { MdAddShoppingCart } from "react-icons/md";
 import Rating from "../components/Rating";
-import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineMinus, AiOutlinePlus, AiFillHome } from "react-icons/ai";
 import { Helmet } from "react-helmet";
 
 function Product() {
@@ -27,74 +27,84 @@ function Product() {
   const { productName } = useParams();
 
   const { data: product, loading } = useFetch(
-    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
 
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [price, setPrice] = useState(0);
-  const [optionsMap, setOptionsMap] = useState(new Map());
-  const [canCheckout, setCanCheckout] = useState(false);
+  const [allowedQuantity, setAllowedQuantity] = useState(0);
   const [markdown, setMarkdown] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     if (product) {
+      setSelectedProduct({
+        price: product[0]?.attributes.options[0].price,
+        quantity: product[0]?.attributes.options[0].quantity,
+        option: product[0]?.attributes.options[0].title,
+      });
       setMarkdown(product[0]?.attributes.longDescription);
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
-      setPrice(product[0]?.attributes.price);
-      if (product[0].attributes.options.length === 0) {
-        setCanCheckout(true);
-      }
     }
   }, [product]);
 
-  const handePriceChange = (value) => {
-    setOptionsMap(
-      new Map(
-        optionsMap.set(value[0], { suboption: value[1], price: value[2] })
-      )
-    );
-    let sum = 0;
-    optionsMap.forEach(function (value, key) {
-      sum += value.price;
-    });
-
-    setPrice(product[0]?.attributes.price + sum);
-    if (product[0].attributes.options.length === optionsMap.size) {
-      setCanCheckout(true);
+  const calculateAllowedQuantity = () => {
+    if (product) {
+      const item = products.find(
+        (x) => x.id === product[0]?.id && x.option === selectedProduct?.option
+      );
+      if (!item) {
+        setAllowedQuantity(selectedProduct?.quantity);
+      } else {
+        setAllowedQuantity(selectedProduct?.quantity - item.quantity);
+      }
     }
   };
 
-  const checkAvailability = (quantityValue) => {
-    if (product) {
-      const prod = products.find((x) => x.id === product[0].id);
-      if (!prod && product[0].attributes.quantity > 0) {
-        dispatch(
-          addToCart({
-            id: product[0].id,
-            name: product[0].attributes.title,
-            img: product[0].attributes.image.data[0].attributes.url,
-            price: price,
-            options: Array.from(optionsMap),
-            quantity,
-          })
-        );
-      } else {
-        if (prod) {
-          if (quantityValue + prod.quantity <= product[0].attributes.quantity) {
-            dispatch(
-              addToCart({
-                id: product[0].id,
-                name: product[0].attributes.title,
-                img: product[0].attributes.image.data[0].attributes.url,
-                price: price,
-                options: Array.from(optionsMap),
-                quantity,
-              })
-            );
-          }
-        }
-      }
+  const handePriceChange = (value) => {
+    setQuantity(1);
+    setSelectedProduct({
+      price: value[0],
+      quantity: value[1],
+      option: value[2],
+    });
+  };
+
+  useEffect(() => {
+    calculateAllowedQuantity();
+  }, [selectedProduct, products]);
+
+  const Add = () => {
+    setQuantity(1);
+    calculateAllowedQuantity();
+    if (product[0]?.attributes.type === "promotion") {
+      dispatch(
+        addToCart({
+          id: product[0].id,
+          name: product[0].attributes.title,
+          img: product[0].attributes.image.data[0].attributes.url,
+          price:
+            selectedProduct?.price -
+            (selectedProduct?.price *
+              product[0].attributes.discountPercentage) /
+              100,
+          option: selectedProduct?.option,
+          optionName: product[0].attributes.optionName,
+          quantity,
+        })
+      );
+    } else {
+      dispatch(
+        addToCart({
+          id: product[0].id,
+          name: product[0].attributes.title,
+          img: product[0].attributes.image.data[0].attributes.url,
+          price: selectedProduct?.price,
+          option: selectedProduct?.option,
+          optionName: product[0].attributes.optionName,
+          quantity,
+        })
+      );
     }
   };
   return (
@@ -106,12 +116,19 @@ function Product() {
         <div className="flex w-full mx-auto p-4 pt-8 md:p-8">
           <div className="flex flex-col space-y-8 w-full mx-auto max-w-[1400px]">
             <Breadcrumbs
-              separator="›"
+              separator=" › "
               aria-label="breadcrumb"
-              className="!text-white !text-sm !breadcrumbs !scrollbar-thumb-rounded-full !scrollbar-thumb-base-100 !pb-4 !scrollbar-thumb-sm"
+              className="bg-transparent"
+              color="cyan"
             >
-              <Link to="/">Home</Link>
               <Link
+                to="/"
+                className="text-secondary-content hover:text-primary duration-150 ease-in"
+              >
+                <AiFillHome className="w-4 h-4" />
+              </Link>
+              <Link
+                className="text-secondary-content hover:text-primary duration-150 ease-in"
                 to={`/products/${parseLink(
                   product[0]?.attributes.categories.data[0].attributes.title
                 )}`}
@@ -125,6 +142,7 @@ function Product() {
               </Link>
               {product[0]?.attributes.subcategories.data.length > 0 && (
                 <Link
+                  className="text-secondary-content hover:text-primary duration-150 ease-in"
                   to={`/products/${parseLink(
                     product[0]?.attributes.categories.data[0].attributes.title
                   )}/${parseLink(
@@ -138,7 +156,10 @@ function Product() {
                   }
                 </Link>
               )}
-              <Link to={`/product/${parseLink(product[0]?.attributes.title)}`}>
+              <Link
+                to={`/product/${parseLink(product[0]?.attributes.title)}`}
+                className="text-secondary-content hover:text-primary duration-150 ease-in"
+              >
                 {product[0]?.attributes.title.charAt(0).toUpperCase() +
                   product[0]?.attributes.title.slice(1)}
               </Link>
@@ -185,7 +206,7 @@ function Product() {
                 </h2>
                 {product[0]?.attributes.type !== "preorder" && (
                   <>
-                    {product[0]?.attributes.quantity === 0 ? (
+                    {selectedProduct?.quantity === 0 ? (
                       <p className="line-through text-xs lg:text-sm">
                         Out Of Stock
                       </p>
@@ -198,38 +219,53 @@ function Product() {
                 )}
 
                 <div className="divider"></div>
-                <p className="text-xl text-primary font-semibold tracking-wide">
-                  {price}
-                  {currency}
-                </p>
+                {product[0]?.attributes.type === "promotion" ? (
+                  <div className="flex flex-row space-x-4">
+                    <p className="text-xl text-neutral line-through font-semibold tracking-wide">
+                      {selectedProduct?.price}
+                      {currency}
+                    </p>
+                    <p className="text-xl text-primary font-semibold tracking-wide">
+                      {selectedProduct?.price -
+                        (selectedProduct?.price *
+                          product[0].attributes.discountPercentage) /
+                          100}
+                      {currency}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-xl text-primary font-semibold tracking-wide">
+                    {selectedProduct?.price}
+                    {currency}
+                  </p>
+                )}
 
                 <p className="text-secondary-content">
                   {product[0]?.attributes.shortDescription}
                 </p>
 
-                {product[0]?.attributes.options.length !== 0 ? (
-                  product[0]?.attributes.options?.map((item, index) => (
-                    <div key={index} className="max-w-[300px] mb-4">
-                      <Select
-                        variant="standard"
-                        label={item.option}
-                        color="cyan"
-                        className="text-secondary-content mb-4"
-                        onChange={handePriceChange}
-                      >
-                        {item.suboption.map((sub, index) => (
-                          <Option
-                            value={[item.option, sub.suboption, sub.price]}
-                            key={index}
-                          >
-                            {sub.suboption}
-                          </Option>
-                        ))}
-                      </Select>
-                    </div>
-                  ))
-                ) : (
+                {product[0]?.attributes.options.length === 1 &&
+                product[0]?.attributes.options[0].title === "Default" ? (
                   <></>
+                ) : (
+                  <div className="w-full mb-4">
+                    <Select
+                      variant="standard"
+                      label={product[0]?.attributes.option_name}
+                      color="cyan"
+                      className="text-secondary-content"
+                      onChange={handePriceChange}
+                    >
+                      {product[0]?.attributes.options.map((sub, index) => (
+                        <Option
+                          value={[sub.price, sub.quantity, sub.title]}
+                          key={index}
+                        >
+                          {sub.title}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
                 )}
                 <div className="pt-4 pb-4 flex flex-row justify-start space-x-4 items-center">
                   <div className="flex text-xl h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[100px] text-secondary-content px-3">
@@ -240,13 +276,11 @@ function Product() {
                     >
                       <AiOutlineMinus />
                     </button>
-                    {product[0]?.attributes.quantity === 0 ? 0 : quantity}
+                    {allowedQuantity === 0 ? 0 : quantity}
                     <button
                       onClick={() =>
                         setQuantity((prev) =>
-                          prev === product[0]?.attributes.quantity
-                            ? prev
-                            : prev + 1
+                          prev >= allowedQuantity ? allowedQuantity : prev + 1
                         )
                       }
                     >
@@ -255,12 +289,11 @@ function Product() {
                   </div>
                   <button
                     className={
-                      product[0].attributes.quantity === 0 ||
-                      canCheckout === false
+                      allowedQuantity === 0
                         ? "btn btn-disabled btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
                         : "btn btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
                     }
-                    onClick={() => checkAvailability(quantity)}
+                    onClick={() => Add(quantity)}
                   >
                     <p> Add to Cart</p>
                     <MdAddShoppingCart className="w-5 h-5 font-extralight" />

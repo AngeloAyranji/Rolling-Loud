@@ -12,8 +12,7 @@ export const cartSlice = createSlice({
     addToCart: (state, action) => {
       const item = state.products.find(
         (item) =>
-          item.id === action.payload.id &&
-          _.isEqual(item.options, action.payload.options)
+          item.id === action.payload.id && item.option === action.payload.option
       );
 
       if (item) {
@@ -27,12 +26,12 @@ export const cartSlice = createSlice({
         (item) =>
           item.id !== action.payload.id ||
           (item.id === action.payload.id &&
-            !_.isEqual(item.options, action.payload.options))
+            item.option !== action.payload.option)
       );
     },
     removeAll: (state, action) => {
-      state.products = []
-    }
+      state.products = [];
+    },
   },
 });
 

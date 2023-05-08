@@ -22,7 +22,7 @@ function Order() {
 
   const products = useSelector((state) => state.cart.products);
   const promoCode = useSelector((state) => state.promo.promoCode);
-  
+
   const [showToast, setShowToast] = useState(false);
   const [promoInput, setPromoInput] = useState("");
   const onChange = ({ target }) => setPromoInput(target.value);
@@ -201,11 +201,9 @@ function Order() {
                                   {product.price * product.quantity} {currency}
                                 </p>
                               </div>
-                              {product.options.map((item, index) => (
-                                <p className="text-sm" key={index}>
-                                  {item[0]} : <span>{item[1].suboption}</span>
-                                </p>
-                              ))}
+                              {product.option !== "Default" && (
+                                <p className="text-sm">{product.option}</p>
+                              )}
                             </div>
                             <div className="flex flex-1 items-end justify-between text-sm">
                               <div className="flex items-center">
