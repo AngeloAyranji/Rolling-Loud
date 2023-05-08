@@ -76,7 +76,6 @@ function Team() {
               className="flex flex-col justify-center items-center snap-center"
             >
               <div className="aspect-[2/3] h-[300px] md:h-[400px] mb-8 overflow-hidden rounded-lg border border-primary relative bg-none">
-                <div className="screen-overlay"></div>
                 <img
                   src={team.attributes.image.data.attributes.url}
                   alt={team.attributes.description}
