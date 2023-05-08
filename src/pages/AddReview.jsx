@@ -67,6 +67,9 @@ function AddReview() {
                 className="text-secondary-content tracking-wide"
               />
             </div>
+            <button className="btn btn-primary sm:max-w-[300px]">
+              Submit Review
+            </button>
           </div>
         </div>
       </div>
