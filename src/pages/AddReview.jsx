@@ -2,14 +2,59 @@ import { Textarea } from "@material-tailwind/react";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { GrStar } from "react-icons/gr";
+import { useJwt } from "react-jwt";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 function AddReview() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  const productId = queryParams.get("product");
+
+  const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
+
   const [rating, setRating] = useState(5);
   const [hover, setHover] = useState(null);
+
+  const addReview = async () => {
+    const reviewText = document.getElementById("reviewText").value;
+
+    if (reviewText !== "") {
+      try {
+        const config = {
+          headers: { Authorization: `Bearer ${sessionStorage.getItem("jwt")}` },
+        };
+
+        const payload = {
+          data: {
+            description: reviewText,
+            rating: rating,
+            user: decodedToken?.id,
+            product: productId,
+          },
+        };
+
+        const res = await axios.post(
+          process.env.REACT_APP_BACKEND_URL + "api/reviews",
+          payload,
+          config
+        );
+
+        if (res) {
+          navigate(-1);
+        }
+      } catch (err) {
+        console.log("error", err);
+      }
+    }
+  };
+
   return (
     <>
       <Helmet>
-        <title>Brands</title>
+        <title>Add Review</title>
       </Helmet>
       <div className="w-full mx-auto flex justify-center items-center">
         <div className="max-w-[1400px] w-full p-4 md:p-8">
@@ -61,13 +106,17 @@ function AddReview() {
             </h3>
             <div className="w-full">
               <Textarea
+                id="reviewText"
                 type="text"
                 label="Review"
                 color="cyan"
                 className="text-secondary-content tracking-wide"
               />
             </div>
-            <button className="btn btn-primary sm:max-w-[300px]">
+            <button
+              onClick={addReview}
+              className="btn btn-primary sm:max-w-[300px]"
+            >
               Submit Review
             </button>
           </div>

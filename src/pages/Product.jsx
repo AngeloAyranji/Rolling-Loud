@@ -30,6 +30,8 @@ function Product() {
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
 
+  const { data: reviews } = useFetch(`api/reviews?populate[product]=*&filters[product][title][$eq]=${productName}`)
+    console.log(reviews)
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [allowedQuantity, setAllowedQuantity] = useState(0);
@@ -335,11 +337,9 @@ function Product() {
                 Reviews
               </h3>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
-              <Rating />
-              <Rating />
-              <Rating />
-              <Rating />
-              <Rating />
+              {reviews?.map((review) => (
+                <Rating review={review.attributes} />
+              ))}
             </div>
 
             {/* extra infos and related products */}

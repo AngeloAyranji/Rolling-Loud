@@ -40,7 +40,12 @@ function App() {
               path="/footer/about"
               element={<FooterContent name={"About Us"} />}
             />
-            <Route path="/review" element={<AddReview />} />
+            <Route path="/review" element={
+                sessionStorage.getItem("jwt") ? (
+                  <AddReview />
+                ) : (
+                  <Navigate to={"/login"} state={{ from: location }} />
+                )} />
             <Route
               path="/products/:category/:subcategory"
               element={<Products />}
