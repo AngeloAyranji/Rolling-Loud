@@ -61,14 +61,9 @@ function Hero() {
         <h1 className="font-planet text-[50px] md:text-[70px] lg:text-[120px] text-white">
           <span className="text-primary">SKY</span>SHOP
         </h1>
-        <div className="flex flex-row space-x-4">
+        <div className="flex flex-row">
           <Link to="/products">
             <button className="btn btn-primary btn-outline text-secondary-content lg:btn-lg">
-              Explore
-            </button>
-          </Link>
-          <Link to="/products">
-            <button className="btn btn-primary btn-outline text-white lg:btn-lg">
               Explore
             </button>
           </Link>
