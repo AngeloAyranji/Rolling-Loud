@@ -1,42 +1,47 @@
-import { useState } from "react";
-import { BsWhatsapp } from "react-icons/bs";
-import { BsMessenger } from "react-icons/bs";
-import { TfiHeadphoneAlt } from "react-icons/tfi";
+import {
+  IconButton,
+  SpeedDial,
+  SpeedDialHandler,
+  SpeedDialContent,
+  SpeedDialAction,
+  Typography,
+} from "@material-tailwind/react";
+import { BsPlus, BsWhatsapp, BsMessenger } from "react-icons/bs";
 
-function SocialsMenu() {
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(!open);
+export default function SocialsMenu() {
+  const labelProps = {
+    variant: "small",
+    color: "white",
+    className: "absolute right-14 font-normal",
   };
+
   return (
-    <div className="fixed bottom-4 right-4 rounded-full bg-secondary flex flex-col items-center justify-center space-y-4 p-4 transition-transform z-[1000]">
-      <TfiHeadphoneAlt
-        className="text-secondary-content w-6 h-6 cursor-pointer"
-        onClick={handleOpen}
-      />
-      <a
-        href="https://m.me/Skyshop.fpv"
-        className={
-          open
-            ? "text-secondary-content w-6 h-6 cursor-pointer hover:text-blue-500"
-            : "hidden"
-        }
-      >
-        <BsMessenger className="w-full h-full" />
-      </a>
-      <a
-        href="https://wa.me/+96170124129"
-        className={
-          open
-            ? "text-secondary-content w-6 h-6 cursor-pointer hover:text-green-400"
-            : "hidden"
-        }
-      >
-        <BsWhatsapp className="w-full h-full" />
-      </a>
+    <div className="fixed right-4 bottom-4">
+      <div className="relative h-80 w-full">
+        <div className="absolute bottom-0 right-0">
+          <SpeedDial>
+            <SpeedDialHandler>
+              <IconButton size="lg" className="rounded-full" color="purple">
+                <BsPlus className="h-5 w-5 transition-transform group-hover:rotate-45" />
+              </IconButton>
+            </SpeedDialHandler>
+            <SpeedDialContent>
+              <SpeedDialAction className="relative">
+                <a href="https://wa.me/+96170124129">
+                  <BsWhatsapp className="h-5 w-5 text-secondary" />
+                </a>
+                <Typography {...labelProps}>Whatsapp</Typography>
+              </SpeedDialAction>
+              <SpeedDialAction className="relative">
+                <a href="https://m.me/Skyshop.fpv">
+                  <BsMessenger className="h-5 w-5 text-secondary" />
+                </a>
+                <Typography {...labelProps}>Messenger</Typography>
+              </SpeedDialAction>
+            </SpeedDialContent>
+          </SpeedDial>
+        </div>
+      </div>
     </div>
   );
 }
-
-export default SocialsMenu;
