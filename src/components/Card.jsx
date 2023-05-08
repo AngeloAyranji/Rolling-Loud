@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRegionChecker } from "../hooks/regionChecker";
 import { addToCart } from "../redux/cartReducer";
 import { parseLink } from "../utils/utils";
+import { updateQuantity } from "../redux/cartReducer";
 
 function Card({ item, id }) {
   const navigate = useNavigate();
@@ -33,42 +34,45 @@ function Card({ item, id }) {
   const checkAvailability = (quantityValue) => {
     if (item) {
       const prod = products.find((x) => x.id === id);
-
-      if (!prod && item.quantity > 0) {
-        if (item.options.length > 0) {
-          navigate(`/product/${parseLink(item.title)}`);
-        } else {
+      if (!prod) {
+        if (
+          item.options.length === 1 &&
+          item.options[0].quantity > 0 &&
+          (item.options[0].title === "Default" ||
+            item.options[0].title === "default")
+        ) {
           handleToast();
           dispatch(
             addToCart({
               id: id,
               name: item.title,
               img: item.image.data[0].attributes.url,
-              price: item.price,
-              options: [],
-              quantity,
+              price: item.options[0].price,
+              option: item.options[0].option,
+              optionId: item.options[0].id,
+              optionName: item.options[0].option_name,
+              quantity: 1,
             })
           );
+        } else {
+          navigate(`/product/${parseLink(item.title)}`);
         }
       } else {
-        if (prod) {
-          if (quantityValue + prod.quantity <= item.quantity) {
-            if (item.options.length > 0) {
-              navigate(`/product/${parseLink(item.title)}`);
-            } else {
-              handleToast();
-              dispatch(
-                addToCart({
-                  id: id,
-                  name: item.title,
-                  img: item.image.data[0].attributes.url,
-                  price: item.price,
-                  options: [],
-                  quantity,
-                })
-              );
-            }
-          }
+        if (
+          item.options.length === 1 &&
+          quantityValue + prod.quantity <= item.options[0].quantity &&
+          (item.options[0].title === "Default" ||
+            item.options[0].title === "default")
+        ) {
+          handleToast();
+          dispatch(
+            updateQuantity({
+              optionId: item.options[0].id,
+              quantity: prod.quantity + quantityValue,
+            })
+          );
+        } else {
+          navigate(`/product/${parseLink(item.title)}`);
         }
       }
     }

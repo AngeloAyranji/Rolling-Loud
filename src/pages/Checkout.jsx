@@ -24,7 +24,7 @@ function Order() {
 
   const products = useSelector((state) => state.cart.products);
   const promoCode = useSelector((state) => state.promo.promoCode);
-  // console.log(products)
+  
   const [showToast, setShowToast] = useState(false);
   const [promoInput, setPromoInput] = useState("");
   const onChange = ({ target }) => setPromoInput(target.value);
@@ -111,7 +111,6 @@ function Order() {
       } catch (err) {
         console.log(err.response.data.error);
         if (err.response.data.error === "Promo Code Expired") {
-          console.log(2);
           dispatch(removePromo());
         }
       }

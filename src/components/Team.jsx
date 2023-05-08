@@ -8,7 +8,7 @@ function Team() {
 
   useEffect(() => {
     function handleResize() {
-      console.log(teams);
+
       const div = document.getElementById("image-track");
       if (div.scrollWidth > div.clientWidth) {
         setScrollPercent(0);
