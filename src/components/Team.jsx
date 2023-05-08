@@ -55,13 +55,6 @@ function Team() {
         <h2 className="font-extrabold text-white text-3xl uppercase mb-4">
           team of <span className="text-primary">pilots</span>
         </h2>
-        <p className="text-white max-w-2xl">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusantium,
-          quod commodi aspernatur saepe quibusdam libero, minus magnam dolor
-          voluptates nulla dignissimos, ipsam exercitationem! Architecto,
-          quaerat nostrum? Eos nulla accusamus a!
-        </p>
-
         {/* Image Slider */}
         <div
           onScroll={handleScroll}

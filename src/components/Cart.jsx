@@ -97,15 +97,15 @@ export default function Example({ handleOpen }) {
                                           {product.name}
                                         </Link>
                                         <p className="ml-4 text-white">
-                                          {product.price * product.quantity} {currency}
+                                          {product.price * product.quantity}{" "}
+                                          {currency}
                                         </p>
                                       </div>
-                                      {product.options.map((item, index) => (
-                                        <p className="text-sm" key={index}>
-                                          {item[0]} :{" "}
-                                          <span>{item[1].suboption}</span>
+                                      {product.option !== "Default" && (
+                                        <p className="text-sm">
+                                          {product.option}
                                         </p>
-                                      ))}
+                                      )}
                                     </div>
                                     <div className="flex flex-1 items-end justify-between text-sm mt-2">
                                       <p>Qty {product.quantity}</p>
@@ -116,7 +116,7 @@ export default function Example({ handleOpen }) {
                                             dispatch(
                                               removeItem({
                                                 id: product.id,
-                                                options: product.options,
+                                                option: product.option,
                                               })
                                             )
                                           }

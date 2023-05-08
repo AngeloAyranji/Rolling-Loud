@@ -32,7 +32,7 @@ function Product() {
 
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [canCheckout, setCanCheckout] = useState(false);
+  const [allowedQuantity, setAllowedQuantity] = useState(0);
   const [markdown, setMarkdown] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -45,66 +45,66 @@ function Product() {
       });
       setMarkdown(product[0]?.attributes.longDescription);
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
-      if (product[0].attributes.options.length === 1) {
-        setCanCheckout(true);
-      }
     }
   }, [product]);
 
-  const handePriceChange = (value) => {
-    if (!product[0]?.attributes.discountPercentage) {
-      setSelectedProduct({
-        price: value[0],
-        quantity: value[1],
-        option: value[2],
-      });
-    } else {
-      setSelectedProduct({
-        price:
-          value[0] -
-          (value[0] * product[0]?.attributes.discountPercentage) / 100,
-        quantity: value[1],
-        option: value[2],
-      });
+  const calculateAllowedQuantity = () => {
+    if (product) {
+      const item = products.find(
+        (x) => x.id === product[0]?.id && x.option === selectedProduct?.option
+      );
+      if (!item) {
+        setAllowedQuantity(selectedProduct?.quantity);
+      } else {
+        setAllowedQuantity(selectedProduct?.quantity - item.quantity);
+      }
     }
-
-    setCanCheckout(true);
   };
 
-  const checkAvailability = (quantityValue) => {
-    if (product) {
-      const prod = products.find(
-        (x) => x.id === product[0].id && x.option === selectedProduct.option
+  const handePriceChange = (value) => {
+    setQuantity(1);
+    setSelectedProduct({
+      price: value[0],
+      quantity: value[1],
+      option: value[2],
+    });
+  };
+
+  useEffect(() => {
+    calculateAllowedQuantity();
+  }, [selectedProduct, products]);
+
+  const Add = () => {
+    setQuantity(1);
+    calculateAllowedQuantity();
+    if (product[0]?.attributes.type === "promotion") {
+      dispatch(
+        addToCart({
+          id: product[0].id,
+          name: product[0].attributes.title,
+          img: product[0].attributes.image.data[0].attributes.url,
+          price:
+            selectedProduct?.price -
+            (selectedProduct?.price *
+              product[0].attributes.discountPercentage) /
+              100,
+          option: selectedProduct?.option,
+          optionName: product[0].attributes.optionName,
+          quantity,
+        })
       );
-      if (!prod && selectedProduct.quantity > 0) {
-        dispatch(
-          addToCart({
-            id: product[0].id,
-            name: product[0].attributes.title,
-            img: product[0].attributes.image.data[0].attributes.url,
-            price: selectedProduct?.price,
-            option: selectedProduct?.option,
-            optionName: product[0].attributes.optionName,
-            quantityValue,
-          })
-        );
-      } else {
-        if (prod) {
-          if (quantityValue + prod.quantity <= selectedProduct) {
-            dispatch(
-              addToCart({
-                id: product[0].id,
-                name: product[0].attributes.title,
-                img: product[0].attributes.image.data[0].attributes.url,
-                price: selectedProduct?.price,
-                option: selectedProduct?.option,
-                optionName: product[0].attributes.optionName,
-                quantityValue,
-              })
-            );
-          }
-        }
-      }
+    } else {
+      dispatch(
+        addToCart({
+          id: product[0].id,
+          name: product[0].attributes.title,
+          img: product[0].attributes.image.data[0].attributes.url,
+          price: selectedProduct?.price,
+          option: selectedProduct?.option,
+          optionName: product[0].attributes.optionName,
+          quantity,
+        })
+      );
     }
   };
   return (
@@ -276,11 +276,11 @@ function Product() {
                     >
                       <AiOutlineMinus />
                     </button>
-                    {selectedProduct?.quantity === 0 ? 0 : quantity}
+                    {allowedQuantity === 0 ? 0 : quantity}
                     <button
                       onClick={() =>
                         setQuantity((prev) =>
-                          prev === selectedProduct?.quantity ? prev : prev + 1
+                          prev >= allowedQuantity ? allowedQuantity : prev + 1
                         )
                       }
                     >
@@ -289,11 +289,11 @@ function Product() {
                   </div>
                   <button
                     className={
-                      selectedProduct?.quantity === 0 || canCheckout === false
+                      allowedQuantity === 0
                         ? "btn btn-disabled btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
                         : "btn btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
                     }
-                    onClick={() => checkAvailability(quantity)}
+                    onClick={() => Add(quantity)}
                   >
                     <p> Add to Cart</p>
                     <MdAddShoppingCart className="w-5 h-5 font-extralight" />
