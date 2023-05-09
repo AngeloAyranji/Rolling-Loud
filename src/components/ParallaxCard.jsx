@@ -18,11 +18,9 @@ function ParallaxCard() {
               exciting experience to capture shots they’d never be able to get
               from terra firma.
             </p>
-            <Link to="/products">
-              <button className="btn btn-primary w-[120px] text-white">
-                EXPLORE
-              </button>
-            </Link>
+            <button className="btn btn-primary w-[120px] text-white">
+              <Link to="/products">EXPLORE</Link>
+            </button>
           </div>
           <div className="flex justify-center items-center w-[270px] md:w-[40%] h-[250px]">
             <div className="relative w-full h-full">

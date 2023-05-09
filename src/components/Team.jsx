@@ -4,50 +4,6 @@ import useFetch from "../hooks/useFetch";
 
 function Team() {
   const { data: teams } = useFetch(`api/teams/?populate[image]=*`);
-  const [scrollPercent, setScrollPercent] = useState(0);
-
-  useEffect(() => {
-    function handleResize() {
-      console.log(teams);
-      const div = document.getElementById("image-track");
-      if (div.scrollWidth > div.clientWidth) {
-        setScrollPercent(0);
-      } else {
-        setScrollPercent(50);
-      }
-      const track = document.getElementById("image-track");
-
-      for (const image of track.getElementsByTagName("img")) {
-        image.animate(
-          {
-            objectPosition: `${scrollPercent}% center`,
-          },
-          { duration: 1200, fill: "forwards" }
-        );
-      }
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [scrollPercent]);
-
-  function handleScroll(event) {
-    const element = event.target;
-    const scrollPosition = element.scrollLeft;
-    const totalWidth = element.scrollWidth - element.clientWidth;
-    const percent = (scrollPosition / totalWidth) * 100;
-    setScrollPercent(percent);
-
-    const track = document.getElementById("image-track");
-
-    for (const image of track.getElementsByTagName("img")) {
-      image.animate(
-        {
-          objectPosition: `${scrollPercent}% center`,
-        },
-        { duration: 1200, fill: "forwards" }
-      );
-    }
-  }
 
   return (
     <div className="w-full mx-auto flex items-center justify-center">
@@ -57,7 +13,6 @@ function Team() {
         </h2>
         {/* Image Slider */}
         <div
-          onScroll={handleScroll}
           className="w-full overflow-x-scroll scrollbar-custom pt-12 flex flex-row justify-start md:space-x-[70px] space-x-8 pb-10"
           id="image-track"
         >
@@ -75,7 +30,7 @@ function Team() {
                   className="object-cover w-full h-full"
                 />
               </div>
-              <h3 className="text-lg md:text-xl text-center text-secondary-content max-w-[150px] md:max-w-sm mb-2 font-genos font-normal">
+              <h3 className="text-xl md:text-2xl text-center text-secondary-content max-w-[150px] md:max-w-sm mb-2 font-genos font-normal">
                 {team.attributes.title}
               </h3>
               <a href={team.attributes.url} rel="noreferrer" target={"_blank"}>
