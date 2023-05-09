@@ -1,16 +1,18 @@
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { useJwt } from "react-jwt";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
 import { addPromo, removePromo } from "../redux/promoCodeReducer";
+import { updateQuantity } from "../redux/cartReducer";
 import { parseLink } from "../utils/utils";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { Helmet } from "react-helmet";
 import { Input, Button } from "@material-tailwind/react";
+import useFetch from "../hooks/useFetch";
 
 function Order() {
   const navigate = useNavigate();
@@ -22,12 +24,34 @@ function Order() {
 
   const products = useSelector((state) => state.cart.products);
   const promoCode = useSelector((state) => state.promo.promoCode);
-
+  
   const [showToast, setShowToast] = useState(false);
   const [promoInput, setPromoInput] = useState("");
   const onChange = ({ target }) => setPromoInput(target.value);
 
   const [loadingCheckout, setLoadingCheckout] = useState(false);
+  const [productsURL, setProductsURL] = useState("");
+  const [productsDB, setProductsDB] = useState(null);
+
+  const { data: prod } = useFetch(productsURL !== "" ? productsURL : null);
+
+  useEffect(() => {
+    fetchProductsDB();
+  }, [products]);
+
+  useEffect(() => {
+    if(prod !== undefined && prod !== null) setProductsDB(prod)
+  }, [prod])
+
+  const fetchProductsDB = () => {
+    let url = `api/products?populate[options]=*`;
+
+    products.forEach((product, index) => {
+      url += `&filters[$or][${index}][id][$eq]=${product.id}`;
+    })
+
+    setProductsURL(url);
+  };
 
   const handleToast = () => {
     setShowToast(true);
@@ -87,7 +111,6 @@ function Order() {
       } catch (err) {
         console.log(err.response.data.error);
         if (err.response.data.error === "Promo Code Expired") {
-          console.log(2);
           dispatch(removePromo());
         }
       }
@@ -97,11 +120,21 @@ function Order() {
     }
   };
 
-  const checkAvailability = (item) => {
-    // const { data: product } = useFetch(
-    //   `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options][populate]=*&filters[region][$eq]=${region}&filters[title][$eq]=${item.name}`
-    // );
-    // console.log(product);
+  const checkAvailability = (item, type) => {
+    const itemDB = productsDB.find(product => product.id === item.id);
+    const optionDB = itemDB.attributes.options.find(option => option.id === item.optionId)
+  
+    if(type === "increment" && optionDB.quantity - item.quantity > 0) {
+      dispatch(updateQuantity({
+        optionId: item.optionId,
+        quantity: item.quantity + 1
+      }))
+    } else if(type === "decrement" && item.quantity > 1) {
+      dispatch(updateQuantity({
+        optionId: item.optionId,
+        quantity: item.quantity - 1
+      }))
+    }
   };
 
   const handlePromoCode = async () => {
@@ -211,6 +244,7 @@ function Order() {
                                 <div
                                   role="button"
                                   className="hover:text-primary duration-100 ease-in mx-2"
+                                  onClick={() => checkAvailability(product, "decrement")}
                                 >
                                   <AiOutlineMinus className="" />
                                 </div>
@@ -218,7 +252,7 @@ function Order() {
                                 <div
                                   role="button"
                                   className="hover:text-primary duration-100 ease-in mx-2"
-                                  onClick={() => checkAvailability(product)}
+                                  onClick={() => checkAvailability(product, "increment")}
                                 >
                                   <AiOutlinePlus className="" />
                                 </div>
