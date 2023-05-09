@@ -4,12 +4,17 @@ import { Input, Button } from "@material-tailwind/react";
 
 function Footer({ navigation }) {
   const [email, setEmail] = React.useState("");
+  const [nav, setNav] = React.useState([]);
+
+  React.useEffect(() => {
+    setNav(navigation);
+  }, [navigation]);
   const onChange = ({ target }) => setEmail(target.value);
   return (
     <footer className="footer px-4 md:px-10 py-12 bg-[#121212] text-base-content">
       <div>
         <span className="footer-title">Products</span>
-        {navigation.slice(0, -1).map((item) => (
+        {nav.slice(1, -1).map((item) => (
           <a
             key={item.name}
             className="link link-hover uppercase"
