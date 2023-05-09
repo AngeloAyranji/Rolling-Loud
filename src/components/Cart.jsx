@@ -2,14 +2,17 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { removeItem } from "../redux/cartReducer";
 import { Link } from "react-router-dom";
+import { removeItem } from "../redux/cartReducer";
+import { useRegionChecker } from "../hooks/regionChecker";
 import { parseLink } from "../utils/utils";
 
 export default function Example({ handleOpen }) {
   const [open, setOpen] = useState(true);
   const products = useSelector((state) => state.cart.products);
   const dispatch = useDispatch();
+
+  const { currency } = useRegionChecker();
 
   const totalPrice = () => {
     let total = 0;
@@ -48,7 +51,7 @@ export default function Example({ handleOpen }) {
                 >
                   <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
                     <div className="flex h-full flex-col overflow-y-scroll bg-[#121212] shadow-xl">
-                      <div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
+                      <div className="flex-1 overflow-y-auto scrollbar-cart py-6 px-4 sm:px-6">
                         <div className="flex items-start justify-between">
                           <Dialog.Title className="text-lg font-medium text-white">
                             Shopping cart
@@ -94,15 +97,15 @@ export default function Example({ handleOpen }) {
                                           {product.name}
                                         </Link>
                                         <p className="ml-4 text-white">
-                                          {product.price * product.quantity} $
+                                          {product.price * product.quantity}{" "}
+                                          {currency}
                                         </p>
                                       </div>
-                                      {product.options.map((item, index) => (
-                                        <p className="text-sm" key={index}>
-                                          {item[0]} :{" "}
-                                          <span>{item[1].suboption}</span>
+                                      {product.option !== "Default" && (
+                                        <p className="text-sm">
+                                          {product.option}
                                         </p>
-                                      ))}
+                                      )}
                                     </div>
                                     <div className="flex flex-1 items-end justify-between text-sm mt-2">
                                       <p>Qty {product.quantity}</p>
@@ -113,7 +116,7 @@ export default function Example({ handleOpen }) {
                                             dispatch(
                                               removeItem({
                                                 id: product.id,
-                                                options: product.options,
+                                                option: product.option,
                                               })
                                             )
                                           }

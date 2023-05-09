@@ -15,13 +15,9 @@ function Hero() {
             loop
             muted
             playsInline
+            type="video/mp4"
             className="w-full object-cover object-center brightness-[0.4]"
-          >
-            <source
-              src={videoUrl?.attributes.video.data.attributes.url}
-              type="video/mp4"
-            />
-          </video>
+          ></video>
           <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
             <a href="#slide3" className="btn btn-circle hidden md:flex">
               ❮
@@ -61,18 +57,13 @@ function Hero() {
         </div>
       </div>
       <div className="absolute bottom-0 w-full h-[400px] bg-gradient-to-t from-[#121212] to-transparent"></div>
-      <div className="flex flex-col z-[1] space-y-4 lg:space-y-8">
+      <div className="flex flex-col z-[1]">
         <h1 className="font-planet text-[50px] md:text-[70px] lg:text-[120px] text-white">
           <span className="text-primary">SKY</span>SHOP
         </h1>
-        <div className="flex flex-row space-x-4">
+        <div className="flex flex-row">
           <Link to="/products">
             <button className="btn btn-primary btn-outline text-secondary-content lg:btn-lg">
-              Explore
-            </button>
-          </Link>
-          <Link to="/products">
-            <button className="btn btn-primary btn-outline text-white lg:btn-lg">
               Explore
             </button>
           </Link>

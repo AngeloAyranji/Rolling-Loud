@@ -176,12 +176,18 @@ function Card({ item, id }) {
                 )}
               </div>
               <div className="h-4 mb-2">
-                {item.quantity > 0 ? (
-                  <p className="text-green-500 text-xs lg:text-sm">In Stock</p>
-                ) : (
-                  <p className="text-gray-600 line-through text-xs lg:text-sm">
-                    Out Of Stock
-                  </p>
+                {item.type !== "preorder" && (
+                  <>
+                    {item.options[0].quantity > 0 ? (
+                      <p className="text-green-500 text-xs lg:text-sm">
+                        In Stock
+                      </p>
+                    ) : (
+                      <p className="text-gray-600 line-through text-xs lg:text-sm">
+                        Out Of Stock
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
               {/* <p className="hidden group-hover:text-black text-base-100 ease-in-out duration-150 text-sm line-clamp-4 lg:line-clamp-3 mb-4 lg:mb-8 lg:inline-block">
@@ -191,16 +197,18 @@ function Card({ item, id }) {
             {item.type == "promotion" ? (
               <div className="card-actions justify-start">
                 <div className="badge badge-xs lg:badge-md line-through text-gray-400">
-                  {currency} {item.oldPrice}
+                  {currency} {item.options[0].price}
                 </div>
                 <div className="badge badge-xs lg:badge-md text-secondary-content">
-                  {currency} {item.price}
+                  {currency}{" "}
+                  {item.options[0].price -
+                    (item.options[0].price * item.discountPercentage) / 100}
                 </div>
               </div>
             ) : (
               <div className="card-actions justify-start">
                 <div className="badge badge-xs lg:badge-md text-secondary-content">
-                  {currency} {item.price}
+                  {currency} {item.options[0].price}
                 </div>
               </div>
             )}

@@ -2,7 +2,6 @@ import { useState, Fragment, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BsPerson } from "react-icons/bs";
-import { FiHeart } from "react-icons/fi";
 import {
   Bars3Icon,
   XMarkIcon,
@@ -61,9 +60,9 @@ export default function Navbar({ navigation, setNavigation }) {
     >
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-[1400px] px-2 md:px-6 lg:px-8">
+          <div className="mx-auto max-w-[1400px] px-2 md:px-6 2xl:px-8">
             <div className="relative flex h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center lg:hidden">
+              <div className="absolute inset-y-0 left-0 flex items-center 2xl:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
@@ -74,23 +73,23 @@ export default function Navbar({ navigation, setNavigation }) {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center lg:items-stretch lg:justify-start">
+              <div className="flex flex-1 items-center justify-center 2xl:items-stretch 2xl:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <Link to="/" onClick={() => handleCurrentNav("Home")}>
                     <img
-                      className="block h-10 w-auto lg:hidden"
+                      className="block h-10 w-auto 2xl:hidden"
                       src={Logo}
                       alt="Skyshop"
                     />
                     <img
-                      className="hidden h-8 w-auto lg:block "
+                      className="hidden h-8 w-auto 2xl:block "
                       src={Logo}
                       alt="Skyshop"
                     />
                   </Link>
                 </div>
-                <div className="hidden lg:ml-6 lg:block">
-                  <div className="flex space-x-4 items-center ove">
+                <div className="hidden 2xl:ml-6 2xl:block">
+                  <div className="flex space-x-4 items-center">
                     {navigation.map((item) => (
                       <Dropdown
                         key={item.name}
@@ -102,21 +101,7 @@ export default function Navbar({ navigation, setNavigation }) {
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0">
-                <button
-                  type="button"
-                  className="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                  onClick={() => {
-                    handleOpen();
-                  }}
-                >
-                  <span className="sr-only">View cart</span>
-                  <FiHeart
-                    className="h-5 w-5 sm:h-6 sm:w-6"
-                    aria-hidden="true"
-                  />
-                </button>
-
+              <div className="absolute inset-y-0 right-0 flex items-center pr-2 2xl:static 2xl:inset-auto 2xl:ml-6 2xl:pr-0">
                 <button
                   type="button"
                   className=" ml-3 relative rounded-full bg-[#121212] p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -221,7 +206,7 @@ export default function Navbar({ navigation, setNavigation }) {
             </div>
           </div>
 
-          <Disclosure.Panel className="lg:hidden">
+          <Disclosure.Panel className="2xl:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item, index) => (
                 <Dropdown

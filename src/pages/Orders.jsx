@@ -8,12 +8,13 @@ import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
 import { parseLink } from "../utils/utils";
 import { removeAll } from "../redux/cartReducer";
+import { Helmet } from "react-helmet";
 
 function Orders() {
   const dispatch = useDispatch();
 
   const { currency } = useRegionChecker();
-  
+
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
@@ -66,6 +67,9 @@ function Orders() {
 
   return (
     <>
+      <Helmet>
+        <title>Orders - {sessionStorage.getItem("username")}</title>
+      </Helmet>
       {ordersDB ? (
         <div className="w-full mx-auto flex justify-center items-center">
           <div className="max-w-[1400px] w-full">
@@ -97,7 +101,7 @@ function Orders() {
                       order id: {order?.attributes.stripe_id}
                     </h2>
                     <p className="text-secondary-content font-semibold tracking-wide uppercase lg:text-lg">
-                      {order.attributes.amount_total}{" "}{currency}
+                      {order.attributes.amount_total} {currency}
                     </p>
                   </div>
                   <div className="flex w-full justify-between">
