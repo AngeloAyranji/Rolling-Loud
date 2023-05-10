@@ -34,7 +34,7 @@ function Sidebar({
   function valuetext(value) {
     return `${value} $`;
   }
-  const [value, setValue] = useState([0, 10000]);
+  const [value, setValue] = useState([0, 3000]);
 
   const handleChangeSlider = (event, newValue) => {
     setValue(newValue);
@@ -139,7 +139,7 @@ function Sidebar({
                 onChangeCommitted={(e, p) => setPrice(p)}
                 valueLabelDisplay="auto"
                 getAriaValueText={valuetext}
-                max={10000}
+                max={3000}
                 min={0}
               />
             </ThemeProvider>
