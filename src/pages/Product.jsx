@@ -330,7 +330,9 @@ function Product() {
                 </div>
               </div>
             </div>
-
+            <Link to={`/review?product=${product[0]?.id}`}>
+              Add Review
+            </Link>
             {/* Ratings */}
             <div className="w-full mx-auto flex flex-col space-y-4 pt-8">
               <h3 className="text-secondary-content text-xl font-semibold tracking-wide uppercase">

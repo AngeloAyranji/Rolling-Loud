@@ -45,7 +45,7 @@ function AddReview() {
         );
 
         if (res) {
-          // navigate(-1);
+          navigate(-1);
         }
       } catch (err) {
         console.log("error", err);
