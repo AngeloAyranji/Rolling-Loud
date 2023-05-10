@@ -5,6 +5,51 @@ import useFetch from "../hooks/useFetch";
 function Team() {
   const { data: teams } = useFetch(`api/teams/?populate[image]=*`);
 
+  const [scrollPercent, setScrollPercent] = useState(0);
+
+  useEffect(() => {
+    function handleResize() {
+
+      const div = document.getElementById("image-track");
+      if (div.scrollWidth > div.clientWidth) {
+        setScrollPercent(0);
+      } else {
+        setScrollPercent(50);
+      }
+      const track = document.getElementById("image-track");
+
+      for (const image of track.getElementsByTagName("img")) {
+        image.animate(
+          {
+            objectPosition: `${scrollPercent}% center`,
+          },
+          { duration: 1200, fill: "forwards" }
+        );
+      }
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [scrollPercent]);
+
+  function handleScroll(event) {
+    const element = event.target;
+    const scrollPosition = element.scrollLeft;
+    const totalWidth = element.scrollWidth - element.clientWidth;
+    const percent = (scrollPosition / totalWidth) * 100;
+    setScrollPercent(percent);
+
+    const track = document.getElementById("image-track");
+
+    for (const image of track.getElementsByTagName("img")) {
+      image.animate(
+        {
+          objectPosition: `${scrollPercent}% center`,
+        },
+        { duration: 1200, fill: "forwards" }
+      );
+    }
+  }
+
   return (
     <div className="w-full mx-auto flex items-center justify-center">
       <div className="w-full mx-auto max-w-[1400px] flex flex-col px-8 mb-20 md:mt-20 mt-10">

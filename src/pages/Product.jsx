@@ -30,6 +30,8 @@ function Product() {
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
 
+  const { data: reviews } = useFetch(`api/reviews?populate[product]=*&filters[product][title][$eq]=${productName}`)
+    console.log(reviews)
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [allowedQuantity, setAllowedQuantity] = useState(0);
@@ -42,6 +44,7 @@ function Product() {
         price: product[0]?.attributes.options[0].price,
         quantity: product[0]?.attributes.options[0].quantity,
         option: product[0]?.attributes.options[0].title,
+        id: product[0]?.attributes.options[0].id
       });
       setMarkdown(product[0]?.attributes.longDescription);
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
@@ -67,6 +70,7 @@ function Product() {
       price: value[0],
       quantity: value[1],
       option: value[2],
+      id: value[3],
     });
   };
 
@@ -89,7 +93,8 @@ function Product() {
               product[0].attributes.discountPercentage) /
               100,
           option: selectedProduct?.option,
-          optionName: product[0].attributes.optionName,
+          optionId: selectedProduct?.id,
+          optionName: product[0].attributes.option_name,
           quantity,
         })
       );
@@ -101,7 +106,8 @@ function Product() {
           img: product[0].attributes.image.data[0].attributes.url,
           price: selectedProduct?.price,
           option: selectedProduct?.option,
-          optionName: product[0].attributes.optionName,
+          optionId: selectedProduct?.id,
+          optionName: product[0].attributes.option_name,
           quantity,
         })
       );
@@ -258,7 +264,7 @@ function Product() {
                     >
                       {product[0]?.attributes.options.map((sub, index) => (
                         <Option
-                          value={[sub.price, sub.quantity, sub.title]}
+                          value={[sub.price, sub.quantity, sub.title, sub.id]}
                           key={index}
                         >
                           {sub.title}
@@ -331,11 +337,9 @@ function Product() {
                 Reviews
               </h3>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
-              <Rating />
-              <Rating />
-              <Rating />
-              <Rating />
-              <Rating />
+              {reviews?.map((review) => (
+                <Rating review={review.attributes} />
+              ))}
             </div>
 
             {/* extra infos and related products */}
