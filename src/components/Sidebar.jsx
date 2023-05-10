@@ -25,6 +25,8 @@ function Sidebar({
   isPromotion,
   setIsFeatured,
   isFeatured,
+  setIsPreorder,
+  isPreorder,
   setIsInStock,
   setPrice,
   productQuantity,
@@ -90,6 +92,17 @@ function Sidebar({
             />
             <label htmlFor="Promotion">Promotion</label>
           </div>
+        </div>
+        <div className="flex flex-row justify-start items-center space-x-4 pl-2">
+          <input
+            type="checkbox"
+            id="Preorder"
+            value="Preorder"
+            checked={isPreorder}
+            onChange={(e) => setIsPreorder(e.target.checked)}
+            className="checked:bg-primary rounded-sm"
+          />
+          <label htmlFor="Preorder">Preorder</label>
         </div>
 
         <div className="w-full flex flex-col space-y-4 mt-8">

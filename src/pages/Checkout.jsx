@@ -81,12 +81,12 @@ function Order() {
   const handleCheckout = async () => {
     if (sessionStorage.getItem("jwt")) {
       setLoadingCheckout(true);
-
+      
       const productList = products.map((prd) => {
         return {
           id: prd.id,
           quantity: prd.quantity,
-          options: prd.options,
+          optionId: prd.optionId,
         };
       });
 

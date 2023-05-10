@@ -30,6 +30,9 @@ function Products() {
   const [isFeatured, setIsFeatured] = useState(
     queryFilter === "featured" ? true : false
   );
+  const [isPreorder, setIsPreorder] = useState(
+    queryFilter === "preorder" ? true : false
+  );
   const [isInStock, setIsInStock] = useState(false);
   const [price, setPrice] = useState([0, 10000]);
   const [url, setUrl] = useState("");
@@ -57,6 +60,7 @@ function Products() {
     isNew,
     isFeatured,
     isPromotion,
+    isPreorder,
     isInStock,
     sortBy,
     category,
@@ -84,6 +88,7 @@ function Products() {
     if (isNew) filter += "&filters[type][$eq]=new";
     if (isPromotion) filter += "&filters[type][$eq]=promotion";
     if (isFeatured) filter += "&filters[type][$eq]=featured";
+    if (isPreorder) filter += "&filters[type][$eq]=preorder";
     if (isInStock) filter += "&filters[quantity][$gt]=0";
     if (sortBy == 2) filter += "&sort[0]=price:asc";
     if (sortBy == 1) filter += "&sort[0]=price:desc";
@@ -204,6 +209,8 @@ function Products() {
             isNew={isNew}
             setIsFeatured={setIsFeatured}
             isFeatured={isFeatured}
+            setIsPreorder={setIsPreorder}
+            isPreorder={isPreorder}
             setIsPromotion={setIsPromotion}
             isPromotion={isPromotion}
             setIsInStock={setIsInStock}

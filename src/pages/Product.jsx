@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FiHeart } from "react-icons/fi";
 import { CiDeliveryTruck, CiLock } from "react-icons/ci";
-import { Breadcrumbs } from "@material-tailwind/react";
+import { Breadcrumbs } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
@@ -14,7 +14,7 @@ import Loading from "../components/Loading";
 import { parseLink } from "../utils/utils";
 import { MdAddShoppingCart } from "react-icons/md";
 import Rating from "../components/Rating";
-import { AiOutlineMinus, AiOutlinePlus, AiFillHome } from "react-icons/ai";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { Helmet } from "react-helmet";
 
 function Product() {
@@ -124,14 +124,14 @@ function Product() {
             <Breadcrumbs
               separator=" › "
               aria-label="breadcrumb"
-              className="bg-transparent"
+              className="!bg-transparent !text-white !text-sm !breadcrumbs !scrollbar-thumb-rounded-full !scrollbar-thumb-base-100 !pb-4 !scrollbar-thumb-sm"
               color="cyan"
             >
               <Link
                 to="/"
                 className="text-secondary-content hover:text-primary duration-150 ease-in"
               >
-                <AiFillHome className="w-4 h-4" />
+                Home
               </Link>
               <Link
                 className="text-secondary-content hover:text-primary duration-150 ease-in"
@@ -330,7 +330,9 @@ function Product() {
                 </div>
               </div>
             </div>
-
+            <Link to={`/review?product=${product[0]?.id}`}>
+              Add Review
+            </Link>
             {/* Ratings */}
             <div className="w-full mx-auto flex flex-col space-y-4 pt-8">
               <h3 className="text-secondary-content text-xl font-semibold tracking-wide uppercase">
