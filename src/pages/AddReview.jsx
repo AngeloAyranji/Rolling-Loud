@@ -31,11 +31,13 @@ function AddReview() {
           data: {
             description: reviewText,
             rating: rating,
-            user: decodedToken?.id,
+            user: {
+              connect: [decodedToken?.id]
+            },
             product: productId,
           },
         };
-
+        
         const res = await axios.post(
           process.env.REACT_APP_BACKEND_URL + "api/reviews",
           payload,
@@ -43,7 +45,7 @@ function AddReview() {
         );
 
         if (res) {
-          navigate(-1);
+          // navigate(-1);
         }
       } catch (err) {
         console.log("error", err);
