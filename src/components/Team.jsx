@@ -4,6 +4,7 @@ import useFetch from "../hooks/useFetch";
 
 function Team() {
   const { data: teams } = useFetch(`api/teams/?populate[image]=*`);
+
   const [scrollPercent, setScrollPercent] = useState(0);
 
   useEffect(() => {
@@ -57,7 +58,6 @@ function Team() {
         </h2>
         {/* Image Slider */}
         <div
-          onScroll={handleScroll}
           className="w-full overflow-x-scroll scrollbar-custom pt-12 flex flex-row justify-start md:space-x-[70px] space-x-8 pb-10"
           id="image-track"
         >
@@ -75,7 +75,7 @@ function Team() {
                   className="object-cover w-full h-full"
                 />
               </div>
-              <h3 className="text-lg md:text-xl text-center text-secondary-content max-w-[150px] md:max-w-sm mb-2 font-genos font-normal">
+              <h3 className="text-xl md:text-2xl text-center text-secondary-content max-w-[150px] md:max-w-sm mb-2 font-genos font-normal">
                 {team.attributes.title}
               </h3>
               <a href={team.attributes.url} rel="noreferrer" target={"_blank"}>
