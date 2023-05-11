@@ -143,7 +143,7 @@ function Order() {
   const handlePromoCode = async () => {
     if (promoCode === null) {
       try {
-        const code = document.getElementById("promoCode").value;
+        const code = document.getElementById("promocode").value;
         const res = await axios.get(
           process.env.REACT_APP_BACKEND_URL +
           `api/promotions/?filters[code][$eq]=${code}`
