@@ -6,17 +6,20 @@ import axios from "axios";
 import { useJwt } from "react-jwt";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
-import { addPromo, removePromo } from "../redux/promoCodeReducer";
-import { updateQuantity } from "../redux/cartReducer";
-import { parseLink } from "../utils/utils";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { Helmet } from "react-helmet";
 import { Input, Button } from "@material-tailwind/react";
+import { useLocation } from "react-router-dom";
+import { addPromo, removePromo } from "../redux/promoCodeReducer";
+import { updateQuantity } from "../redux/cartReducer";
+import { parseLink } from "../utils/utils";
 import useFetch from "../hooks/useFetch";
 
 function Order() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const location = useLocation();
 
   const { region, currency } = useRegionChecker();
 
@@ -24,7 +27,7 @@ function Order() {
 
   const products = useSelector((state) => state.cart.products);
   const promoCode = useSelector((state) => state.promo.promoCode);
-  
+
   const [showToast, setShowToast] = useState(false);
   const [promoInput, setPromoInput] = useState("");
   const onChange = ({ target }) => setPromoInput(target.value);
@@ -40,7 +43,7 @@ function Order() {
   }, [products]);
 
   useEffect(() => {
-    if(prod !== undefined && prod !== null) setProductsDB(prod)
+    if (prod !== undefined && prod !== null) setProductsDB(prod)
   }, [prod])
 
   const fetchProductsDB = () => {
@@ -72,16 +75,16 @@ function Order() {
   const discountedPrice = () => {
     return promoCode !== null
       ? (
-          totalPrice() *
-          (1 - (1 - promoCode[0].attributes?.discount / 100))
-        ).toFixed(2)
+        totalPrice() *
+        (1 - (1 - promoCode[0].attributes?.discount / 100))
+      ).toFixed(2)
       : 0;
   };
 
   const handleCheckout = async () => {
     if (sessionStorage.getItem("jwt")) {
       setLoadingCheckout(true);
-      
+
       const productList = products.map((prd) => {
         return {
           id: prd.id,
@@ -116,20 +119,20 @@ function Order() {
       }
       setLoadingCheckout(false);
     } else {
-      navigate("/login");
+      navigate("/login", { state: { from: location } });
     }
   };
 
   const checkAvailability = (item, type) => {
     const itemDB = productsDB.find(product => product.id === item.id);
     const optionDB = itemDB.attributes.options.find(option => option.id === item.optionId)
-  
-    if(type === "increment" && optionDB.quantity - item.quantity > 0) {
+
+    if (type === "increment" && optionDB.quantity - item.quantity > 0) {
       dispatch(updateQuantity({
         optionId: item.optionId,
         quantity: item.quantity + 1
       }))
-    } else if(type === "decrement" && item.quantity > 1) {
+    } else if (type === "decrement" && item.quantity > 1) {
       dispatch(updateQuantity({
         optionId: item.optionId,
         quantity: item.quantity - 1
@@ -143,7 +146,7 @@ function Order() {
         const code = document.getElementById("promoCode").value;
         const res = await axios.get(
           process.env.REACT_APP_BACKEND_URL +
-            `api/promotions/?filters[code][$eq]=${code}`
+          `api/promotions/?filters[code][$eq]=${code}`
         );
         if (res.data.data.length) {
           dispatch(addPromo(res.data.data));
