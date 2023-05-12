@@ -33,12 +33,21 @@ function Product() {
   const { data: reviews } = useFetch(
     `api/reviews?populate[product]=*&populate[user-permissions]=*&filters[product][title][$eq]=${productName}`
   );
-  console.log(reviews);
+
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [allowedQuantity, setAllowedQuantity] = useState(0);
   const [markdown, setMarkdown] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const [page, setPage] = useState(1);
+  const [reviewsArr, setReviewsArr] = useState([]);
+
+  const { data: product, loading } = useFetch(
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
+  );
+
+  const { data: reviews, metadata: reviewsMetadata } = useFetch(`api/reviews?populate[product]=*&filters[product][title][$eq]=${productName}&pagination[page]=${page}&pagination[pageSize]=3`)
 
   useEffect(() => {
     if (product) {
@@ -52,6 +61,21 @@ function Product() {
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
     }
   }, [product]);
+
+  useEffect(() => {
+    handleAddMore()
+  }, [reviews])
+
+  const handleAddMore = () => {
+    let tmpReviews = reviewsArr.slice();
+    console.log(tmpReviews)
+    reviews?.map((review) => {
+      if (reviewsArr.findIndex((x) => x.id === review.id) === -1)
+      tmpReviews.push(review);
+    });
+
+    if (reviews) setReviewsArr(tmpReviews);
+  };
 
   const calculateAllowedQuantity = () => {
     if (product) {
@@ -346,11 +370,13 @@ function Product() {
                 </button>
               </div>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
-              {reviews?.map((review) => (
+              {reviewsArr.map((review) => (
                 <Rating review={review.attributes} />
               ))}
             </div>
-
+            {page < reviewsMetadata?.pagination.pageCount && (
+                <p onClick={() => setPage(page + 1)}>Add More</p>
+              )}
             {/* extra infos and related products */}
             <div className="w-full mx-auto p-4 md:p-8 border-2 border-primary rounded-lg flex flex-col space-y-4 pt-8">
               <h3 className="text-secondary-content text-lg font-semibold tracking-wide uppercase">
