@@ -107,7 +107,10 @@ function Order() {
                 <Link to={`/orders/${orderId}`}>{orderId}</Link>
               </Breadcrumbs>
               <h2 className="text-xl xl:text-3xl font-bold text-white uppercase tracking-wide">
-                order id: {orderId}
+                order id:{" "}
+                <p className="text-ellipsis inline-block w-[300px] overflow-clip">
+                  {orderId}
+                </p>
               </h2>
               <p className="max-w-[700px]">
                 Order Date: {convertDate(order[0]?.attributes.date)}
@@ -148,12 +151,7 @@ function Order() {
                                     {currency}
                                   </p>
                                 </div>
-                                {product.option.map((item, index) => (
-                                  <p className="text-sm" key={index}>
-                                    {item.option} :{" "}
-                                    <span>{item.suboption}</span>
-                                  </p>
-                                ))}
+                                <p className="text-sm">{product.optionName}</p>
                               </div>
                               <div className="flex flex-1 items-end justify-between text-sm">
                                 <p className="">Qty : {product.quantity}</p>

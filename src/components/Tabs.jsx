@@ -77,7 +77,7 @@ function Tabs() {
               </Link>
             )}
           </div>
-          <div className="max-w-[1400px]">
+          <div className="max-w-[1400px] w-full flex justify-center">
             <List type={active} />
           </div>
         </div>

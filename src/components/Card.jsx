@@ -133,7 +133,7 @@ function Card({ item, id }) {
         </div>
       </div>{" "}
       {/* card */}
-      <div className="flex flex-col rounded-xl w-[150px] md:w-[190px] shadow-xl h-full lg:w-[320px] md:h-[350px] lg:h-[560px] cursor-pointer group relative bg-secondary-content">
+      <div className="flex flex-col rounded-xl w-[150px] md:w-[190px] shadow-xl h-full lg:w-[300px] md:h-[320px] lg:h-[500px] cursor-pointer group relative bg-secondary-content">
         <Link to={`/product/${parseLink(item.title)}`}>
           <figure>
             {item && (
@@ -152,10 +152,10 @@ function Card({ item, id }) {
           <MdAddShoppingCart />
         </div>
         <Link to={`/product/${parseLink(item.title)}`}>
-          <div className="flex flex-col justify-between lg:w-[320px] w-[150px] md:w-[190px] h-[168px] p-4 lg:p-6">
+          <div className="flex flex-col justify-between lg:w-[320px] w-[150px] md:w-[190px] h-[130px] p-4 lg:p-6">
             <div>
               <div className="flex flex-col space-y-2 mb-2 ">
-                <h2 className="card-title uppercase text-neutral group-hover:text-black ease-in-out duration-150 text-xs lg:text-base line-clamp-4">
+                <h2 className="card-title uppercase text-neutral group-hover:text-black ease-in-out duration-150 text-xs lg:text-base line-clamp-2">
                   {item.title}
                 </h2>
                 {item.type === "new" && (
