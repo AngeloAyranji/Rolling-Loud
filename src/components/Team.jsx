@@ -27,7 +27,7 @@ function Team() {
                 <img
                   src={team.attributes.image.data.attributes.url}
                   alt={team.attributes.description}
-                  className="object-cover w-full h-full"
+                  className="object-cover object-center w-full h-full"
                 />
               </div>
               <h3 className="text-xl md:text-2xl text-center text-secondary-content max-w-[150px] md:max-w-sm mb-2 font-genos font-normal">
