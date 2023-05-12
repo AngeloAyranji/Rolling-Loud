@@ -1,5 +1,7 @@
 import React, { Fragment } from "react";
 import { Helmet } from "react-helmet";
+import { HiArrowLongLeft } from "react-icons/hi2";
+import { Link } from "react-router-dom";
 
 function ComingSoon() {
   return (
@@ -9,6 +11,17 @@ function ComingSoon() {
       </Helmet>
       <div className="w-full min-h-screen min-w-screen m-auto flex justify-center items-center">
         <div className="max-w-[1400px] w-full flex flex-col space-y-20 items-center justify-center p-8">
+          <div className="w-full">
+            <div className="" role="button">
+              <Link
+                to="/country"
+                className="flex space-x-2 items-center w-[100px]"
+              >
+                <HiArrowLongLeft />
+                <p className="text-xl">Back</p>
+              </Link>
+            </div>
+          </div>
           <h1 className="font-planet text-[50px] text-white">
             <span className="text-primary">SKY</span>SHOP
           </h1>

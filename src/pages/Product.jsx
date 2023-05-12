@@ -31,7 +31,7 @@ function Product() {
   );
 
   const { data: reviews } = useFetch(
-    `api/reviews?populate[product]=*&filters[product][title][$eq]=${productName}`
+    `api/reviews?populate[product]=*&populate[user-permissions]=*&filters[product][title][$eq]=${productName}`
   );
   console.log(reviews);
   const [mainImg, setMainImg] = useState(null);
