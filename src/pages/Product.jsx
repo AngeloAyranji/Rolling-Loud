@@ -41,6 +41,7 @@ function Product() {
 
   const { data: reviews, metadata: reviewsMetadata } = useFetch(`api/reviews?populate[product]=*&populate[user]=*&filters[product][title][$eq]=${productName}&pagination[page]=${page}&pagination[pageSize]=3`)
     console.log(reviews)
+
   useEffect(() => {
     if (product) {
       setSelectedProduct({
@@ -55,14 +56,14 @@ function Product() {
   }, [product]);
 
   useEffect(() => {
-    handleAddMore()
-  }, [reviews])
+    handleAddMore();
+  }, [reviews]);
 
   const handleAddMore = () => {
     let tmpReviews = reviewsArr.slice();
     reviews?.map((review) => {
       if (reviewsArr.findIndex((x) => x.id === review.id) === -1)
-      tmpReviews.push(review);
+        tmpReviews.push(review);
     });
 
     if (reviews) setReviewsArr(tmpReviews);
@@ -366,8 +367,17 @@ function Product() {
               ))}
             </div>
             {page < reviewsMetadata?.pagination.pageCount && (
-                <p onClick={() => setPage(page + 1)}>Add More</p>
-              )}
+              <div className="w-full p-4 flex justify-center items-center px-12 space-x-4">
+                <div className="h-[2px] w-full bg-primary"></div>
+                <p
+                  onClick={() => setPage(page + 1)}
+                  className="font-semibold tracking-widest uppercase hover:text-primary text-center cursor-pointer text-xl whitespace-nowrap"
+                >
+                  Load more
+                </p>
+                <div className="h-[2px] w-full bg-primary"></div>
+              </div>
+            )}
             {/* extra infos and related products */}
             <div className="w-full mx-auto p-4 md:p-8 border-2 border-primary rounded-lg flex flex-col space-y-4 pt-8">
               <h3 className="text-secondary-content text-lg font-semibold tracking-wide uppercase">
