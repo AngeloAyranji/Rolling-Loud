@@ -369,7 +369,16 @@ function Product() {
               ))}
             </div>
             {page < reviewsMetadata?.pagination.pageCount && (
-              <p onClick={() => setPage(page + 1)}>Add More</p>
+              <div className="w-full p-4 flex justify-center items-center px-12 space-x-4">
+                <div className="h-[2px] w-full bg-primary"></div>
+                <p
+                  onClick={() => setPage(page + 1)}
+                  className="font-semibold tracking-widest uppercase hover:text-primary text-center cursor-pointer text-xl whitespace-nowrap"
+                >
+                  Load more
+                </p>
+                <div className="h-[2px] w-full bg-primary"></div>
+              </div>
             )}
             {/* extra infos and related products */}
             <div className="w-full mx-auto p-4 md:p-8 border-2 border-primary rounded-lg flex flex-col space-y-4 pt-8">
