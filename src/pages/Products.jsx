@@ -34,7 +34,7 @@ function Products() {
     queryFilter === "preorder" ? true : false
   );
   const [isInStock, setIsInStock] = useState(false);
-  const [price, setPrice] = useState([0, 10000]);
+  const [price, setPrice] = useState([0, 3000]);
   const [url, setUrl] = useState("");
   const [page, setPage] = useState(1);
   const [products, setProducts] = useState([]);

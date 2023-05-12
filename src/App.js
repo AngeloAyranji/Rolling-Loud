@@ -44,7 +44,7 @@ function App() {
                 sessionStorage.getItem("jwt") ? (
                   <AddReview />
                 ) : (
-                  <Navigate to={"/login"} state={{ from: location }} />
+                  <Navigate to={"/login"} replace={true} state={{ from: location }} />
                 )} />
             <Route
               path="/products/:category/:subcategory"

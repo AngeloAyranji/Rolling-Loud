@@ -44,9 +44,9 @@ function Login() {
           sessionStorage.setItem("username", res.data.user.username);
 
           if (location.state?.from) {
-            navigate(location.state.from);
+            navigate(location.state.from, { replace: true });
           } else {
-            navigate("/");
+            navigate("/", { replace: true });
           }
         }
       } catch (err) {
