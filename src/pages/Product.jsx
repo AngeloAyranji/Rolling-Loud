@@ -7,6 +7,8 @@ import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { Select, Option } from "@material-tailwind/react";
 import remarkGfm from "remark-gfm";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { Helmet } from "react-helmet";
 import { addToCart } from "../redux/cartReducer";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
@@ -14,8 +16,6 @@ import Loading from "../components/Loading";
 import { parseLink } from "../utils/utils";
 import { MdAddShoppingCart } from "react-icons/md";
 import Rating from "../components/Rating";
-import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
-import { Helmet } from "react-helmet";
 
 function Product() {
   const dispatch = useDispatch();
@@ -39,9 +39,8 @@ function Product() {
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
 
-  const { data: reviews, metadata: reviewsMetadata } = useFetch(
-    `api/reviews?populate[product]=*&filters[product][title][$eq]=${productName}&pagination[page]=${page}&pagination[pageSize]=3`
-  );
+  const { data: reviews, metadata: reviewsMetadata } = useFetch(`api/reviews?populate[product]=*&populate[user]=*&filters[product][title][$eq]=${productName}&pagination[page]=${page}&pagination[pageSize]=3`)
+    console.log(reviews)
 
   useEffect(() => {
     if (product) {
@@ -62,7 +61,6 @@ function Product() {
 
   const handleAddMore = () => {
     let tmpReviews = reviewsArr.slice();
-    console.log(tmpReviews);
     reviews?.map((review) => {
       if (reviewsArr.findIndex((x) => x.id === review.id) === -1)
         tmpReviews.push(review);
@@ -364,8 +362,8 @@ function Product() {
                 </button>
               </div>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
-              {reviewsArr.map((review) => (
-                <Rating review={review.attributes} />
+              {reviewsArr.map((review, index) => (
+                <Rating key={index} review={review.attributes} />
               ))}
             </div>
             {page < reviewsMetadata?.pagination.pageCount && (
