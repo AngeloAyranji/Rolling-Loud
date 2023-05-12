@@ -30,8 +30,10 @@ function Product() {
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
 
-  const { data: reviews } = useFetch(`api/reviews?populate[product]=*&filters[product][title][$eq]=${productName}`)
-    console.log(reviews)
+  const { data: reviews } = useFetch(
+    `api/reviews?populate[product]=*&populate[user-permissions]=*&filters[product][title][$eq]=${productName}`
+  );
+  console.log(reviews);
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [allowedQuantity, setAllowedQuantity] = useState(0);
@@ -44,7 +46,7 @@ function Product() {
         price: product[0]?.attributes.options[0].price,
         quantity: product[0]?.attributes.options[0].quantity,
         option: product[0]?.attributes.options[0].title,
-        id: product[0]?.attributes.options[0].id
+        id: product[0]?.attributes.options[0].id,
       });
       setMarkdown(product[0]?.attributes.longDescription);
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
@@ -330,14 +332,19 @@ function Product() {
                 </div>
               </div>
             </div>
-            <Link to={`/review?product=${product[0]?.id}`}>
-              Add Review
-            </Link>
+
             {/* Ratings */}
             <div className="w-full mx-auto flex flex-col space-y-4 pt-8">
-              <h3 className="text-secondary-content text-xl font-semibold tracking-wide uppercase">
-                Reviews
-              </h3>
+              <div className="flex flex-row w-full justify-between">
+                <h3 className="text-secondary-content text-xl font-semibold tracking-wide uppercase">
+                  Reviews
+                </h3>
+                <button className="btn btn-primary">
+                  <Link to={`/review?product=${product[0]?.id}`}>
+                    Add Review
+                  </Link>
+                </button>
+              </div>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
               {reviews?.map((review) => (
                 <Rating review={review.attributes} />

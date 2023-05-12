@@ -12,7 +12,7 @@ function List({ type }) {
   );
 
   return (
-    <div className="gap-4 flex flex-row overflow-x-scroll items-center justify-start scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-full pb-8">
+    <div className="gap-4 flex flex-row overflow-x-scroll w-full items-center justify-start scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-full pb-8">
       {loading ? (
         <Fragment>
           {[...Array(4)].map((star, index) => {

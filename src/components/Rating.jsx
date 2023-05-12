@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { GrStar } from "react-icons/gr";
 
 function Rating({ review }) {
+  console.log(review);
   const [rating, setRating] = useState(review.rating);
-  
+
   return (
     <div className="flex flex-col space-y-2 pt-2">
       <div className="flex flex-row space-x-4">
@@ -33,7 +34,7 @@ function Rating({ review }) {
         <p className="md:text-lg tracking-wide">Ramy Sobhieh</p>
       </div>
       <p className="text-secondary-content tracking-wide pb-2">
-          {review.description}
+        {review.description}
       </p>
       <div className="divider"></div>
     </div>
