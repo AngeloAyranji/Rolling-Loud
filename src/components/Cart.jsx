@@ -138,7 +138,9 @@ export default function Example({ handleOpen }) {
                       <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                         <div className="flex justify-between text-base font-medium text-white mt-4">
                           <p>Subtotal</p>
-                          <p>{totalPrice()} $</p>
+                          <p>
+                            {totalPrice()} {currency}
+                          </p>
                         </div>
                         <p className="mt-0.5 text-sm text-gray-500">
                           Shipping and taxes calculated at checkout.
