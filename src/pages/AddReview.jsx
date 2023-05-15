@@ -12,6 +12,7 @@ function AddReview() {
 
   const queryParams = new URLSearchParams(location.search);
   const productId = queryParams.get("product");
+  const productName = queryParams.get("name");
 
   const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
 
@@ -64,10 +65,7 @@ function AddReview() {
             Add Review
           </h1>
           <p className="mt-8">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid
-            quod error incidunt fugiat, expedita corporis soluta rerum
-            architecto, quae possimus ab perferendis maiores quam odit dicta
-            reiciendis, tempore cupiditate nostrum.
+            {productName}
           </p>
           <div className="w-full h-[1px] bg-gray-700 mt-8 mb-10 md:mb-14"></div>
           <div className="flex flex-wrap gap-4 md:items-center">

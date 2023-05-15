@@ -355,7 +355,7 @@ function Product() {
                   Reviews
                 </h3>
                 <button className="btn btn-primary">
-                  <Link to={`/review?product=${product[0]?.id}`}>
+                  <Link to={`/review?product=${product[0]?.id}&name=${product[0]?.attributes.title}`}>
                     Add Review
                   </Link>
                 </button>
