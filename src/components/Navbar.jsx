@@ -22,10 +22,16 @@ export default function Navbar({ navigation, setNavigation }) {
 
   const [opena, setOpena] = useState(false);
 
+  const [openMobile, setOpenMobile] = useState(false);
+
   const products = useSelector((state) => state.cart.products);
 
   const handleOpen = () => {
     setOpena(!opena);
+  };
+
+  const handleMenu = () => {
+    setOpenMobile(!openMobile);
   };
 
   const handleLogOut = () => {
@@ -64,14 +70,38 @@ export default function Navbar({ navigation, setNavigation }) {
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center 2xl:hidden">
                 {/* Mobile menu button*/}
-                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                {/* <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                  {openMobile ? (
+                    <XMarkIcon
+                      className="block h-6 w-6"
+                      aria-hidden="true"
+                      onClick={() => handleMenu()}
+                    />
                   ) : (
-                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                    <Bars3Icon
+                      className="block h-6 w-6"
+                      aria-hidden="true"
+                      onClick={() => handleMenu()}
+                    />
                   )}
-                </Disclosure.Button>
+                </Disclosure.Button> */}
+                <div className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white">
+                  <span className="sr-only">Open main menu</span>
+                  {openMobile ? (
+                    <XMarkIcon
+                      className="block h-6 w-6"
+                      aria-hidden="true"
+                      onClick={() => handleMenu()}
+                    />
+                  ) : (
+                    <Bars3Icon
+                      className="block h-6 w-6"
+                      aria-hidden="true"
+                      onClick={() => handleMenu()}
+                    />
+                  )}
+                </div>
               </div>
               <div className="flex flex-1 items-center justify-center 2xl:items-stretch 2xl:justify-start">
                 <div className="flex flex-shrink-0 items-center">
@@ -206,18 +236,21 @@ export default function Navbar({ navigation, setNavigation }) {
             </div>
           </div>
 
-          <Disclosure.Panel className="2xl:hidden">
-            <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map((item, index) => (
-                <Dropdown
-                  key={index}
-                  title={item.name}
-                  href={item.href}
-                  subCategories={item.sub}
-                />
-              ))}
+          {openMobile && (
+            <div className="2xl:hidden">
+              <div className="space-y-1 pl-4 pt-2 pb-3">
+                {navigation.map((item, index) => (
+                  <Dropdown
+                    key={index}
+                    handleMenu={handleMenu}
+                    title={item.name}
+                    href={item.href}
+                    subCategories={item.sub}
+                  />
+                ))}
+              </div>
             </div>
-          </Disclosure.Panel>
+          )}
         </>
       )}
     </Disclosure>

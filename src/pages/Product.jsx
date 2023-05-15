@@ -7,6 +7,8 @@ import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { Select, Option } from "@material-tailwind/react";
 import remarkGfm from "remark-gfm";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { Helmet } from "react-helmet";
 import { addToCart } from "../redux/cartReducer";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
@@ -14,8 +16,6 @@ import Loading from "../components/Loading";
 import { parseLink } from "../utils/utils";
 import { MdAddShoppingCart } from "react-icons/md";
 import Rating from "../components/Rating";
-import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
-import { Helmet } from "react-helmet";
 
 function Product() {
   const dispatch = useDispatch();
@@ -26,17 +26,23 @@ function Product() {
 
   const { productName } = useParams();
 
-  const { data: product, loading } = useFetch(
-    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
-  );
-
-  const { data: reviews } = useFetch(`api/reviews?populate[product]=*&filters[product][title][$eq]=${productName}`)
-    console.log(reviews)
   const [mainImg, setMainImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [allowedQuantity, setAllowedQuantity] = useState(0);
   const [markdown, setMarkdown] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const [page, setPage] = useState(1);
+  const [reviewsArr, setReviewsArr] = useState([]);
+
+  const { data: product, loading } = useFetch(
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
+  );
+
+  const { data: reviews, metadata: reviewsMetadata } = useFetch(
+    `api/reviews?populate[product]=*&populate[user]=*&filters[product][title][$eq]=${productName}&pagination[page]=${page}&pagination[pageSize]=3`
+  );
+  console.log(reviews);
 
   useEffect(() => {
     if (product) {
@@ -44,12 +50,26 @@ function Product() {
         price: product[0]?.attributes.options[0].price,
         quantity: product[0]?.attributes.options[0].quantity,
         option: product[0]?.attributes.options[0].title,
-        id: product[0]?.attributes.options[0].id
+        id: product[0]?.attributes.options[0].id,
       });
       setMarkdown(product[0]?.attributes.longDescription);
       setMainImg(product[0]?.attributes.image.data[0].attributes.url);
     }
   }, [product]);
+
+  useEffect(() => {
+    handleAddMore();
+  }, [reviews]);
+
+  const handleAddMore = () => {
+    let tmpReviews = reviewsArr.slice();
+    reviews?.map((review) => {
+      if (reviewsArr.findIndex((x) => x.id === review.id) === -1)
+        tmpReviews.push(review);
+    });
+
+    if (reviews) setReviewsArr(tmpReviews);
+  };
 
   const calculateAllowedQuantity = () => {
     if (product) {
@@ -179,10 +199,6 @@ function Product() {
                     alt={product[0]?.attributes.title}
                     className="object-cover object-center w-full h-full"
                   />
-                  <div className="flex flex-row space-x-2 justify-end items-center absolute top-4 right-4 hover:text-black  duration-150 ease-in cursor-pointer">
-                    <FiHeart className="" />
-                    <p className="text-sm uppercase">Add to Wishlist</p>
-                  </div>
                 </div>
                 <div className="flex w-full mx-auto space-x-2 overflow-x-auto lg:scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-full scrollbar-track-gray-600 scrollbar-track-rounded-full pb-4">
                   {product[0]?.attributes.image.data.map((item, index) => (
@@ -333,15 +349,33 @@ function Product() {
 
             {/* Ratings */}
             <div className="w-full mx-auto flex flex-col space-y-4 pt-8">
-              <h3 className="text-secondary-content text-xl font-semibold tracking-wide uppercase">
-                Reviews
-              </h3>
+              <div className="flex flex-row w-full justify-between items-center">
+                <h3 className="text-secondary-content text-xl font-semibold tracking-wide uppercase">
+                  Reviews
+                </h3>
+                <button className="btn btn-primary">
+                  <Link to={`/review?product=${product[0]?.id}`}>
+                    Add Review
+                  </Link>
+                </button>
+              </div>
               <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
-              {reviews?.map((review) => (
-                <Rating review={review.attributes} />
+              {reviewsArr.map((review, index) => (
+                <Rating key={index} review={review.attributes} />
               ))}
             </div>
-
+            {page < reviewsMetadata?.pagination.pageCount && (
+              <div className="w-full p-4 flex justify-center items-center px-12 space-x-4">
+                <div className="h-[2px] w-full bg-primary"></div>
+                <p
+                  onClick={() => setPage(page + 1)}
+                  className="font-semibold tracking-widest uppercase hover:text-primary text-center cursor-pointer text-xl whitespace-nowrap"
+                >
+                  Load more
+                </p>
+                <div className="h-[2px] w-full bg-primary"></div>
+              </div>
+            )}
             {/* extra infos and related products */}
             <div className="w-full mx-auto p-4 md:p-8 border-2 border-primary rounded-lg flex flex-col space-y-4 pt-8">
               <h3 className="text-secondary-content text-lg font-semibold tracking-wide uppercase">

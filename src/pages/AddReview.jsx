@@ -31,7 +31,9 @@ function AddReview() {
           data: {
             description: reviewText,
             rating: rating,
-            user: decodedToken?.id,
+            user: {
+              connect: [decodedToken?.id],
+            },
             product: productId,
           },
         };

@@ -16,7 +16,7 @@ export default function SocialsMenu() {
   };
 
   return (
-    <div className="fixed right-4 bottom-4">
+    <div className="fixed right-4 bottom-4 z-[1000]">
       <div className="relative h-80 w-full">
         <div className="absolute bottom-0 right-0">
           <SpeedDial>

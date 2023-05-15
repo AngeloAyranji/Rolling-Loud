@@ -25,6 +25,8 @@ function Sidebar({
   isPromotion,
   setIsFeatured,
   isFeatured,
+  setIsPreorder,
+  isPreorder,
   setIsInStock,
   setPrice,
   productQuantity,
@@ -32,7 +34,7 @@ function Sidebar({
   function valuetext(value) {
     return `${value} $`;
   }
-  const [value, setValue] = useState([0, 10000]);
+  const [value, setValue] = useState([0, 3000]);
 
   const handleChangeSlider = (event, newValue) => {
     setValue(newValue);
@@ -91,6 +93,17 @@ function Sidebar({
             <label htmlFor="Promotion">Promotion</label>
           </div>
         </div>
+        <div className="flex flex-row justify-start items-center space-x-4 pl-2">
+          <input
+            type="checkbox"
+            id="Preorder"
+            value="Preorder"
+            checked={isPreorder}
+            onChange={(e) => setIsPreorder(e.target.checked)}
+            className="checked:bg-primary rounded-sm"
+          />
+          <label htmlFor="Preorder">Preorder</label>
+        </div>
 
         <div className="w-full flex flex-col space-y-4 mt-8">
           <h3 className="text-white text-lg ">Availability</h3>
@@ -126,7 +139,7 @@ function Sidebar({
                 onChangeCommitted={(e, p) => setPrice(p)}
                 valueLabelDisplay="auto"
                 getAriaValueText={valuetext}
-                max={10000}
+                max={3000}
                 min={0}
               />
             </ThemeProvider>
