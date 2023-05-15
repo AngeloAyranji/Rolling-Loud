@@ -39,8 +39,10 @@ function Product() {
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
 
-  const { data: reviews, metadata: reviewsMetadata } = useFetch(`api/reviews?populate[product]=*&populate[user]=*&filters[product][title][$eq]=${productName}&pagination[page]=${page}&pagination[pageSize]=3`)
-    console.log(reviews)
+  const { data: reviews, metadata: reviewsMetadata } = useFetch(
+    `api/reviews?populate[product]=*&populate[user]=*&filters[product][title][$eq]=${productName}&pagination[page]=${page}&pagination[pageSize]=3`
+  );
+  console.log(reviews);
 
   useEffect(() => {
     if (product) {
@@ -197,10 +199,6 @@ function Product() {
                     alt={product[0]?.attributes.title}
                     className="object-cover object-center w-full h-full"
                   />
-                  <div className="flex flex-row space-x-2 justify-end items-center absolute top-4 right-4 hover:text-black  duration-150 ease-in cursor-pointer">
-                    <FiHeart className="" />
-                    <p className="text-sm uppercase">Add to Wishlist</p>
-                  </div>
                 </div>
                 <div className="flex w-full mx-auto space-x-2 overflow-x-auto lg:scrollbar-thin scrollbar-thumb-primary scrollbar-thumb-rounded-full scrollbar-track-gray-600 scrollbar-track-rounded-full pb-4">
                   {product[0]?.attributes.image.data.map((item, index) => (
@@ -351,7 +349,7 @@ function Product() {
 
             {/* Ratings */}
             <div className="w-full mx-auto flex flex-col space-y-4 pt-8">
-              <div className="flex flex-row w-full justify-between">
+              <div className="flex flex-row w-full justify-between items-center">
                 <h3 className="text-secondary-content text-xl font-semibold tracking-wide uppercase">
                   Reviews
                 </h3>
