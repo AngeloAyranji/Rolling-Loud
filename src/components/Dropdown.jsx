@@ -17,7 +17,7 @@ function Dropdown({ title, href, subCategories, handleMenu }) {
         <div className="relative overflow-visible">
           <div className="relative flex flex-row 2xl:justify-between items-center space-x-2 hover:text-primary 2xl:hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
             <div className="" role="btn" onClick={() => handleMenu()}>
-              <Link to={href} className=" text-xs font-bold">
+              <Link to={href} className="text-sm 2xl:text-xs font-bold">
                 {title}
               </Link>
             </div>
@@ -36,12 +36,12 @@ function Dropdown({ title, href, subCategories, handleMenu }) {
             <div
               className={
                 isOpen
-                  ? "w-fit 2xl:absolute 2xl:left-0 2xl:top-0 mb-4 flex flex-col space-y-4 justify-start ease-in-out duration-300 z-0"
+                  ? "w-fit 2xl:absolute 2xl:left-0 2xl:top-0 2xl:mb-4 flex flex-col 2xl:space-y-4 justify-start ease-in-out duration-300 z-0"
                   : "hidden"
               }
             >
               <div className="pt-0 2xl:pt-[36px]">
-                <div className="2xl:bg-[#313131] 2xl:rounded-md p-4 flex flex-col space-y-4">
+                <div className="2xl:bg-[#313131] 2xl:rounded-md 2xl:p-4 p-2 flex flex-col 2xl:space-y-4 space-y-2">
                   {subCategories?.map((sub, index) => (
                     <div role="btn" onClick={() => handleMenu()}>
                       <Link
@@ -49,7 +49,7 @@ function Dropdown({ title, href, subCategories, handleMenu }) {
                         to={`/products/${parseLink(title)}/${parseLink(
                           sub?.attributes.title
                         )}`}
-                        className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap"
+                        className="cursor-pointer text-secondary-content hover:text-primary text-xs uppercase font-semibold whitespace-nowrap"
                       >
                         {sub?.attributes.title}
                       </Link>
