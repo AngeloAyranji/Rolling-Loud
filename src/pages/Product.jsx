@@ -42,7 +42,6 @@ function Product() {
   const { data: reviews, metadata: reviewsMetadata } = useFetch(
     `api/reviews?populate[product]=*&populate[user]=*&filters[product][title][$eq]=${productName}&pagination[page]=${page}&pagination[pageSize]=3`
   );
-  console.log(reviews);
 
   useEffect(() => {
     if (product) {
@@ -239,7 +238,7 @@ function Product() {
                     )}
                   </>
                 ) : (
-                  <p>PRE-ORDER</p>
+                  <p className="text-secondary">PRE-ORDER</p>
                 )}
 
                 <div className="divider"></div>

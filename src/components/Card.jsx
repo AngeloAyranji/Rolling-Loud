@@ -78,6 +78,13 @@ function Card({ item, id }) {
     }
   };
 
+  const checkQuantity = () => {
+    for(let i = 0; i < item.options.length; i++) {
+      if(item.options[i].quantity > 0) return true
+    }
+    return false;
+  }
+
   return (
     <Fragment>
       {/* toast */}
@@ -182,7 +189,7 @@ function Card({ item, id }) {
               <div className="h-4 mb-2">
                 {item.type !== "preorder" && (
                   <>
-                    {item.options[0].quantity > 0 ? (
+                    {checkQuantity() ? (
                       <p className="text-green-500 text-xs lg:text-sm">
                         In Stock
                       </p>
