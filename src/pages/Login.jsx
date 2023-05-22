@@ -40,8 +40,8 @@ function Login() {
 
         if (res) {
           setError(false);
-          sessionStorage.setItem("jwt", res.data.jwt);
-          sessionStorage.setItem("username", res.data.user.username);
+          localStorage.setItem("jwt", res.data.jwt);
+          localStorage.setItem("username", res.data.user.username);
 
           if (location.state?.from) {
             navigate(location.state.from, { replace: true });

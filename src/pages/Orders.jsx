@@ -20,7 +20,7 @@ function Orders() {
   const queryParams = new URLSearchParams(location.search);
   const success = queryParams.get("success");
 
-  const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
+  const { decodedToken } = useJwt(localStorage.getItem("jwt"));
 
   const [page, setPage] = useState(1);
   const [orders, setOrders] = useState([]);
@@ -68,7 +68,7 @@ function Orders() {
   return (
     <>
       <Helmet>
-        <title>Orders - {sessionStorage.getItem("username")}</title>
+        <title>Orders - {localStorage.getItem("username")}</title>
       </Helmet>
       {ordersDB ? (
         <div className="w-full mx-auto flex justify-center items-center">
@@ -81,7 +81,7 @@ function Orders() {
               >
                 <Link to="/">Home</Link>
                 <Link to={`/orders`}>Orders</Link>
-                <Link to={`/orders`}>{sessionStorage.getItem("username")}</Link>
+                <Link to={`/orders`}>{localStorage.getItem("username")}</Link>
               </Breadcrumbs>
               <h2 className="text-xl xl:text-3xl font-bold text-white uppercase tracking-wide">
                 Your orders

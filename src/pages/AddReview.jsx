@@ -14,7 +14,7 @@ function AddReview() {
   const productId = queryParams.get("product");
   const productName = queryParams.get("name");
 
-  const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
+  const { decodedToken } = useJwt(localStorage.getItem("jwt"));
 
   const [rating, setRating] = useState(5);
   const [hover, setHover] = useState(null);
@@ -25,7 +25,7 @@ function AddReview() {
     if (reviewText !== "") {
       try {
         const config = {
-          headers: { Authorization: `Bearer ${sessionStorage.getItem("jwt")}` },
+          headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
         };
 
         const payload = {

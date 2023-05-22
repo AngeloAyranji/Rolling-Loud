@@ -35,8 +35,8 @@ export default function Navbar({ navigation, setNavigation }) {
   };
 
   const handleLogOut = () => {
-    sessionStorage.removeItem("jwt");
-    sessionStorage.removeItem("userId");
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("username");
 
     navigate("/");
   };
@@ -185,7 +185,7 @@ export default function Navbar({ navigation, setNavigation }) {
                       <Menu.Item>
                         {({ active }) => (
                           <>
-                            {sessionStorage.getItem("jwt") !== null && (
+                            {localStorage.getItem("jwt") !== null && (
                               <a
                                 href="/orders"
                                 className={classNames(
@@ -204,7 +204,7 @@ export default function Navbar({ navigation, setNavigation }) {
                         {({ active }) => (
                           <>
                             {/* isLoggedIn condition */}
-                            {sessionStorage.getItem("jwt") === null ? (
+                            {localStorage.getItem("jwt") === null ? (
                               <a
                                 href="/login"
                                 className={classNames(

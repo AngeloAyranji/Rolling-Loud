@@ -41,7 +41,7 @@ function App() {
               element={<FooterContent name={"About Us"} />}
             />
             <Route path="/review" element={
-                sessionStorage.getItem("jwt") ? (
+                localStorage.getItem("jwt") ? (
                   <AddReview />
                 ) : (
                   <Navigate to={"/login"} replace={true} state={{ from: location }} />
@@ -54,7 +54,7 @@ function App() {
             <Route
               path="/orders"
               element={
-                sessionStorage.getItem("jwt") ? (
+                localStorage.getItem("jwt") ? (
                   <Orders />
                 ) : (
                   <Navigate to={"/login"} state={{ from: location }} />
@@ -64,7 +64,7 @@ function App() {
             <Route
               path="/orders/:orderId"
               element={
-                sessionStorage.getItem("jwt") ? (
+                localStorage.getItem("jwt") ? (
                   <Order />
                 ) : (
                   <Navigate to={"/login"} state={{ from: location }} />

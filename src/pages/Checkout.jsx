@@ -23,8 +23,8 @@ function Order() {
 
   const { region, currency } = useRegionChecker();
 
-  const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
-
+  const { decodedToken } = useJwt(localStorage.getItem("jwt"));
+  
   const products = useSelector((state) => state.cart.products);
   const promoCode = useSelector((state) => state.promo.promoCode);
 
@@ -82,7 +82,7 @@ function Order() {
   };
 
   const handleCheckout = async () => {
-    if (sessionStorage.getItem("jwt")) {
+    if (localStorage.getItem("jwt")) {
       setLoadingCheckout(true);
 
       const productList = products.map((prd) => {
@@ -97,10 +97,11 @@ function Order() {
         items: productList,
         promoCode: promoCode !== null ? promoCode[0].attributes?.code : null,
         userId: decodedToken?.id,
+        country: "FR"
       };
 
       const config = {
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("jwt")}` },
+        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
       };
 
       try {

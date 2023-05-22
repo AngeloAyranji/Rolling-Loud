@@ -103,7 +103,7 @@ function Order() {
               >
                 <Link to="/">Home</Link>
                 <Link to={`/orders`}>Orders</Link>
-                <Link to={`/orders`}>{sessionStorage.getItem("username")}</Link>
+                <Link to={`/orders`}>{localStorage.getItem("username")}</Link>
                 <Link to={`/orders/${orderId}`}>{orderId}</Link>
               </Breadcrumbs>
               <h2 className="text-xl xl:text-3xl font-bold text-white uppercase tracking-wide">
