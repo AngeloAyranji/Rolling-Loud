@@ -1,3 +1,5 @@
 export const parseLink = (link) => {
-    return link.split('/').join('%2F');
-  }
+  // // let tmp = link.replace('&', encodeURIComponent('&'));
+  // let tmp = link.split('&').join('%26');
+  return link.split('/').join('%2F');
+}

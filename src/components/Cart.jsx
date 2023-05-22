@@ -20,7 +20,7 @@ export default function Example({ handleOpen }) {
     total = total.toFixed(2);
     return total;
   };
-
+  console.log(products)
   return (
     <>
       <Transition.Root show={open} as={Fragment}>
@@ -116,7 +116,7 @@ export default function Example({ handleOpen }) {
                                             dispatch(
                                               removeItem({
                                                 id: product.id,
-                                                option: product.option,
+                                                optionId: product.optionId,
                                               })
                                             )
                                           }

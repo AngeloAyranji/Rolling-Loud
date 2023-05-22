@@ -25,7 +25,7 @@ export const cartSlice = createSlice({
         (item) =>
           item.id !== action.payload.id ||
           (item.id === action.payload.id &&
-            item.option !== action.payload.option)
+            item.optionId !== action.payload.optionId)
       );
     },
     removeAll: (state, action) => {

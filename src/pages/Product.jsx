@@ -34,7 +34,7 @@ function Product() {
 
   const [page, setPage] = useState(1);
   const [reviewsArr, setReviewsArr] = useState([]);
-
+  
   const { data: product, loading } = useFetch(
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
   );
@@ -132,6 +132,9 @@ function Product() {
       );
     }
   };
+
+  console.log(productName)
+
   return (
     <>
       <Helmet>
@@ -299,7 +302,7 @@ function Product() {
                     >
                       <AiOutlineMinus />
                     </button>
-                    {allowedQuantity === 0 ? 0 : quantity}
+                    {allowedQuantity <= 0 ? 0 : quantity}
                     <button
                       onClick={() =>
                         setQuantity((prev) =>
@@ -312,13 +315,13 @@ function Product() {
                   </div>
                   <button
                     className={
-                      allowedQuantity === 0
+                      allowedQuantity <= 0
                         ? "btn btn-disabled btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
                         : "btn btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
                     }
                     onClick={() => Add(quantity)}
                   >
-                    <p> Add to Cart</p>
+                    <p>Add to Cart</p>
                     <MdAddShoppingCart className="w-5 h-5 font-extralight" />
                   </button>
                 </div>

@@ -11,7 +11,7 @@ import { Helmet } from "react-helmet";
 import { Input, Button } from "@material-tailwind/react";
 import { useLocation } from "react-router-dom";
 import { addPromo, removePromo } from "../redux/promoCodeReducer";
-import { updateQuantity } from "../redux/cartReducer";
+import { updateQuantity, removeItem } from "../redux/cartReducer";
 import { parseLink } from "../utils/utils";
 import useFetch from "../hooks/useFetch";
 
@@ -21,7 +21,7 @@ function Order() {
 
   const location = useLocation();
 
-  const { region, currency } = useRegionChecker();
+  const { currency } = useRegionChecker();
 
   const { decodedToken } = useJwt(localStorage.getItem("jwt"));
 
@@ -113,9 +113,21 @@ function Order() {
 
         window.open(res.data.session.url);
       } catch (err) {
-        console.log(err.response.data.error);
         if (err.response.data.error === "Promo Code Expired") {
           dispatch(removePromo());
+        } else if(err.response.data.optionId && err.response.data.itemId) {
+          if(err.response.data.quantity <= 0) {
+            dispatch(removeItem({
+              id: err.response.data.itemId,
+              optionId: err.response.data.optionId,
+            }))
+          } else {
+            dispatch(updateQuantity({
+              optionId: err.response.data.optionId,
+              quantity: err.response.data.quantity
+            }))
+            fetchProductsDB();
+          }
         }
       }
       setLoadingCheckout(false);
