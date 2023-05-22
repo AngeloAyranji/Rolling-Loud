@@ -226,7 +226,7 @@ function Product() {
                 <h2 className="text-xl text-secondary-content font-bold">
                   {product[0]?.attributes.title}
                 </h2>
-                {product[0]?.attributes.type !== "preorder" && (
+                {product[0]?.attributes.type !== "preorder" ? (
                   <>
                     {selectedProduct?.quantity === 0 ? (
                       <p className="line-through text-xs lg:text-sm">
@@ -238,6 +238,8 @@ function Product() {
                       </p>
                     )}
                   </>
+                ) : (
+                  <p>PRE-ORDER</p>
                 )}
 
                 <div className="divider"></div>

@@ -24,7 +24,7 @@ function Order() {
   const { region, currency } = useRegionChecker();
 
   const { decodedToken } = useJwt(localStorage.getItem("jwt"));
-  
+
   const products = useSelector((state) => state.cart.products);
   const promoCode = useSelector((state) => state.promo.promoCode);
 
@@ -63,22 +63,22 @@ function Order() {
     }, 5000);
   };
 
-  const totalPrice = (withPromo = false) => {
+  const totalPrice = () => {
     let total = 0;
     products.forEach((item) => (total += item.price * item.quantity));
-    if (promoCode && withPromo)
-      total = total * (1 - promoCode[0].attributes?.discount / 100);
-    total = total.toFixed(2);
     return total;
   };
 
   const discountedPrice = () => {
-    return promoCode !== null
-      ? (
-        totalPrice() *
-        (1 - (1 - promoCode[0].attributes?.discount / 100))
-      ).toFixed(2)
-      : 0;
+    if (promoCode !== null) {
+      if(promoCode[0].attributes?.isFixed_Amount) {
+        return promoCode[0].attributes?.discount
+      } else {
+        return totalPrice() * (1 - (1 - promoCode[0].attributes?.discount / 100)).toFixed(2)
+      }
+    }
+
+    return 0;
   };
 
   const handleCheckout = async () => {
@@ -332,7 +332,7 @@ function Order() {
                     <div className="flex flex-row w-full justify-between items-center text-secondary-content">
                       <p className="text-xl font-semibold">Total</p>
                       <p className="text-xl font-semibold">
-                        {totalPrice(true)} {currency}
+                        {totalPrice() - discountedPrice() < 0 ? 0 : (totalPrice() - discountedPrice()).toFixed(2)} {currency}
                       </p>
                     </div>
                   </div>
