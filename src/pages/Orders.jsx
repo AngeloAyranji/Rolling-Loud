@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
-import { parseLink } from "../utils/utils";
 import { removeAll } from "../redux/cartReducer";
 import { Helmet } from "react-helmet";
 
@@ -107,7 +106,7 @@ function Orders() {
                   <div className="flex w-full justify-between">
                     <p>{convertDate(order?.attributes.date)}</p>
                     <Link
-                      to={`/orders/${parseLink(order?.attributes.stripe_id)}`}
+                      to={`/orders/${encodeURIComponent(order?.attributes.stripe_id)}`}
                       className="link"
                     >
                       <p> Order Details</p>

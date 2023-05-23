@@ -12,7 +12,6 @@ import { Input, Button } from "@material-tailwind/react";
 import { useLocation } from "react-router-dom";
 import { addPromo, removePromo } from "../redux/promoCodeReducer";
 import { updateQuantity, removeItem } from "../redux/cartReducer";
-import { parseLink } from "../utils/utils";
 import useFetch from "../hooks/useFetch";
 
 function Order() {
@@ -241,7 +240,7 @@ function Order() {
                             <div>
                               <div className="flex justify-between text-sm lg:text-base font-medium text-white">
                                 <Link
-                                  to={`/product/${parseLink(product.name)}`}
+                                  to={`/product/${encodeURIComponent(product.name)}`}
                                   className="line-clamp-3 text-white mb-2"
                                 >
                                   {product.name}

@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import Brand from "../components/Brand";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
-import { parseLink } from "../utils/utils";
 import { Helmet } from "react-helmet";
 
 function Brands() {
@@ -30,7 +29,7 @@ function Brands() {
               {brands?.map((brand, index) => {
                 return (
                   <Link
-                    to={`/products/${parseLink(brand.attributes.name)}`}
+                    to={`/products/${encodeURIComponent(brand.attributes.name)}`}
                     key={index}
                   >
                     <Brand

@@ -13,7 +13,6 @@ import { addToCart } from "../redux/cartReducer";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
-import { parseLink } from "../utils/utils";
 import { MdAddShoppingCart } from "react-icons/md";
 import Rating from "../components/Rating";
 
@@ -36,9 +35,9 @@ function Product() {
   const [reviewsArr, setReviewsArr] = useState([]);
   
   const { data: product, loading } = useFetch(
-    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${encodeURIComponent(productName)}`
   );
-
+    console.log("product: ", product);
   const { data: reviews, metadata: reviewsMetadata } = useFetch(
     `api/reviews?populate[product]=*&populate[user]=*&filters[product][title][$eq]=${productName}&pagination[page]=${page}&pagination[pageSize]=3`
   );
@@ -157,7 +156,7 @@ function Product() {
               </Link>
               <Link
                 className="text-secondary-content hover:text-primary duration-150 ease-in"
-                to={`/products/${parseLink(
+                to={`/products/${encodeURIComponent(
                   product[0]?.attributes.categories.data[0].attributes.title
                 )}`}
               >
@@ -171,9 +170,9 @@ function Product() {
               {product[0]?.attributes.subcategories.data.length > 0 && (
                 <Link
                   className="text-secondary-content hover:text-primary duration-150 ease-in"
-                  to={`/products/${parseLink(
+                  to={`/products/${encodeURIComponent(
                     product[0]?.attributes.categories.data[0].attributes.title
-                  )}/${parseLink(
+                  )}/${encodeURIComponent(
                     product[0]?.attributes.subcategories.data[0].attributes
                       .title
                   )}`}
@@ -185,7 +184,7 @@ function Product() {
                 </Link>
               )}
               <Link
-                to={`/product/${parseLink(product[0]?.attributes.title)}`}
+                to={`/product/${encodeURIComponent(product[0]?.attributes.title)}`}
                 className="text-secondary-content hover:text-primary duration-150 ease-in"
               >
                 {product[0]?.attributes.title.charAt(0).toUpperCase() +

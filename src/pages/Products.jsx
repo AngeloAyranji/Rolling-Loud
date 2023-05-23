@@ -9,7 +9,6 @@ import ListProduct from "../components/ListProduct";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
-import { parseLink } from "../utils/utils";
 import { Helmet } from "react-helmet";
 
 function Products() {
@@ -131,7 +130,7 @@ function Products() {
               <Link to="/">Home</Link>
               <Link to="/products">Products</Link>
               {category ? (
-                <Link to={`/products/${parseLink(category)}`}>
+                <Link to={`/products/${encodeURIComponent(category)}`}>
                   {category.charAt(0).toUpperCase() + category.slice(1)}
                 </Link>
               ) : querySearch ? (
@@ -143,7 +142,7 @@ function Products() {
               )}
               {subcategory && (
                 <Link
-                  to={`/products/${parseLink(category)}/${parseLink(
+                  to={`/products/${encodeURIComponent(category)}/${encodeURIComponent(
                     subcategory
                   )}`}
                 >

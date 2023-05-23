@@ -1,7 +1,6 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { parseLink } from "../utils/utils";
 import { isMobile } from "react-device-detect";
 
 function Dropdown({ title, href, subCategories, handleMenu }) {
@@ -46,7 +45,7 @@ function Dropdown({ title, href, subCategories, handleMenu }) {
                     <div role="btn" onClick={() => handleMenu()}>
                       <Link
                         key={index}
-                        to={`/products/${parseLink(title)}/${parseLink(
+                        to={`/products/${encodeURIComponent(title)}/${encodeURIComponent(
                           sub?.attributes.title
                         )}`}
                         className="cursor-pointer text-secondary-content hover:text-primary text-xs uppercase font-semibold whitespace-nowrap"
@@ -96,7 +95,7 @@ function Dropdown({ title, href, subCategories, handleMenu }) {
                     <div role="btn" onClick={() => handleMenu()}>
                       <Link
                         key={index}
-                        to={`/products/${parseLink(title)}/${parseLink(
+                        to={`/products/${encodeURIComponent(title)}/${encodeURIComponent(
                           sub.attributes.title
                         )}`}
                         className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap"

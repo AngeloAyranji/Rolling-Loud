@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { removeItem } from "../redux/cartReducer";
 import { useRegionChecker } from "../hooks/regionChecker";
-import { parseLink } from "../utils/utils";
 
 export default function Example({ handleOpen }) {
   const [open, setOpen] = useState(true);
@@ -88,7 +87,7 @@ export default function Example({ handleOpen }) {
                                     <div>
                                       <div className="flex justify-between text-sm lg:text-base font-medium">
                                         <Link
-                                          to={`/product/${parseLink(
+                                          to={`/product/${encodeURIComponent(
                                             product.name
                                           )}`}
                                           className="line-clamp-3 text-white mb-2"
