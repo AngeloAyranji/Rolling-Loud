@@ -61,7 +61,6 @@ function Products() {
     isPromotion,
     isPreorder,
     isInStock,
-    // sortBy,
     category,
     price,
     brandDB,
@@ -75,12 +74,12 @@ function Products() {
   }, [productsDB]);
 
   useEffect(() => {
-    handleSortBy();
+    handleSortBy(products);
   }, [sortBy]);
-  console.log(products[0])
-  const handleSortBy = () => {
-    if (products) {
-      let tmpProducts = products.slice();
+  
+  const handleSortBy = (prod) => {
+    if (prod) {
+      let tmpProducts = prod.slice();
       if (sortBy === '1') {
         tmpProducts = tmpProducts.sort(
           (a, b) =>
@@ -117,8 +116,6 @@ function Products() {
     if (isFeatured) filter += "&filters[type][$eq]=featured";
     if (isPreorder) filter += "&filters[type][$eq]=preorder";
     if (isInStock) filter += "&filters[quantity][$gt]=0";
-    // if (sortBy == 2) filter += "&sort[0]=price:asc";
-    // if (sortBy == 1) filter += "&sort[0]=price:desc";
     setUrl(filter);
     setPage(1);
   };
@@ -129,7 +126,8 @@ function Products() {
     );
     let tmpProducts = products.slice();
     tmpProducts = tmpProducts.concat(res.data.data);
-    setProducts(tmpProducts);
+    handleSortBy(tmpProducts);
+    // setProducts(tmpProducts);
     setPage(page);
   };
 
