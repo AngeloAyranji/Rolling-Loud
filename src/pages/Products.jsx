@@ -61,7 +61,7 @@ function Products() {
     isPromotion,
     isPreorder,
     isInStock,
-    sortBy,
+    // sortBy,
     category,
     price,
     brandDB,
@@ -73,6 +73,29 @@ function Products() {
   useEffect(() => {
     setProducts(productsDB);
   }, [productsDB]);
+
+  useEffect(() => {
+    handleSortBy();
+  }, [sortBy]);
+
+  const handleSortBy = () => {
+    if (products) {
+      let tmpProducts = products.slice();
+      if (sortBy === '1') {
+        tmpProducts = tmpProducts.sort(
+          (a, b) =>
+            b.attributes.options[0].price - a.attributes.options[0].price
+        );
+      } else if (sortBy === '2') {
+        tmpProducts = tmpProducts.sort(
+          (a, b) =>
+            a.attributes.options[0].price - b.attributes.options[0].price
+        );
+      }
+
+      setProducts(tmpProducts);
+    }
+  };
 
   const handleFilters = () => {
     let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[options]=*&pagination[pageSize]=25&filters[region][$eq]=${region}`;
@@ -89,8 +112,8 @@ function Products() {
     if (isFeatured) filter += "&filters[type][$eq]=featured";
     if (isPreorder) filter += "&filters[type][$eq]=preorder";
     if (isInStock) filter += "&filters[quantity][$gt]=0";
-    if (sortBy == 2) filter += "&sort[0]=price:asc";
-    if (sortBy == 1) filter += "&sort[0]=price:desc";
+    // if (sortBy == 2) filter += "&sort[0]=price:asc";
+    // if (sortBy == 1) filter += "&sort[0]=price:desc";
     setUrl(filter);
     setPage(1);
   };
@@ -142,9 +165,9 @@ function Products() {
               )}
               {subcategory && (
                 <Link
-                  to={`/products/${encodeURIComponent(category)}/${encodeURIComponent(
-                    subcategory
-                  )}`}
+                  to={`/products/${encodeURIComponent(
+                    category
+                  )}/${encodeURIComponent(subcategory)}`}
                 >
                   {subcategory}
                 </Link>
