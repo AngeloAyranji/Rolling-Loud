@@ -77,7 +77,7 @@ function Products() {
   useEffect(() => {
     handleSortBy();
   }, [sortBy]);
-
+  console.log(products[0])
   const handleSortBy = () => {
     if (products) {
       let tmpProducts = products.slice();
@@ -90,6 +90,11 @@ function Products() {
         tmpProducts = tmpProducts.sort(
           (a, b) =>
             a.attributes.options[0].price - b.attributes.options[0].price
+        );
+      } else {
+        tmpProducts = tmpProducts.sort(
+          (a, b) =>
+            new Date(a.attributes.publishedAt).getTime() - new Date(b.attributes.publishedAt).getTime()
         );
       }
 
