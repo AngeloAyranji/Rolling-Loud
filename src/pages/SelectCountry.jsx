@@ -59,7 +59,7 @@ function SelectCountry() {
           >
             {countries?.map((country, index) => (
               <Option key={index} value={country.attributes}>
-                {country.attributes.code}
+                {country.attributes.country_name}
               </Option>
             ))}
           </Select>

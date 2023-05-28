@@ -73,7 +73,7 @@ function Order() {
       if(promoCode[0].attributes?.isFixed_Amount) {
         return promoCode[0].attributes?.discount
       } else {
-        return totalPrice() * (1 - (1 - promoCode[0].attributes?.discount / 100)).toFixed(2)
+        return (totalPrice() * (1 - (1 - promoCode[0].attributes?.discount / 100))).toFixed(2)
       }
     }
 
