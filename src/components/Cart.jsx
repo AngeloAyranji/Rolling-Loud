@@ -19,7 +19,7 @@ export default function Example({ handleOpen }) {
     total = total.toFixed(2);
     return total;
   };
-  console.log(products)
+  
   return (
     <>
       <Transition.Root show={open} as={Fragment}>

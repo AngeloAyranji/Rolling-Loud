@@ -20,7 +20,7 @@ function Order() {
 
   const location = useLocation();
 
-  const { currency } = useRegionChecker();
+  const { currency, country } = useRegionChecker();
 
   const { decodedToken } = useJwt(localStorage.getItem("jwt"));
 
@@ -96,7 +96,7 @@ function Order() {
         items: productList,
         promoCode: promoCode !== null ? promoCode[0].attributes?.code : null,
         userId: decodedToken?.id,
-        country: "FR"
+        country: country
       };
 
       const config = {

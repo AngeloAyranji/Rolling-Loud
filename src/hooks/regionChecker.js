@@ -8,13 +8,13 @@ export const RegionCheckerProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const [region, setRegion] = useState(localStorage.getItem("region"));
+  const [country, setCountry] = useState(localStorage.getItem("country"));
   const [currency, setCurrency] = useState("$");
 
   useEffect(() => {
     if (location.pathname !== "/country") {
-      if (!region) {
+      if (!region || !country) {
         navigate("/country", { state: { from: location } });
-      } else {
       }
     }
   }, [location]);
@@ -25,7 +25,7 @@ export const RegionCheckerProvider = ({ children }) => {
   }, [region])
 
   return (
-    <RegionCheckerContext.Provider value={{ region, setRegion, currency }}>
+    <RegionCheckerContext.Provider value={{ region, setRegion, country, setCountry, currency }}>
       {children}
     </RegionCheckerContext.Provider>
   );

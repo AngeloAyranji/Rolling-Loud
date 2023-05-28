@@ -37,7 +37,7 @@ function Product() {
   const { data: product, loading } = useFetch(
     `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${encodeURIComponent(productName)}`
   );
-    console.log("product: ", product);
+  
   const { data: reviews, metadata: reviewsMetadata } = useFetch(
     `api/reviews?populate[product]=*&populate[user]=*&filters[product][title][$eq]=${productName}&pagination[page]=${page}&pagination[pageSize]=3`
   );
@@ -132,7 +132,6 @@ function Product() {
     }
   };
 
-  console.log(productName)
 
   return (
     <>
