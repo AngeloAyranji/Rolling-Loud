@@ -11,8 +11,7 @@ import { Helmet } from "react-helmet";
 import { Input, Button } from "@material-tailwind/react";
 import { useLocation } from "react-router-dom";
 import { addPromo, removePromo } from "../redux/promoCodeReducer";
-import { updateQuantity } from "../redux/cartReducer";
-import { parseLink } from "../utils/utils";
+import { updateQuantity, removeItem } from "../redux/cartReducer";
 import useFetch from "../hooks/useFetch";
 
 function Order() {
@@ -21,9 +20,9 @@ function Order() {
 
   const location = useLocation();
 
-  const { region, currency } = useRegionChecker();
+  const { currency, country } = useRegionChecker();
 
-  const { decodedToken } = useJwt(sessionStorage.getItem("jwt"));
+  const { decodedToken } = useJwt(localStorage.getItem("jwt"));
 
   const products = useSelector((state) => state.cart.products);
   const promoCode = useSelector((state) => state.promo.promoCode);
@@ -63,26 +62,26 @@ function Order() {
     }, 5000);
   };
 
-  const totalPrice = (withPromo = false) => {
+  const totalPrice = () => {
     let total = 0;
     products.forEach((item) => (total += item.price * item.quantity));
-    if (promoCode && withPromo)
-      total = total * (1 - promoCode[0].attributes?.discount / 100);
-    total = total.toFixed(2);
     return total;
   };
 
   const discountedPrice = () => {
-    return promoCode !== null
-      ? (
-        totalPrice() *
-        (1 - (1 - promoCode[0].attributes?.discount / 100))
-      ).toFixed(2)
-      : 0;
+    if (promoCode !== null) {
+      if(promoCode[0].attributes?.isFixed_Amount) {
+        return promoCode[0].attributes?.discount
+      } else {
+        return (totalPrice() * (1 - (1 - promoCode[0].attributes?.discount / 100))).toFixed(2)
+      }
+    }
+
+    return 0;
   };
 
   const handleCheckout = async () => {
-    if (sessionStorage.getItem("jwt")) {
+    if (localStorage.getItem("jwt")) {
       setLoadingCheckout(true);
 
       const productList = products.map((prd) => {
@@ -97,10 +96,11 @@ function Order() {
         items: productList,
         promoCode: promoCode !== null ? promoCode[0].attributes?.code : null,
         userId: decodedToken?.id,
+        country: country
       };
 
       const config = {
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("jwt")}` },
+        headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
       };
 
       try {
@@ -112,9 +112,21 @@ function Order() {
 
         window.open(res.data.session.url);
       } catch (err) {
-        console.log(err.response.data.error);
         if (err.response.data.error === "Promo Code Expired") {
           dispatch(removePromo());
+        } else if(err.response.data.optionId && err.response.data.itemId) {
+          if(err.response.data.quantity <= 0) {
+            dispatch(removeItem({
+              id: err.response.data.itemId,
+              optionId: err.response.data.optionId,
+            }))
+          } else {
+            dispatch(updateQuantity({
+              optionId: err.response.data.optionId,
+              quantity: err.response.data.quantity
+            }))
+            fetchProductsDB();
+          }
         }
       }
       setLoadingCheckout(false);
@@ -228,7 +240,7 @@ function Order() {
                             <div>
                               <div className="flex justify-between text-sm lg:text-base font-medium text-white">
                                 <Link
-                                  to={`/product/${parseLink(product.name)}`}
+                                  to={`/product/${encodeURIComponent(product.name)}`}
                                   className="line-clamp-3 text-white mb-2"
                                 >
                                   {product.name}
@@ -331,7 +343,7 @@ function Order() {
                     <div className="flex flex-row w-full justify-between items-center text-secondary-content">
                       <p className="text-xl font-semibold">Total</p>
                       <p className="text-xl font-semibold">
-                        {totalPrice(true)} {currency}
+                        {totalPrice() - discountedPrice() < 0 ? 0 : (totalPrice() - discountedPrice()).toFixed(2)} {currency}
                       </p>
                     </div>
                   </div>

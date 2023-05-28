@@ -4,7 +4,6 @@ import { useParams, Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
-import { parseLink } from "../utils/utils";
 import { Helmet } from "react-helmet";
 
 function Order() {
@@ -103,7 +102,7 @@ function Order() {
               >
                 <Link to="/">Home</Link>
                 <Link to={`/orders`}>Orders</Link>
-                <Link to={`/orders`}>{sessionStorage.getItem("username")}</Link>
+                <Link to={`/orders`}>{localStorage.getItem("username")}</Link>
                 <Link to={`/orders/${orderId}`}>{orderId}</Link>
               </Breadcrumbs>
               <h2 className="text-xl xl:text-3xl font-bold text-white uppercase tracking-wide">
@@ -139,7 +138,7 @@ function Order() {
                               <div>
                                 <div className="flex justify-between text-sm lg:text-base font-medium text-white">
                                   <Link
-                                    to={`/product/${parseLink(
+                                    to={`/product/${encodeURIComponent(
                                       fetchProduct(product.id).attributes.title
                                     )}`}
                                     className="line-clamp-3 text-white mb-2"

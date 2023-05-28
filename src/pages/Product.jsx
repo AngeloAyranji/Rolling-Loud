@@ -13,7 +13,6 @@ import { addToCart } from "../redux/cartReducer";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
 import Loading from "../components/Loading";
-import { parseLink } from "../utils/utils";
 import { MdAddShoppingCart } from "react-icons/md";
 import Rating from "../components/Rating";
 
@@ -34,15 +33,14 @@ function Product() {
 
   const [page, setPage] = useState(1);
   const [reviewsArr, setReviewsArr] = useState([]);
-
+  
   const { data: product, loading } = useFetch(
-    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${productName}`
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${encodeURIComponent(productName)}`
   );
-
+  
   const { data: reviews, metadata: reviewsMetadata } = useFetch(
     `api/reviews?populate[product]=*&populate[user]=*&filters[product][title][$eq]=${productName}&pagination[page]=${page}&pagination[pageSize]=3`
   );
-  console.log(reviews);
 
   useEffect(() => {
     if (product) {
@@ -133,6 +131,8 @@ function Product() {
       );
     }
   };
+
+
   return (
     <>
       <Helmet>
@@ -155,7 +155,7 @@ function Product() {
               </Link>
               <Link
                 className="text-secondary-content hover:text-primary duration-150 ease-in"
-                to={`/products/${parseLink(
+                to={`/products/${encodeURIComponent(
                   product[0]?.attributes.categories.data[0].attributes.title
                 )}`}
               >
@@ -169,9 +169,9 @@ function Product() {
               {product[0]?.attributes.subcategories.data.length > 0 && (
                 <Link
                   className="text-secondary-content hover:text-primary duration-150 ease-in"
-                  to={`/products/${parseLink(
+                  to={`/products/${encodeURIComponent(
                     product[0]?.attributes.categories.data[0].attributes.title
-                  )}/${parseLink(
+                  )}/${encodeURIComponent(
                     product[0]?.attributes.subcategories.data[0].attributes
                       .title
                   )}`}
@@ -183,7 +183,7 @@ function Product() {
                 </Link>
               )}
               <Link
-                to={`/product/${parseLink(product[0]?.attributes.title)}`}
+                to={`/product/${encodeURIComponent(product[0]?.attributes.title)}`}
                 className="text-secondary-content hover:text-primary duration-150 ease-in"
               >
                 {product[0]?.attributes.title.charAt(0).toUpperCase() +
@@ -226,7 +226,7 @@ function Product() {
                 <h2 className="text-xl text-secondary-content font-bold">
                   {product[0]?.attributes.title}
                 </h2>
-                {product[0]?.attributes.type !== "preorder" && (
+                {product[0]?.attributes.type !== "preorder" ? (
                   <>
                     {selectedProduct?.quantity === 0 ? (
                       <p className="line-through text-xs lg:text-sm">
@@ -238,6 +238,8 @@ function Product() {
                       </p>
                     )}
                   </>
+                ) : (
+                  <p className="text-secondary">PRE-ORDER</p>
                 )}
 
                 <div className="divider"></div>
@@ -298,7 +300,7 @@ function Product() {
                     >
                       <AiOutlineMinus />
                     </button>
-                    {allowedQuantity === 0 ? 0 : quantity}
+                    {allowedQuantity <= 0 ? 0 : quantity}
                     <button
                       onClick={() =>
                         setQuantity((prev) =>
@@ -311,13 +313,13 @@ function Product() {
                   </div>
                   <button
                     className={
-                      allowedQuantity === 0
+                      allowedQuantity <= 0
                         ? "btn btn-disabled btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
                         : "btn btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
                     }
                     onClick={() => Add(quantity)}
                   >
-                    <p> Add to Cart</p>
+                    <p>Add to Cart</p>
                     <MdAddShoppingCart className="w-5 h-5 font-extralight" />
                   </button>
                 </div>

@@ -49,8 +49,8 @@ function Register() {
         );
 
         if (res) {
-          sessionStorage.setItem("jwt", res.data.jwt);
-          sessionStorage.setItem("username", res.data.user.username);
+          localStorage.setItem("jwt", res.data.jwt);
+          localStorage.setItem("username", res.data.user.username);
 
           navigate("/");
         }

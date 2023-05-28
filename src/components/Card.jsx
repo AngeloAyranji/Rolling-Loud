@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useRegionChecker } from "../hooks/regionChecker";
 import { addToCart } from "../redux/cartReducer";
-import { parseLink } from "../utils/utils";
 import { updateQuantity } from "../redux/cartReducer";
 
 function Card({ item, id }) {
@@ -55,7 +54,7 @@ function Card({ item, id }) {
             })
           );
         } else {
-          navigate(`/product/${parseLink(item.title)}`);
+          navigate(`/product/${encodeURIComponent(item.title)}`);
         }
       } else {
         if (
@@ -72,11 +71,18 @@ function Card({ item, id }) {
             })
           );
         } else {
-          navigate(`/product/${parseLink(item.title)}`);
+          navigate(`/product/${encodeURIComponent(item.title)}`);
         }
       }
     }
   };
+
+  const checkQuantity = () => {
+    for(let i = 0; i < item.options.length; i++) {
+      if(item.options[i].quantity > 0) return true
+    }
+    return false;
+  }
 
   return (
     <Fragment>
@@ -134,7 +140,7 @@ function Card({ item, id }) {
       </div>{" "}
       {/* card */}
       <div className="flex flex-col rounded-xl w-[150px] md:w-[190px] shadow-xl h-full lg:w-[300px] md:h-[320px] lg:h-[500px] cursor-pointer group relative bg-secondary-content">
-        <Link to={`/product/${parseLink(item.title)}`}>
+        <Link to={`/product/${encodeURIComponent(item.title)}`}>
           <figure>
             {item && (
               <img
@@ -151,7 +157,7 @@ function Card({ item, id }) {
         >
           <MdAddShoppingCart />
         </div>
-        <Link to={`/product/${parseLink(item.title)}`}>
+        <Link to={`/product/${encodeURIComponent(item.title)}`}>
           <div className="flex flex-col justify-between lg:w-[320px] w-[150px] md:w-[190px] h-[130px] p-4 lg:p-6">
             <div>
               <div className="flex flex-col space-y-2 mb-2 ">
@@ -182,7 +188,7 @@ function Card({ item, id }) {
               <div className="h-4 mb-2">
                 {item.type !== "preorder" && (
                   <>
-                    {item.options[0].quantity > 0 ? (
+                    {checkQuantity() ? (
                       <p className="text-green-500 text-xs lg:text-sm">
                         In Stock
                       </p>

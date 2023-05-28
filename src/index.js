@@ -7,6 +7,7 @@ import "./index.css";
 import App from "./App";
 import { persistor, store } from "./redux/store";
 import { RegionCheckerProvider } from "./hooks/regionChecker";
+import { AuthCheckerProvider } from "./hooks/authChecker";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,9 +15,11 @@ root.render(
     <React.StrictMode>
       <PersistGate loading={"loading"} persistor={persistor}>
         <BrowserRouter>
-          <RegionCheckerProvider>
-            <App />
-          </RegionCheckerProvider>
+          <AuthCheckerProvider>
+            <RegionCheckerProvider>
+              <App />
+            </RegionCheckerProvider>
+          </AuthCheckerProvider>
         </BrowserRouter>
       </PersistGate>
     </React.StrictMode>

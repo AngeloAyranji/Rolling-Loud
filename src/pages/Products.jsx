@@ -9,7 +9,6 @@ import ListProduct from "../components/ListProduct";
 import Loading from "../components/Loading";
 import useFetch from "../hooks/useFetch";
 import { useRegionChecker } from "../hooks/regionChecker";
-import { parseLink } from "../utils/utils";
 import { Helmet } from "react-helmet";
 
 function Products() {
@@ -62,7 +61,6 @@ function Products() {
     isPromotion,
     isPreorder,
     isInStock,
-    sortBy,
     category,
     price,
     brandDB,
@@ -74,6 +72,34 @@ function Products() {
   useEffect(() => {
     setProducts(productsDB);
   }, [productsDB]);
+
+  useEffect(() => {
+    handleSortBy(products);
+  }, [sortBy]);
+  
+  const handleSortBy = (prod) => {
+    if (prod) {
+      let tmpProducts = prod.slice();
+      if (sortBy === '1') {
+        tmpProducts = tmpProducts.sort(
+          (a, b) =>
+            b.attributes.options[0].price - a.attributes.options[0].price
+        );
+      } else if (sortBy === '2') {
+        tmpProducts = tmpProducts.sort(
+          (a, b) =>
+            a.attributes.options[0].price - b.attributes.options[0].price
+        );
+      } else {
+        tmpProducts = tmpProducts.sort(
+          (a, b) =>
+            new Date(a.attributes.publishedAt).getTime() - new Date(b.attributes.publishedAt).getTime()
+        );
+      }
+
+      setProducts(tmpProducts);
+    }
+  };
 
   const handleFilters = () => {
     let filter = `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[options]=*&pagination[pageSize]=25&filters[region][$eq]=${region}`;
@@ -90,8 +116,6 @@ function Products() {
     if (isFeatured) filter += "&filters[type][$eq]=featured";
     if (isPreorder) filter += "&filters[type][$eq]=preorder";
     if (isInStock) filter += "&filters[quantity][$gt]=0";
-    if (sortBy == 2) filter += "&sort[0]=price:asc";
-    if (sortBy == 1) filter += "&sort[0]=price:desc";
     setUrl(filter);
     setPage(1);
   };
@@ -102,7 +126,8 @@ function Products() {
     );
     let tmpProducts = products.slice();
     tmpProducts = tmpProducts.concat(res.data.data);
-    setProducts(tmpProducts);
+    handleSortBy(tmpProducts);
+    // setProducts(tmpProducts);
     setPage(page);
   };
 
@@ -131,7 +156,7 @@ function Products() {
               <Link to="/">Home</Link>
               <Link to="/products">Products</Link>
               {category ? (
-                <Link to={`/products/${parseLink(category)}`}>
+                <Link to={`/products/${encodeURIComponent(category)}`}>
                   {category.charAt(0).toUpperCase() + category.slice(1)}
                 </Link>
               ) : querySearch ? (
@@ -143,9 +168,9 @@ function Products() {
               )}
               {subcategory && (
                 <Link
-                  to={`/products/${parseLink(category)}/${parseLink(
-                    subcategory
-                  )}`}
+                  to={`/products/${encodeURIComponent(
+                    category
+                  )}/${encodeURIComponent(subcategory)}`}
                 >
                   {subcategory}
                 </Link>
