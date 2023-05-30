@@ -36,7 +36,8 @@ function Order() {
   const [productsDB, setProductsDB] = useState(null);
 
   const { data: prod } = useFetch(productsURL !== "" ? productsURL : null);
-
+  const { data: shipping } = useFetch(`api/shippings/?filters[code][$eq]=${country}`);
+  
   useEffect(() => {
     fetchProductsDB();
   }, [products]);
@@ -337,7 +338,7 @@ function Order() {
 
                     <div className="flex flex-row justify-between items-center w-full border-b-[1px] border-gray-600 border-dashed pb-4 mb-4">
                       <p>Delivery</p>
-                      <p>0.00 {currency}</p>
+                      <p>{shipping ? shipping[0]?.attributes.shipping_price : 0} {currency}</p>
                     </div>
 
                     <div className="flex flex-row w-full justify-between items-center text-secondary-content">

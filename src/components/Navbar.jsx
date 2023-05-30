@@ -178,7 +178,7 @@ export default function Navbar({ navigation, setNavigation }) {
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Change Region
+                            Change Country
                           </a>
                         )}
                       </Menu.Item>

@@ -78,8 +78,8 @@ function Card({ item, id }) {
   };
 
   const checkQuantity = () => {
-    for(let i = 0; i < item.options.length; i++) {
-      if(item.options[i].quantity > 0) return true
+    for (let i = 0; i < item.options.length; i++) {
+      if (item.options[i].quantity > 0) return true
     }
     return false;
   }
@@ -151,12 +151,15 @@ function Card({ item, id }) {
             )}
           </figure>
         </Link>
-        <div
-          className="absolute flex lg:hidden h-8 w-8 md:h-12 md:w-12  rounded-full bg-primary transition-opacity right-4 top-4 lg:group-hover:flex text-secondary-content items-center justify-center hover:scale-105"
-          onClick={() => checkAvailability(quantity)}
-        >
-          <MdAddShoppingCart />
-        </div>
+        {checkQuantity() && (
+          <div
+            className="absolute flex lg:hidden h-8 w-8 md:h-12 md:w-12  rounded-full bg-primary transition-opacity right-4 top-4 lg:group-hover:flex text-secondary-content items-center justify-center hover:scale-105"
+            onClick={() => checkAvailability(quantity)}
+          >
+            <MdAddShoppingCart />
+          </div>
+        )}
+
         <Link to={`/product/${encodeURIComponent(item.title)}`}>
           <div className="flex flex-col justify-between lg:w-[320px] w-[150px] md:w-[190px] h-[130px] p-4 lg:p-6">
             <div>

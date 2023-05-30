@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Select, Option } from "@material-tailwind/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
@@ -57,7 +57,7 @@ function SelectCountry() {
               setCountryTmp(e.code)
             }}
           >
-            {countries?.map((country, index) => (
+            {countries.sort((a, b) => a.attributes.country_name.localeCompare(b.attributes.country_name))?.map((country, index) => (
               <Option key={index} value={country.attributes}>
                 {country.attributes.country_name}
               </Option>
