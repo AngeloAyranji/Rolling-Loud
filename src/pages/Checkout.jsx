@@ -37,7 +37,7 @@ function Order() {
 
   const { data: prod } = useFetch(productsURL !== "" ? productsURL : null);
   const { data: shipping } = useFetch(`api/shippings/?filters[code][$eq]=${country}`);
-  
+
   useEffect(() => {
     fetchProductsDB();
   }, [products]);
@@ -71,7 +71,7 @@ function Order() {
 
   const discountedPrice = () => {
     if (promoCode !== null) {
-      if(promoCode[0].attributes?.isFixed_Amount) {
+      if (promoCode[0].attributes?.isFixed_Amount) {
         return promoCode[0].attributes?.discount
       } else {
         return (totalPrice() * (1 - (1 - promoCode[0].attributes?.discount / 100))).toFixed(2)
@@ -82,8 +82,8 @@ function Order() {
   };
 
   const deliveryPrice = () => {
-    if(shipping) {
-      if(shipping[0]?.attributes.free_shipping_threshold !== null && (totalPrice() - discountedPrice() > shipping[0]?.attributes.free_shipping_threshold)) return 0;
+    if (shipping) {
+      if (shipping[0]?.attributes.free_shipping_threshold !== null && (totalPrice() - discountedPrice() > shipping[0]?.attributes.free_shipping_threshold)) return 0;
       else return shipping[0]?.attributes.shipping_price;
     } else {
       return 0;
@@ -120,12 +120,13 @@ function Order() {
           config
         );
 
-        window.open(res.data.session.url);
+        setTimeout(() => window.open(res.data.session.url));
+        
       } catch (err) {
         if (err.response.data.error === "Promo Code Expired") {
           dispatch(removePromo());
-        } else if(err.response.data.optionId && err.response.data.itemId) {
-          if(err.response.data.quantity <= 0) {
+        } else if (err.response.data.optionId && err.response.data.itemId) {
+          if (err.response.data.quantity <= 0) {
             dispatch(removeItem({
               id: err.response.data.itemId,
               optionId: err.response.data.optionId,
