@@ -410,7 +410,7 @@ function Order() {
                           ? "w-full btn btn-primary uppercase text-xl "
                           : "w-full btn btn-disabled uppercase text-xl "
                       }
-                      onClick={() => handleCheckout().then((url) => window.open(url))}
+                      onClick={() => handleCheckout().then((url) => window.open(url, '_blank'))}
                     >
                       Checkout
                     </button>
