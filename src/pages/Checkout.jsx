@@ -120,8 +120,8 @@ function Order() {
           config
         );
 
-        setTimeout(() => window.open(res.data.session.url, "_blank"));
-
+        // setTimeout(() => window.open(res.data.session.url, "_blank"));
+        return res.data.session.url;
       } catch (err) {
         if (err.response.data.error === "Promo Code Expired") {
           dispatch(removePromo());
@@ -354,7 +354,7 @@ function Order() {
                     <div className="flex flex-row w-full justify-between items-center text-secondary-content">
                       <p className="text-xl font-semibold">Total</p>
                       <p className="text-xl font-semibold">
-                        {totalPrice() - discountedPrice() < 0 ? 0 : (totalPrice() - discountedPrice()).toFixed(2)} {currency}
+                        {totalPrice() - discountedPrice() < 0 ? 0 : (totalPrice() - discountedPrice() + deliveryPrice()).toFixed(2)} {currency}
                       </p>
                     </div>
                   </div>
@@ -410,7 +410,7 @@ function Order() {
                           ? "w-full btn btn-primary uppercase text-xl "
                           : "w-full btn btn-disabled uppercase text-xl "
                       }
-                      onClick={handleCheckout}
+                      onClick={() => handleCheckout().then((url) => window.open(url))}
                     >
                       Checkout
                     </button>
