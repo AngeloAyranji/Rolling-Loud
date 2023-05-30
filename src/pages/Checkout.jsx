@@ -81,6 +81,16 @@ function Order() {
     return 0;
   };
 
+  const deliveryPrice = () => {
+    if(shipping) {
+      console.log(totalPrice() - discountedPrice(), shipping[0]?.attributes.free_shipping_threshold)
+      if(shipping[0]?.attributes.free_shipping_threshold !== null && (totalPrice() - discountedPrice() > shipping[0]?.attributes.free_shipping_threshold)) return 0;
+      else return shipping[0]?.attributes.shipping_price;
+    } else {
+      return 0;
+    }
+  }
+
   const handleCheckout = async () => {
     if (localStorage.getItem("jwt")) {
       setLoadingCheckout(true);
@@ -338,7 +348,7 @@ function Order() {
 
                     <div className="flex flex-row justify-between items-center w-full border-b-[1px] border-gray-600 border-dashed pb-4 mb-4">
                       <p>Delivery</p>
-                      <p>{shipping ? shipping[0]?.attributes.shipping_price : 0} {currency}</p>
+                      <p>{deliveryPrice()} {currency}</p>
                     </div>
 
                     <div className="flex flex-row w-full justify-between items-center text-secondary-content">
