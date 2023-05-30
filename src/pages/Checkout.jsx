@@ -34,6 +34,7 @@ function Order() {
   const [loadingCheckout, setLoadingCheckout] = useState(false);
   const [productsURL, setProductsURL] = useState("");
   const [productsDB, setProductsDB] = useState(null);
+  const [checkoutURL, setCheckoutURL] = useState(null);
 
   const { data: prod } = useFetch(productsURL !== "" ? productsURL : null);
   const { data: shipping } = useFetch(`api/shippings/?filters[code][$eq]=${country}`);
@@ -45,6 +46,12 @@ function Order() {
   useEffect(() => {
     if (prod !== undefined && prod !== null) setProductsDB(prod)
   }, [prod])
+
+  useEffect(() => {
+    if(checkoutURL !== null) {
+      window.open(checkoutURL, '_blank');
+    }
+  }, [checkoutURL])
 
   const fetchProductsDB = () => {
     let url = `api/products?populate[options]=*`;
@@ -121,7 +128,7 @@ function Order() {
         );
 
         // setTimeout(() => window.open(res.data.session.url, "_blank"));
-        return res.data.session.url;
+        setCheckoutURL(res.data.session.url);
       } catch (err) {
         if (err.response.data.error === "Promo Code Expired") {
           dispatch(removePromo());
@@ -410,7 +417,7 @@ function Order() {
                           ? "w-full btn btn-primary uppercase text-xl "
                           : "w-full btn btn-disabled uppercase text-xl "
                       }
-                      onClick={() => handleCheckout().then((url) => window.open(url, '_blank'))}
+                      onClick={handleCheckout}
                     >
                       Checkout
                     </button>
