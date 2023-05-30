@@ -120,8 +120,8 @@ function Order() {
           config
         );
 
-        setTimeout(() => window.open(res.data.session.url));
-        
+        setTimeout(() => window.open(res.data.session.url, "_blank"));
+
       } catch (err) {
         if (err.response.data.error === "Promo Code Expired") {
           dispatch(removePromo());
