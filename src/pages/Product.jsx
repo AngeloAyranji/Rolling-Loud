@@ -42,8 +42,6 @@ function Product() {
     `api/reviews?populate[product]=*&populate[user]=*&filters[product][title][$eq]=${encodeURIComponent(productName)}&pagination[page]=${page}&pagination[pageSize]=3`
   );
 
-  console.log(reviews, productName)
-
   useEffect(() => {
     if (product) {
       setSelectedProduct({

@@ -83,7 +83,6 @@ function Order() {
 
   const deliveryPrice = () => {
     if(shipping) {
-      console.log(totalPrice() - discountedPrice(), shipping[0]?.attributes.free_shipping_threshold)
       if(shipping[0]?.attributes.free_shipping_threshold !== null && (totalPrice() - discountedPrice() > shipping[0]?.attributes.free_shipping_threshold)) return 0;
       else return shipping[0]?.attributes.shipping_price;
     } else {
