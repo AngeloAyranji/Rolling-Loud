@@ -69,7 +69,7 @@ function Hero() {
           )}
         >
           <video
-            id="heroid"
+            id="herovid"
             onCanPlay={handleLoading}
             src={videoUrl?.attributes.video.data.attributes.url}
             autoPlay
