@@ -19,7 +19,7 @@ export default function Example({ handleOpen }) {
     total = total.toFixed(2);
     return total;
   };
-  
+
   return (
     <>
       <Transition.Root show={open} as={Fragment}>
@@ -79,7 +79,7 @@ export default function Example({ handleOpen }) {
                                     <img
                                       src={product.img}
                                       alt={product.imageAlt}
-                                      className="h-full w-full object-cover object-center"
+                                      className="h-full w-full object-cover object-center bg-white"
                                     />
                                   </div>
 

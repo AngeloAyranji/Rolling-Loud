@@ -33,17 +33,22 @@ function Product() {
 
   const [page, setPage] = useState(1);
   const [reviewsArr, setReviewsArr] = useState([]);
-  
+
   const { data: product, loading } = useFetch(
-    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${encodeURIComponent(productName)}`
+    `api/products/?populate[image]=*&populate[brand]=*&populate[categories]=*&populate[subcategories]=*&populate[options]=*&filters[region][$eq]=${region}&filters[title][$eq]=${encodeURIComponent(
+      productName
+    )}`
   );
-  
+
   const { data: reviews, metadata: reviewsMetadata } = useFetch(
-    `api/reviews?populate[product]=*&populate[user]=*&filters[product][title][$eq]=${encodeURIComponent(productName)}&pagination[page]=${page}&pagination[pageSize]=3`
+    `api/reviews?populate[product]=*&populate[user]=*&filters[product][title][$eq]=${encodeURIComponent(
+      productName
+    )}&pagination[page]=${page}&pagination[pageSize]=3`
   );
 
   useEffect(() => {
     if (product) {
+      console.log(product);
       setSelectedProduct({
         price: product[0]?.attributes.options[0].price,
         quantity: product[0]?.attributes.options[0].quantity,
@@ -132,7 +137,6 @@ function Product() {
     }
   };
 
-
   return (
     <>
       <Helmet>
@@ -183,7 +187,9 @@ function Product() {
                 </Link>
               )}
               <Link
-                to={`/product/${encodeURIComponent(product[0]?.attributes.title)}`}
+                to={`/product/${encodeURIComponent(
+                  product[0]?.attributes.title
+                )}`}
                 className="text-secondary-content hover:text-primary duration-150 ease-in"
               >
                 {product[0]?.attributes.title.charAt(0).toUpperCase() +
@@ -228,7 +234,8 @@ function Product() {
                 </h2>
                 {product[0]?.attributes.type !== "preorder" ? (
                   <>
-                    {selectedProduct?.quantity === 0 ? (
+                    {selectedProduct?.quantity === 0 ||
+                    selectedProduct?.quantity === null ? (
                       <p className="line-through text-xs lg:text-sm">
                         Out Of Stock
                       </p>
@@ -285,7 +292,16 @@ function Product() {
                           value={[sub.price, sub.quantity, sub.title, sub.id]}
                           key={index}
                         >
-                          {sub.title}
+                          <div className="flex flex-row space-x-2 items-center">
+                            <div
+                              className={
+                                sub.quantity === 0 || sub.quantity === null
+                                  ? "rounded-full h-2 w-2 bg-gray-500"
+                                  : "rounded-full h-2 w-2 bg-green-400"
+                              }
+                            ></div>
+                            <p> {sub.title}</p>
+                          </div>
                         </Option>
                       ))}
                     </Select>
@@ -356,7 +372,9 @@ function Product() {
                   Reviews
                 </h3>
                 <button className="btn btn-primary">
-                  <Link to={`/review?product=${product[0]?.id}&name=${product[0]?.attributes.title}`}>
+                  <Link
+                    to={`/review?product=${product[0]?.id}&name=${product[0]?.attributes.title}`}
+                  >
                     Add Review
                   </Link>
                 </button>

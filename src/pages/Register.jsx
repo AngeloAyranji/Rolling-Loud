@@ -9,17 +9,8 @@ function Register() {
   const navigate = useNavigate();
 
   const [error, setError] = useState(false);
-  const [logHeight, setLogHeight] = useState(window.innerHeight);
 
   const { data: videoUrl } = useFetch("api/hero-video?populate=*");
-
-  useEffect(() => {
-    window.addEventListener("resize", setDimension);
-  }, []);
-
-  const setDimension = () => {
-    setLogHeight(window.innerHeight - 64);
-  };
 
   const handleRegister = async () => {
     const username = document.getElementById("registerUsername").value;
@@ -68,7 +59,7 @@ function Register() {
         <title>SkyShop - Register</title>
       </Helmet>
 
-      <div className="w-full h-full relative" style={{ height: logHeight }}>
+      <div className="w-full h-full min-h-screen min-w-screen relative">
         <div className="absolute w-full h-full left-0 top-0 overflow-hidden z-0">
           <video
             src={videoUrl?.attributes.video.data.attributes.url}
