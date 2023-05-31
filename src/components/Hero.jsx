@@ -14,7 +14,8 @@ function Hero() {
 
   const handleLoading = () => {
     setLoading(false);
-    console.log(loading);
+    const video = document.getElementById("herovid");
+    video.play();
   };
   return (
     <Fragment>
@@ -24,11 +25,6 @@ function Hero() {
           <video
             onCanPlay={handleLoading}
             src={videoUrl?.attributes.video.data.attributes.url}
-            autoPlay
-            muted
-            playsInline
-            type="video/mp4"
-            className="w-[100%] h-[100%] object-cover object-center brightness-[1]"
           ></video>
         </Fragment>
       ) : (
@@ -75,6 +71,7 @@ function Hero() {
             )}
           >
             <video
+              id="heroid"
               src={videoUrl?.attributes.video.data.attributes.url}
               autoPlay
               muted
