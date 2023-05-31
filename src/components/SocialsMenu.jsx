@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { BsPlus, BsWhatsapp, BsMessenger } from "react-icons/bs";
+import { HiOutlineEnvelope, HiOutlineEnvelopeOpen } from "react-icons/hi2";
 
 export default function SocialsMenu() {
   const labelProps = {
@@ -21,8 +22,13 @@ export default function SocialsMenu() {
         <div className="absolute bottom-0 right-0">
           <SpeedDial>
             <SpeedDialHandler>
-              <IconButton size="lg" className="rounded-full" color="purple">
-                <BsPlus className="h-5 w-5 transition-transform group-hover:rotate-45" />
+              <IconButton
+                size="lg"
+                className="rounded-full group"
+                color="purple"
+              >
+                <HiOutlineEnvelope className="h-5 w-5 transition-transform group-hover:hidden" />
+                <HiOutlineEnvelopeOpen className="hidden h-5 w-5 transition-transform group-hover:block" />
               </IconButton>
             </SpeedDialHandler>
             <SpeedDialContent>
