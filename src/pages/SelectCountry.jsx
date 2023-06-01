@@ -13,7 +13,7 @@ function SelectCountry() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { data: countries, loading } = useFetch(`api/shippings`);
+  const { data: countries, loading } = useFetch(`api/shippings/?pagination[page]=1&pagination[pageSize]=300`);
 
   const { setRegion, setCountry } = useRegionChecker();
 
