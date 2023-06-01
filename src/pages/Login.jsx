@@ -54,16 +54,15 @@ function Login() {
       </Helmet>
       <div className="w-full h-full min-h-screen min-w-screen relative">
         <div className="absolute w-full h-full left-0 top-0 overflow-hidden z-0">
-          <video
+          {/* <video
             src={videoUrl?.attributes.video.data.attributes.url}
             playsInline
-            loop
             autoPlay
             muted
             type="video/mp4"
             alt=""
             className="h-full w-full object-cover object-center brightness-[0.4] blur-sm"
-          ></video>
+          ></video> */}
         </div>
         <div className=" absolute left-0 top-0 w-full h-full flex items-center justify-center z-[50]">
           <div className="w-full md:min-w-[600px] lg:min-w-[600px] h-full flex flex-col my-auto bg-transparent items-center justify-center p-4 md:p-14">

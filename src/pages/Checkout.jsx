@@ -34,31 +34,27 @@ function Order() {
   const [loadingCheckout, setLoadingCheckout] = useState(false);
   const [productsURL, setProductsURL] = useState("");
   const [productsDB, setProductsDB] = useState(null);
-  const [checkoutURL, setCheckoutURL] = useState(null);
 
   const { data: prod } = useFetch(productsURL !== "" ? productsURL : null);
-  const { data: shipping } = useFetch(`api/shippings/?filters[code][$eq]=${country}`);
+  const { data: shipping } = useFetch(
+    `api/shippings/?filters[code][$eq]=${country}`
+  );
 
   useEffect(() => {
     fetchProductsDB();
   }, [products]);
 
   useEffect(() => {
-    if (prod !== undefined && prod !== null) setProductsDB(prod)
-  }, [prod])
+    if (prod !== undefined && prod !== null) setProductsDB(prod);
+  }, [prod]);
 
-  useEffect(() => {
-    if(checkoutURL !== null) {
-      window.open(checkoutURL, '_blank');
-    }
-  }, [checkoutURL])
 
   const fetchProductsDB = () => {
     let url = `api/products?populate[options]=*`;
 
     products.forEach((product, index) => {
       url += `&filters[$or][${index}][id][$eq]=${product.id}`;
-    })
+    });
 
     setProductsURL(url);
   };
@@ -79,9 +75,12 @@ function Order() {
   const discountedPrice = () => {
     if (promoCode !== null) {
       if (promoCode[0].attributes?.isFixed_Amount) {
-        return promoCode[0].attributes?.discount
+        return promoCode[0].attributes?.discount;
       } else {
-        return (totalPrice() * (1 - (1 - promoCode[0].attributes?.discount / 100))).toFixed(2)
+        return (
+          totalPrice() *
+          (1 - (1 - promoCode[0].attributes?.discount / 100))
+        ).toFixed(2);
       }
     }
 
@@ -90,12 +89,17 @@ function Order() {
 
   const deliveryPrice = () => {
     if (shipping) {
-      if (shipping[0]?.attributes.free_shipping_threshold !== null && (totalPrice() - discountedPrice() > shipping[0]?.attributes.free_shipping_threshold)) return 0;
+      if (
+        shipping[0]?.attributes.free_shipping_threshold !== null &&
+        totalPrice() - discountedPrice() >
+          shipping[0]?.attributes.free_shipping_threshold
+      )
+        return 0;
       else return shipping[0]?.attributes.shipping_price;
     } else {
       return 0;
     }
-  }
+  };
 
   const handleCheckout = async () => {
     if (localStorage.getItem("jwt")) {
@@ -113,7 +117,7 @@ function Order() {
         items: productList,
         promoCode: promoCode !== null ? promoCode[0].attributes?.code : null,
         userId: decodedToken?.id,
-        country: country
+        country: country,
       };
 
       const config = {
@@ -127,22 +131,26 @@ function Order() {
           config
         );
 
-        // setTimeout(() => window.open(res.data.session.url, "_blank"));
-        setCheckoutURL(res.data.session.url);
+        window.location.replace(res.data.session.url);
+        
       } catch (err) {
         if (err.response.data.error === "Promo Code Expired") {
           dispatch(removePromo());
         } else if (err.response.data.optionId && err.response.data.itemId) {
           if (err.response.data.quantity <= 0) {
-            dispatch(removeItem({
-              id: err.response.data.itemId,
-              optionId: err.response.data.optionId,
-            }))
+            dispatch(
+              removeItem({
+                id: err.response.data.itemId,
+                optionId: err.response.data.optionId,
+              })
+            );
           } else {
-            dispatch(updateQuantity({
-              optionId: err.response.data.optionId,
-              quantity: err.response.data.quantity
-            }))
+            dispatch(
+              updateQuantity({
+                optionId: err.response.data.optionId,
+                quantity: err.response.data.quantity,
+              })
+            );
             fetchProductsDB();
           }
         }
@@ -154,19 +162,25 @@ function Order() {
   };
 
   const checkAvailability = (item, type) => {
-    const itemDB = productsDB.find(product => product.id === item.id);
-    const optionDB = itemDB.attributes.options.find(option => option.id === item.optionId)
+    const itemDB = productsDB.find((product) => product.id === item.id);
+    const optionDB = itemDB.attributes.options.find(
+      (option) => option.id === item.optionId
+    );
 
     if (type === "increment" && optionDB.quantity - item.quantity > 0) {
-      dispatch(updateQuantity({
-        optionId: item.optionId,
-        quantity: item.quantity + 1
-      }))
+      dispatch(
+        updateQuantity({
+          optionId: item.optionId,
+          quantity: item.quantity + 1,
+        })
+      );
     } else if (type === "decrement" && item.quantity > 1) {
-      dispatch(updateQuantity({
-        optionId: item.optionId,
-        quantity: item.quantity - 1
-      }))
+      dispatch(
+        updateQuantity({
+          optionId: item.optionId,
+          quantity: item.quantity - 1,
+        })
+      );
     }
   };
 
@@ -176,7 +190,7 @@ function Order() {
         const code = document.getElementById("promocode").value;
         const res = await axios.get(
           process.env.REACT_APP_BACKEND_URL +
-          `api/promotions/?filters[code][$eq]=${code}`
+            `api/promotions/?filters[code][$eq]=${code}`
         );
         if (res.data.data.length) {
           dispatch(addPromo(res.data.data));
@@ -258,7 +272,9 @@ function Order() {
                             <div>
                               <div className="flex justify-between text-sm lg:text-base font-medium text-white">
                                 <Link
-                                  to={`/product/${encodeURIComponent(product.name)}`}
+                                  to={`/product/${encodeURIComponent(
+                                    product.name
+                                  )}`}
                                   className="line-clamp-3 text-white mb-2"
                                 >
                                   {product.name}
@@ -277,7 +293,9 @@ function Order() {
                                 <div
                                   role="button"
                                   className="hover:text-primary duration-100 ease-in mx-2"
-                                  onClick={() => checkAvailability(product, "decrement")}
+                                  onClick={() =>
+                                    checkAvailability(product, "decrement")
+                                  }
                                 >
                                   <AiOutlineMinus className="" />
                                 </div>
@@ -285,7 +303,9 @@ function Order() {
                                 <div
                                   role="button"
                                   className="hover:text-primary duration-100 ease-in mx-2"
-                                  onClick={() => checkAvailability(product, "increment")}
+                                  onClick={() =>
+                                    checkAvailability(product, "increment")
+                                  }
                                 >
                                   <AiOutlinePlus className="" />
                                 </div>
@@ -353,15 +373,33 @@ function Order() {
                       </p>
                     </div>
 
-                    <div className="flex flex-row justify-between items-center w-full border-b-[1px] border-gray-600 border-dashed pb-4 mb-4">
+                    <div className="flex flex-row justify-between items-center w-full mb-2">
                       <p>Delivery</p>
-                      <p>{deliveryPrice()} {currency}</p>
+                      <p>
+                        {deliveryPrice()} {currency}
+                      </p>
                     </div>
+                    {shipping && (
+                      <div className="flex flex-row justify-between items-center w-full border-b-[1px] border-gray-600 border-dashed pb-4 mb-4 text-secondary-content font-semibold">
+                        <p>
+                          Free delivery for orders over{" "}
+                          {shipping[0]?.attributes.free_shipping_threshold}{" "}
+                          {currency}
+                        </p>
+                      </div>
+                    )}
 
                     <div className="flex flex-row w-full justify-between items-center text-secondary-content">
                       <p className="text-xl font-semibold">Total</p>
                       <p className="text-xl font-semibold">
-                        {totalPrice() - discountedPrice() < 0 ? 0 : (totalPrice() - discountedPrice() + deliveryPrice()).toFixed(2)} {currency}
+                        {totalPrice() - discountedPrice() < 0
+                          ? 0
+                          : (
+                              totalPrice() -
+                              discountedPrice() +
+                              deliveryPrice()
+                            ).toFixed(2)}{" "}
+                        {currency}
                       </p>
                     </div>
                   </div>
