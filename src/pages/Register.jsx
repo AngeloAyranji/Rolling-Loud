@@ -35,7 +35,7 @@ function Register() {
     const phone = document.getElementById("registerPhone").value;
 
     const phoneNb = callingCode + " " + phone;
-    console.log(phoneNb);
+    
     const confirmPassword = document.getElementById(
       "registerConfirmPassword"
     ).value;
@@ -54,10 +54,11 @@ function Register() {
         const res = await axios.post(
           process.env.REACT_APP_BACKEND_URL + "api/auth/local/register",
           {
-            firstName: firstName,
-            lastName: lastName,
-            phoneNb: phoneNb,
+            first_name: firstName,
+            last_name: lastName,
+            phone_number: phoneNb,
             email: email,
+            username: firstName + " " + lastName,
             password: password,
             region: localStorage.getItem("region"),
           }
