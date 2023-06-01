@@ -59,6 +59,12 @@ export default function Navbar({ navigation, setNavigation }) {
     else handleCurrentNav("");
   }, []);
 
+  const [nav, setNav] = useState([]);
+
+  useEffect(() => {
+    setNav(navigation);
+  }, [navigation]);
+
   return (
     <Disclosure
       as="nav"
@@ -120,7 +126,7 @@ export default function Navbar({ navigation, setNavigation }) {
                 </div>
                 <div className="hidden 2xl:ml-6 2xl:block">
                   <div className="flex space-x-4 items-center">
-                    {navigation.map((item) => (
+                    {nav.map((item) => (
                       <Dropdown
                         key={item.name}
                         title={item.name}
@@ -239,7 +245,7 @@ export default function Navbar({ navigation, setNavigation }) {
           {openMobile && (
             <div className="2xl:hidden">
               <div className="space-y-1 pl-4 pt-2 pb-3">
-                {navigation.map((item, index) => (
+                {nav.map((item, index) => (
                   <Dropdown
                     key={index}
                     handleMenu={handleMenu}

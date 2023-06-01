@@ -45,9 +45,9 @@ function Dropdown({ title, href, subCategories, handleMenu }) {
                     <div role="btn" onClick={() => handleMenu()}>
                       <Link
                         key={index}
-                        to={`/products/${encodeURIComponent(title)}/${encodeURIComponent(
-                          sub?.attributes.title
-                        )}`}
+                        to={`/products/${encodeURIComponent(
+                          title
+                        )}/${encodeURIComponent(sub?.attributes.title)}`}
                         className="cursor-pointer text-secondary-content hover:text-primary text-xs uppercase font-semibold whitespace-nowrap"
                       >
                         {sub?.attributes.title}
@@ -62,8 +62,8 @@ function Dropdown({ title, href, subCategories, handleMenu }) {
       ) : (
         <div
           className="block relative overflow-visible"
-          onMouseEnter={handleOpen}
-          onMouseLeave={handleOpen}
+          onMouseEnter={() => setIsOpen(true)}
+          onMouseLeave={() => setIsOpen(false)}
         >
           <div className="relative flex flex-row 2xl:justify-between items-center space-x-1 hover:text-primary 2xl:hover:border-b-2 border-primary cursor-pointer py-1 uppercase text-secondary-content z-10">
             <div className="" role="btn" onClick={() => handleMenu()}>
@@ -95,9 +95,9 @@ function Dropdown({ title, href, subCategories, handleMenu }) {
                     <div role="btn" onClick={() => handleMenu()}>
                       <Link
                         key={index}
-                        to={`/products/${encodeURIComponent(title)}/${encodeURIComponent(
-                          sub.attributes.title
-                        )}`}
+                        to={`/products/${encodeURIComponent(
+                          title
+                        )}/${encodeURIComponent(sub.attributes.title)}`}
                         className="cursor-pointer text-secondary-content hover:text-primary font-medium text-sm uppercase whitespace-nowrap"
                       >
                         {sub.attributes.title}
