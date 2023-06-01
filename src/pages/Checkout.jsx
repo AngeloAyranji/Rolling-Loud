@@ -34,7 +34,6 @@ function Order() {
   const [loadingCheckout, setLoadingCheckout] = useState(false);
   const [productsURL, setProductsURL] = useState("");
   const [productsDB, setProductsDB] = useState(null);
-  const [checkoutURL, setCheckoutURL] = useState(null);
 
   const { data: prod } = useFetch(productsURL !== "" ? productsURL : null);
   const { data: shipping } = useFetch(
@@ -49,11 +48,6 @@ function Order() {
     if (prod !== undefined && prod !== null) setProductsDB(prod);
   }, [prod]);
 
-  useEffect(() => {
-    if (checkoutURL !== null) {
-      window.open(checkoutURL, "_blank");
-    }
-  }, [checkoutURL]);
 
   const fetchProductsDB = () => {
     let url = `api/products?populate[options]=*`;
@@ -137,8 +131,8 @@ function Order() {
           config
         );
 
-        // setTimeout(() => window.open(res.data.session.url, "_blank"));
-        setCheckoutURL(res.data.session.url);
+        window.location.replace(res.data.session.url);
+        
       } catch (err) {
         if (err.response.data.error === "Promo Code Expired") {
           dispatch(removePromo());
