@@ -37,7 +37,7 @@ function App() {
             <Route path="/products" element={<Products />} />
             <Route path="/products/:category" element={<Products />} />
             <Route
-              path="/footer/about"
+              path="/footer/:name"
               element={<FooterContent name={"About Us"} />}
             />
             <Route path="/review" element={

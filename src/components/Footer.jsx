@@ -26,7 +26,7 @@ function Footer({ navigation }) {
       </div>
       <div>
         <span className="footer-title">Company</span>
-        <Link to="/footer/about" className="link link-hover">
+        <Link to="/footer/aboutus" className="link link-hover">
           About us
         </Link>
         <a className="link link-hover">Contact</a>
@@ -36,9 +36,9 @@ function Footer({ navigation }) {
       </div>
       <div>
         <span className="footer-title">Legal</span>
-        <a className="link link-hover">Terms of use</a>
-        <a className="link link-hover">Privacy policy</a>
-        <a className="link link-hover">Cookie policy</a>
+        <Link to="/footer/terms-of-use" className="link link-hover">Terms of use</Link>
+        <Link to="/footer/privacy-policy" className="link link-hover">Privacy policy</Link>
+        <Link to="/footer/cookie-policy" className="link link-hover">Cookie policy</Link>
       </div>
       <div className="flex flex-col space-y-2 max-w-[24rem] w-full">
         <p className="footer-title">Newsletter</p>
