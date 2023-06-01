@@ -88,22 +88,24 @@ function Hero() {
             ))}
         </Carousel>
         <div className="absolute bottom-0 w-full h-[30%] bg-gradient-to-t from-[#121212] to-transparent z-[5]"></div>
-        <motion.div
-          className="flex flex-row absolute top-[64%] sm:top-[60%] sm:left-[25%] left-[12%] z-50"
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            duration: 0.8,
-            delay: 3.5,
-            ease: [0, 0.71, 0.2, 1.01],
-          }}
-        >
-          <Link to="/products">
-            <button className="btn btn-primary btn-outline text-secondary-content lg:btn-lg">
-              Explore
-            </button>
-          </Link>
-        </motion.div>
+        {loading && (
+          <motion.div
+            className="flex flex-row absolute top-[64%] sm:top-[60%] sm:left-[25%] left-[12%] z-50"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.8,
+              delay: 3.5,
+              ease: [0, 0.71, 0.2, 1.01],
+            }}
+          >
+            <Link to="/products">
+              <button className="btn btn-primary btn-outline text-secondary-content lg:btn-lg">
+                Explore
+              </button>
+            </Link>
+          </motion.div>
+        )}
       </div>
     </Fragment>
   );
