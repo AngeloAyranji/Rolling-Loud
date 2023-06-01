@@ -380,7 +380,7 @@ function Order() {
                       </p>
                     </div>
                     {shipping && (
-                      <div className="flex flex-row justify-between items-center w-full border-b-[1px] border-gray-600 border-dashed pb-4 mb-4 text-secondary-content font-semibold">
+                      <div className="flex flex-row justify-between items-center w-full border-b-[1px] border-gray-600 border-dashed pb-4 mb-4 text-secondary">
                         <p>
                           Free delivery for orders over{" "}
                           {shipping[0]?.attributes.free_shipping_threshold}{" "}

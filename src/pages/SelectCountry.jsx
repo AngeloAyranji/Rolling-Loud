@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Select, Option } from "@material-tailwind/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
@@ -14,7 +14,7 @@ function SelectCountry() {
   const dispatch = useDispatch();
 
   const { data: countries, loading } = useFetch(`api/shippings/?pagination[page]=1&pagination[pageSize]=300`);
-
+  
   const { setRegion, setCountry } = useRegionChecker();
 
   const [regionTmp, setRegionTmp] = useState("");
