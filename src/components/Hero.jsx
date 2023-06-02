@@ -14,8 +14,8 @@ function Hero() {
 
   const handleLoading = () => {
     setLoading(false);
-    const video = document.getElementById("herovid");
-    video.play();
+    // const video = document.getElementById("herovid");
+    // video.play();
   };
   return (
     <Fragment>
@@ -70,7 +70,7 @@ function Hero() {
         >
           <video
             id="herovid"
-            onCanPlay={handleLoading}
+            onCanPlayThrough={handleLoading}
             src={videoUrl?.attributes.video.data.attributes.url}
             autoPlay
             muted
@@ -88,7 +88,9 @@ function Hero() {
             ))}
         </Carousel>
         <div className="absolute bottom-0 w-full h-[30%] bg-gradient-to-t from-[#121212] to-transparent z-[5]"></div>
-        {loading && (
+        {loading ? (
+          <></>
+        ) : (
           <motion.div
             className="flex flex-row absolute top-[64%] sm:top-[60%] sm:left-[25%] left-[12%] z-50"
             initial={{ opacity: 0, scale: 0.5 }}

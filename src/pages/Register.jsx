@@ -35,7 +35,7 @@ function Register() {
     const phone = document.getElementById("registerPhone").value;
 
     const phoneNb = callingCode + " " + phone;
-    
+
     const confirmPassword = document.getElementById(
       "registerConfirmPassword"
     ).value;
@@ -154,33 +154,35 @@ function Register() {
                         </Button>
                       </MenuHandler>
                       <MenuList className="max-h-[20rem] max-w-[18rem] overflow-y-scroll scrollbar-custom">
-                        {countries.map(
-                          ({ name, flags, countryCallingCode }, index) => {
-                            return (
-                              <MenuItem
-                                key={name}
-                                value={name}
-                                className="flex items-center gap-2"
-                                onClick={() => {
-                                  setCountry(index);
-                                  setCallingCode(
-                                    countries[index].countryCallingCode
-                                  );
-                                }}
-                              >
-                                <img
-                                  src={flags.svg}
-                                  alt={name}
-                                  className="h-5 w-5 rounded-full object-cover"
-                                />
-                                {name}{" "}
-                                <span className="ml-auto">
-                                  {countryCallingCode}
-                                </span>
-                              </MenuItem>
-                            );
-                          }
-                        )}
+                        {countries
+                          .sort((a, b) => a.name.localeCompare(b.name))
+                          ?.map(
+                            ({ name, flags, countryCallingCode }, index) => {
+                              return (
+                                <MenuItem
+                                  key={name}
+                                  value={name}
+                                  className="flex items-center gap-2"
+                                  onClick={() => {
+                                    setCountry(index);
+                                    setCallingCode(
+                                      countries[index].countryCallingCode
+                                    );
+                                  }}
+                                >
+                                  <img
+                                    src={flags.svg}
+                                    alt={name}
+                                    className="h-5 w-5 rounded-full object-cover"
+                                  />
+                                  {name}{" "}
+                                  <span className="ml-auto">
+                                    {countryCallingCode}
+                                  </span>
+                                </MenuItem>
+                              );
+                            }
+                          )}
                       </MenuList>
                     </Menu>
                     <Input
@@ -189,7 +191,7 @@ function Register() {
                       type="tel"
                       placeholder="Mobile Number"
                       color="cyan"
-                      className="rounded-l-none h-[44px] focus:!border-primary text-secondary-content"
+                      className="rounded-l-none !h-[44px] focus:!border-primary text-secondary-content"
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
