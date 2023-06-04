@@ -64,6 +64,18 @@ function Orders() {
     return `${month} ${day}, ${year}`;
   };
 
+  const formatNumber = (number) => {
+    let numberString = String(number);
+
+    if (numberString.length === 3) return numberString;
+
+    while (numberString.length < 3) {
+      numberString = '0' + numberString;
+    }
+
+    return numberString;
+  }
+
   return (
     <>
       <Helmet>
@@ -97,7 +109,7 @@ function Orders() {
                 >
                   <div className="flex w-full justify-between">
                     <h2 className="text-secondary-content font-semibold tracking-wide uppercase lg:text-lg">
-                      order id: {order?.attributes.stripe_id}
+                      order id: #{formatNumber(order?.id)}
                     </h2>
                     <p className="text-secondary-content font-semibold tracking-wide uppercase lg:text-lg">
                       {order.attributes.amount_total} {currency}
