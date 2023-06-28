@@ -6,6 +6,8 @@ import { container } from "../utils/motion";
 import { motion } from "framer-motion";
 import { Fragment, useEffect, useState } from "react";
 import Loading from "./Loading";
+import vid from "../assets/Images/introvid.mp4";
+import logo from "../assets/Images/rollingloudlogo.png";
 function Hero() {
   const { data: videoUrl } = useFetch("api/hero-video?populate=*");
   const { data: imagesUrl } = useFetch("api/hero-image?populate=*");
@@ -27,6 +29,11 @@ function Hero() {
         <></>
       )}
       <div className="w-full aspect-[16/14] sm:aspect-[16/9] flex justify-center items-center relative mb-20">
+        <div className="absolute left-0 top-0 w-full h-full z-10 flex items-center justify-center p-8">
+          <div className="max-w-[500px]">
+            <img src={logo} alt="" className="object-contain" />
+          </div>
+        </div>
         <Carousel
           loop={true}
           className="w-full absolute left-0 top-0 overflow-hidden"
@@ -71,12 +78,12 @@ function Hero() {
           <video
             id="herovid"
             onCanPlayThrough={handleLoading}
-            src={videoUrl?.attributes.video.data.attributes.url}
+            src={vid}
             autoPlay
             muted
             playsInline
             type="video/mp4"
-            className="w-[100%] h-[100%] object-cover object-center brightness-[1]"
+            className="w-[100%] h-[100%] object-cover object-center brightness-[0.4]"
           ></video>
           {imagesUrl?.attributes.image.data &&
             imagesUrl?.attributes.image.data.map((item, index) => (

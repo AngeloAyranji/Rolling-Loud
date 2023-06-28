@@ -61,9 +61,9 @@ module.exports = withMT({
       {
         dark: {
           ...require("daisyui/src/colors/themes")["[data-theme=dark]"],
-          primary: "#02DBE0",
-          "primary-focus": "#01b7bb",
-          "primary-selected": "#013839",
+          primary: "#9F2A2A",
+          "primary-focus": "#661B26",
+          "primary-selected": "#661B26",
           neutral: "#2A303C",
           "secondary-content": "#FFFDFA",
         },
