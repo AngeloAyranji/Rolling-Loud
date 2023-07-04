@@ -78,7 +78,6 @@ const Layout = ({ children }) => {
             location.pathname !== "/soon" && (
               <>
                 <SocialsMenu />
-                <Banner />
                 <Footerlogo />
                 <Footer navigation={navigation} />
               </>

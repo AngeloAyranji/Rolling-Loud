@@ -95,7 +95,7 @@ function Hero() {
             ))}
         </Carousel>
         <div className="absolute bottom-0 w-full h-[30%] bg-gradient-to-t from-[#121212] to-transparent z-[5]"></div>
-        {loading ? (
+        {/* {loading ? (
           <></>
         ) : (
           <motion.div
@@ -114,7 +114,7 @@ function Hero() {
               </button>
             </Link>
           </motion.div>
-        )}
+        )} */}
       </div>
     </Fragment>
   );

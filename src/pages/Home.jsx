@@ -3,6 +3,7 @@ import Tabs from "../components/Tabs";
 import ParallaxCard from "../components/ParallaxCard";
 import Team from "../components/Team";
 import { Helmet } from "react-helmet";
+import TimelineSection from "../components/TimelineSection";
 
 function Home() {
   return (
@@ -11,9 +12,8 @@ function Home() {
         <title>SkyShop - Your One-Stop Shop for Drone FPV Items.</title>
       </Helmet>
       <Hero />
-      <Tabs />
       <ParallaxCard />
-      <Team />
+      <TimelineSection />
     </div>
   );
 }

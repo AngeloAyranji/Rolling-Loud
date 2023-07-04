@@ -8,7 +8,7 @@ import {
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import Logo from "../assets/Images/LogoSky.png";
+import Logo from "../assets/Images/rollingloudlogo.png";
 import Cart from "./Cart";
 import Dropdown from "./Dropdown";
 
