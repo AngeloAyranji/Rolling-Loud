@@ -8,11 +8,12 @@ import {
   TimelineBody,
   Typography,
 } from "@material-tailwind/react";
+import HomeCard from "./HomeCard";
 
 function TimelineSection() {
   return (
     <div className="w-full min-h-screen relative flex justify-center mb-20">
-      <div className="w-full mx-auto p-6 md:p-12 max-w-[1400px] relative">
+      <div className="w-full mx-auto p-6 md:p-12 max-w-[1400px] relative flex flex-col lg:flex-row">
         <div className="w-full max-w-[600px] z-10 relative">
           <Timeline className="">
             <TimelineItem>
@@ -103,6 +104,9 @@ function TimelineSection() {
               </TimelineBody>
             </TimelineItem>
           </Timeline>
+        </div>
+        <div className="w-full items-center justify-center flex">
+          <HomeCard />
         </div>
         <div className="absolute right-0 top-0 bottom-0 w-[80%]">
           <div className="relative w-full h-full">
