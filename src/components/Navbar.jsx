@@ -11,7 +11,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import Logo from "../assets/Images/rollingloudlogo.png";
 import Cart from "./Cart";
 import Dropdown from "./Dropdown";
-import useProvider from "../hooks/useProvider";
+import useCrypto from "../hooks/useCrypto";
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 
 function classNames(...classes) {
@@ -22,7 +22,7 @@ export default function Navbar({ navigation, setNavigation }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { address, handleWalletConnect } = useProvider();
+  const { address, handleWalletConnect } = useCrypto();
 
   const [opena, setOpena] = useState(false);
 
