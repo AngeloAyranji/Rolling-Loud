@@ -9,7 +9,7 @@ function Home() {
   return (
     <div>
       <Helmet>
-        <title>SkyShop - Your One-Stop Shop for Drone FPV Items.</title>
+        <title>Rolling Loud</title>
       </Helmet>
       <Hero />
       <ParallaxCard />

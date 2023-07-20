@@ -76,7 +76,7 @@ function Products() {
   useEffect(() => {
     handleSortBy(products);
   }, [sortBy]);
-  
+
   const handleSortBy = (prod) => {
     if (prod) {
       let tmpProducts = prod.slice();
@@ -135,14 +135,7 @@ function Products() {
     <>
       <Helmet>
         <title>
-          Skyshop -{" "}
-          {!category
-            ? querySearch
-              ? querySearch
-              : "All Products"
-            : subcategory
-            ? subcategory
-            : category}
+          Rolling Loud - Tickets
         </title>
       </Helmet>
       <div className="w-full md:mb-[200px] mb-20">
@@ -155,75 +148,18 @@ function Products() {
             >
               <Link to="/">Home</Link>
               <Link to="/products">Products</Link>
-              {category ? (
-                <Link to={`/products/${encodeURIComponent(category)}`}>
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </Link>
-              ) : querySearch ? (
-                <Link to={`/products?search=${querySearch}`}>
-                  {querySearch}
-                </Link>
-              ) : (
-                <Link to={`/products`}>All Products</Link>
-              )}
-              {subcategory && (
-                <Link
-                  to={`/products/${encodeURIComponent(
-                    category
-                  )}/${encodeURIComponent(subcategory)}`}
-                >
-                  {subcategory}
-                </Link>
-              )}
+              <Link to={`/products`}>All Products</Link>
             </Breadcrumbs>
           </div>
           <h2 className="text-xl xl:text-3xl font-bold text-white uppercase mb-4">
-            {!category
-              ? querySearch
-                ? `Search in ${querySearch}`
-                : "All Products"
-              : subcategory
-              ? subcategory
-              : category}
+            All Tickets
           </h2>
-          {category && categoryDB && brandDB ? (
-            categoryDB?.length ? (
-              <p className="max-w-[700px] mb-4">
-                {categoryDB[0]?.attributes.description}
-              </p>
-            ) : brandDB.length ? (
-              <p className="max-w-[700px] mb-4">
-                {brandDB[0]?.attributes.description}
-              </p>
-            ) : (
-              <></>
-            )
-          ) : querySearch ? (
-            <></>
-          ) : (
-            <></>
-          )}
+          
           <div className="flex flex-row justify-between md:justify-start items-center w-full border-t-2 border-t-base-100 pt-6 space-x-8 md:space-x-0 mb-4">
             <BsSliders
               className="w-6 h-6 font-thin text-[#A6ADBB] md:hidden"
               onClick={() => setIsSidebar(!isSidebar)}
             />
-            <div className="pl-0">
-              <Select
-                color="cyan"
-                label="Sort By"
-                animate={{
-                  mount: { y: 0 },
-                  unmount: { y: 25 },
-                }}
-                className="!ml-0"
-                onChange={setSortBy}
-              >
-                <Option value={"0"}>Default</Option>
-                <Option value={"1"}>Highest Price First</Option>
-                <Option value={"2"}>Lowest Price First</Option>
-              </Select>
-            </div>
           </div>
         </div>
         <div className="flex flex-row w-full relative mb-8">
@@ -246,22 +182,6 @@ function Products() {
             <ListProduct products={products} loading={loading} />
           </div>
         </div>
-        {!loading && metadata && (
-          <>
-            {page < metadata.pagination.pageCount && (
-              <div className="w-full p-4 flex justify-center items-center px-12 space-x-4">
-                <div className="h-[2px] w-full bg-primary"></div>
-                <p
-                  onClick={() => handleAddMore(page + 1)}
-                  className="font-semibold tracking-widest uppercase hover:text-primary text-center cursor-pointer text-xl whitespace-nowrap"
-                >
-                  Load more
-                </p>
-                <div className="h-[2px] w-full bg-primary"></div>
-              </div>
-            )}
-          </>
-        )}
       </div>
     </>
   );

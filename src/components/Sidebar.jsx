@@ -51,7 +51,7 @@ function Sidebar({
       <div className="w-full h-full flex flex-col space-y-4 p-4 lg:pl-8 2xl:pl-14">
         <div className="w-full flex flex-row justify-between items-center mb-8 border-b-2 border-b-base-100 h-20">
           <h2 className="text-white font-bold text-md uppercase">
-            {productQuantity} products
+            4 products
           </h2>
           <div className="text-white md:hidden">
             <AiOutlineClose className="w-6 h-6" onClick={handleSidebar} />
@@ -59,39 +59,6 @@ function Sidebar({
         </div>
         <div className="w-full flex flex-col space-y-4 mt-8">
           <h3 className="text-white text-lg ">Filter by</h3>
-          <div className="flex flex-row justify-start items-center space-x-4 pl-2">
-            <input
-              type="checkbox"
-              id="new"
-              value="new"
-              checked={isNew}
-              onChange={(e) => setIsNew(e.target.checked)}
-              className="checked:bg-primary rounded-sm"
-            />
-            <label htmlFor="new">New</label>
-          </div>
-          <div className="flex flex-row justify-start items-center space-x-4 pl-2">
-            <input
-              type="checkbox"
-              id="featured"
-              value="featured"
-              checked={isFeatured}
-              onChange={(e) => setIsFeatured(e.target.checked)}
-              className="checked:bg-primary rounded-sm"
-            />
-            <label htmlFor="featured">Featured</label>
-          </div>
-          <div className="flex flex-row justify-start items-center space-x-4 pl-2">
-            <input
-              type="checkbox"
-              id="Promotion"
-              value="Promotion"
-              checked={isPromotion}
-              onChange={(e) => setIsPromotion(e.target.checked)}
-              className="checked:bg-primary rounded-sm"
-            />
-            <label htmlFor="Promotion">Promotion</label>
-          </div>
         </div>
         <div className="flex flex-row justify-start items-center space-x-4 pl-2">
           <input
@@ -106,7 +73,6 @@ function Sidebar({
         </div>
 
         <div className="w-full flex flex-col space-y-4 mt-8">
-          <h3 className="text-white text-lg ">Availability</h3>
           <div className="flex flex-row justify-start items-center space-x-4 pl-2">
             <input
               type="checkbox"
@@ -117,15 +83,6 @@ function Sidebar({
             />
             <label htmlFor="inStock">In Stock</label>
           </div>
-          {/* <div className="flex flex-row justify-start items-center space-x-4 pl-2">
-            <input
-              type="checkbox"
-              id="outOfStock"
-              value="outOfStock"
-              className="checked:bg-primary rounded-sm"
-            />
-            <label htmlFor="outOfStock">Out Of Stock</label>
-          </div> */}
         </div>
 
         <div className="w-full flex flex-col space-y-4 mt-8">
