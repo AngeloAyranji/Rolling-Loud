@@ -14,7 +14,7 @@ export const RegionCheckerProvider = ({ children }) => {
   useEffect(() => {
     if (location.pathname !== "/country") {
       if (!region || !country) {
-        navigate("/country", { state: { from: location } });
+        // navigate("/country", { state: { from: location } });
       }
     }
   }, [location]);
