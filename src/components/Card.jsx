@@ -6,19 +6,17 @@ import { useRegionChecker } from "../hooks/regionChecker";
 import { addToCart } from "../redux/cartReducer";
 import { updateQuantity } from "../redux/cartReducer";
 import { FaEthereum } from "react-icons/fa";
+import useCrypto from "../hooks/useCrypto";
 
-function Card({ item, id }) {
+function Card({ tokenId, price }) {
   const navigate = useNavigate();
 
-  const { currency } = useRegionChecker();
+  const { currency, ticketName } = useCrypto();
 
   const dispatch = useDispatch();
 
   const [showToast, setShowToast] = useState(false);
 
-  const [quantity, setQuantity] = useState(1);
-
-  const products = useSelector((state) => state.cart.products);
 
   const handleToast = () => {
     setShowToast(true);
@@ -31,59 +29,6 @@ function Card({ item, id }) {
     setShowToast(false);
   };
 
-  const checkAvailability = (quantityValue) => {
-    if (item) {
-      const prod = products.find((x) => x.id === id);
-      if (!prod) {
-        if (
-          item.options.length === 1 &&
-          item.options[0].quantity > 0 &&
-          (item.options[0].title === "Default" ||
-            item.options[0].title === "default")
-        ) {
-          handleToast();
-          dispatch(
-            addToCart({
-              id: id,
-              name: item.title,
-              img: item.image.data[0].attributes.url,
-              price: item.options[0].price,
-              option: item.options[0].option,
-              optionId: item.options[0].id,
-              optionName: item.options[0].option_name,
-              quantity: 1,
-            })
-          );
-        } else {
-          navigate(`/product/${encodeURIComponent(item.title)}`);
-        }
-      } else {
-        if (
-          item.options.length === 1 &&
-          quantityValue + prod.quantity <= item.options[0].quantity &&
-          (item.options[0].title === "Default" ||
-            item.options[0].title === "default")
-        ) {
-          handleToast();
-          dispatch(
-            updateQuantity({
-              optionId: item.options[0].id,
-              quantity: prod.quantity + quantityValue,
-            })
-          );
-        } else {
-          navigate(`/product/${encodeURIComponent(item.title)}`);
-        }
-      }
-    }
-  };
-
-  const checkQuantity = () => {
-    for (let i = 0; i < item.options.length; i++) {
-      if (item.options[i].quantity > 0) return true;
-    }
-    return false;
-  };
 
   return (
     <Fragment>
@@ -94,11 +39,11 @@ function Card({ item, id }) {
           <div className="w-full h-[75%] aspect-square"></div>
           <div className="w-full h-[25%] border-t-4 border-white p-4 flex flex-col justify-center space-y-4">
             <h3 className="text-white text-2xl font-bold uppercase tracking-widest">
-              RL#01353
+            RL #{tokenId}
             </h3>
             <div className="flex flex-row space-x-2 items-center">
               <FaEthereum className="w-6 h-6 text-white" />
-              <p>0.01 ETH</p>
+              <p>{price != null ? price : "---"} {currency}</p>
             </div>
           </div>
         </div>

@@ -8,6 +8,7 @@ import App from "./App";
 import { persistor, store } from "./redux/store";
 import { RegionCheckerProvider } from "./hooks/regionChecker";
 import { AuthCheckerProvider } from "./hooks/authChecker";
+import { CryptoProvider } from "./hooks/useCrypto";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,7 +18,9 @@ root.render(
         <BrowserRouter>
           <AuthCheckerProvider>
             <RegionCheckerProvider>
-              <App />
+              <CryptoProvider>
+                <App />
+              </CryptoProvider>
             </RegionCheckerProvider>
           </AuthCheckerProvider>
         </BrowserRouter>

@@ -16,17 +16,54 @@ import Loading from "../components/Loading";
 import { MdAddShoppingCart } from "react-icons/md";
 import Rating from "../components/Rating";
 import useCrypto from "../hooks/useCrypto";
+import { ethers } from "ethers";
+import Card from "../components/Card";
 
 function Product() {
+  const [price, setPrice] = useState(null);
+  const [supply, setSupply] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [waitTrx, setWaitTrx] = useState(false)
+  const [trx, setTrx] = useState(null);
 
-  const { productName } = useParams();
+  const { productName: tokenId } = useParams();
 
-  const { ticketName, currency } = useCrypto()
+  const { ticketName, currency, contract, address, handleWalletConnect } = useCrypto()
+
+  useEffect(() => {
+    if(contract != null) {
+      handlePrice()
+      handleSupply()
+    }
+  }, [contract])
+
+  const handlePrice = async () => {
+    let tmpPrice = await contract.getPrice(tokenId);
+    tmpPrice = parseInt(tmpPrice._hex, 16).toString();
+    tmpPrice = ethers.utils.formatUnits(tmpPrice, 18)
+    setPrice(tmpPrice)
+  }
+
+  const handleSupply = async () => {
+    let tmpSupply = await contract.getSupply(tokenId);
+    tmpSupply = parseInt(tmpSupply._hex);
+    setSupply(tmpSupply)
+  }
+
+  const handleMint = async () => {
+    setWaitTrx(true)
+    const options = {value: ethers.utils.parseEther((parseFloat(price) * quantity).toString())}
+    contract.mint(tokenId, quantity, options).then((tx) => {
+      console.log(tx)
+      setTrx(tx)
+      setWaitTrx(false)
+    })
+  }
 
   return (
     <>
       <Helmet>
-        <title>Ticket {productName}</title>
+        <title>Ticket {tokenId}</title>
       </Helmet>
 
       <div className="flex w-full mx-auto p-4 pt-8 md:p-8">
@@ -50,39 +87,30 @@ function Product() {
               Tickets
             </Link>
             <Link
-              to={`/product/${productName}`}
+              to={`/product/${tokenId}`}
               className="text-secondary-content hover:text-primary duration-150 ease-in"
             >
-              TokenId {productName}
+              RL #{tokenId}
             </Link>
 
           </Breadcrumbs>
           <div className=" flex flex-col lg:flex-row lg:justify-start justify-center lg:items-start items-center mt-8 lg:mt-12 lg:space-x-8 xl:space-x-14">
-            {/*image div*/}
-            <div className="flex flex-col space-y-4 md:items-start justify-center items-center w-full max-w-[520px] lg:max-w-[440px]">
-              <div className="relative w-full aspect-square border-primary border rounded-lg overflow-hidden bg-secondary-content">
-                <img
-                  src={""}
-                  alt={"Rolling Loud Ticket image"}
-                  className="object-cover object-center w-full h-full"
-                />
-              </div>
-            </div>
+            <Card tokenId={tokenId} price={price} />
 
             <div className="flex flex-col space-y-4 mt-12 lg:mt-0 max-w-[520px] lg:max-w-none">
-              ROLLING LOUD
+              ROLLING LOUD #{tokenId}
               <h2 className="text-xl text-secondary-content font-bold">
-                {ticketName(productName)}
+                {ticketName(tokenId)}
               </h2>
 
               <div className="divider"></div>
               <p className="text-xl text-primary font-semibold tracking-wide">
-                0.01
+                {price != null ? price : "---"}
                 {" "}
                 {currency}
               </p>
              
-              {/* <div className="pt-4 pb-4 flex flex-row justify-start space-x-4 items-center">
+              <div className="pt-4 pb-4 flex flex-row justify-start space-x-4 items-center">
                 <div className="flex text-xl h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[100px] text-secondary-content px-3">
                   <button
                     onClick={() =>
@@ -91,11 +119,11 @@ function Product() {
                   >
                     <AiOutlineMinus />
                   </button>
-                  {allowedQuantity <= 0 ? 0 : quantity}
+                  {supply <= 0 ? 0 : quantity}
                   <button
                     onClick={() =>
                       setQuantity((prev) =>
-                        prev >= allowedQuantity ? allowedQuantity : prev + 1
+                        prev >= supply ? supply : prev + 1
                       )
                     }
                   >
@@ -104,16 +132,19 @@ function Product() {
                 </div>
                 <button
                   className={
-                    allowedQuantity <= 0
+                    supply <= 0 || waitTrx == true
                       ? "btn btn-disabled btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
                       : "btn btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
                   }
-                  onClick={() => {}}
+                  onClick={() => {
+                    if(address != null) handleMint()
+                    else handleWalletConnect()
+                  }}
                 >
-                  <p>Mint</p>
+                  <p>{address != null ? waitTrx == false ? "Mint" : "Minting..." : "Connect Wallet"}</p>
                   <MdAddShoppingCart className="w-5 h-5 font-extralight" />
                 </button>
-              </div> */}
+              </div>
                {/*
               <div className="divider"></div>
               <div className="flex flex-row space-x-4 items-center pt-4">
@@ -145,7 +176,7 @@ function Product() {
           {/* extra infos and related products */}
           <div className="w-full mx-auto p-4 md:p-8 border-2 border-primary rounded-lg flex flex-col space-y-4 pt-8">
             <h3 className="text-secondary-content text-lg font-semibold tracking-wide uppercase">
-              Technical Characteristics
+              Concert Description
             </h3>
             <div className="w-full h-[2px] rounded-full bg-secondary-content/[0.5]"></div>
             <ReactMarkdown
