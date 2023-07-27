@@ -109,7 +109,7 @@ function Product() {
                 {price != null ? price : "---"} {currency}
               </p>
               <div className="pt-4 pb-4 flex flex-row justify-start space-x-4 items-center">
-                {/* <div className="flex text-xl h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[100px] text-secondary-content px-3">
+                <div className="flex text-xl h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[100px] text-secondary-content px-3">
                   <button
                     onClick={() =>
                       setQuantity((prev) => (prev === 1 ? 1 : prev - 1))
@@ -127,7 +127,7 @@ function Product() {
                   >
                     <AiOutlinePlus />
                   </button>
-                </div> */}
+                </div>
                 <button
                   className={
                     supply <= 0 || waitTrx == true
