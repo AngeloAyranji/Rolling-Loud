@@ -23,42 +23,45 @@ function Product() {
   const [price, setPrice] = useState(null);
   const [supply, setSupply] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [waitTrx, setWaitTrx] = useState(false)
+  const [waitTrx, setWaitTrx] = useState(false);
   const [trx, setTrx] = useState(null);
 
   const { productName: tokenId } = useParams();
 
-  const { ticketName, currency, contract, address, handleWalletConnect } = useCrypto()
+  const { ticketName, currency, contract, address, handleWalletConnect } =
+    useCrypto();
 
   useEffect(() => {
-    if(contract != null) {
-      handlePrice()
-      handleSupply()
+    if (contract != null) {
+      handlePrice();
+      handleSupply();
     }
-  }, [contract])
+  }, [contract]);
 
   const handlePrice = async () => {
     let tmpPrice = await contract.getPrice(tokenId);
     tmpPrice = parseInt(tmpPrice._hex, 16).toString();
-    tmpPrice = ethers.utils.formatUnits(tmpPrice, 18)
-    setPrice(tmpPrice)
-  }
+    tmpPrice = ethers.utils.formatUnits(tmpPrice, 18);
+    setPrice(tmpPrice);
+  };
 
   const handleSupply = async () => {
     let tmpSupply = await contract.getSupply(tokenId);
     tmpSupply = parseInt(tmpSupply._hex);
-    setSupply(tmpSupply)
-  }
+    setSupply(tmpSupply);
+  };
 
   const handleMint = async () => {
-    setWaitTrx(true)
-    const options = {value: ethers.utils.parseEther((parseFloat(price) * quantity).toString())}
+    setWaitTrx(true);
+    const options = {
+      value: ethers.utils.parseEther((parseFloat(price) * quantity).toString()),
+    };
     contract.mint(tokenId, quantity, options).then((tx) => {
-      console.log(tx)
-      setTrx(tx)
-      setWaitTrx(false)
-    })
-  }
+      console.log(tx);
+      setTrx(tx);
+      setWaitTrx(false);
+    });
+  };
 
   return (
     <>
@@ -92,7 +95,6 @@ function Product() {
             >
               RL #{tokenId}
             </Link>
-
           </Breadcrumbs>
           <div className=" flex flex-col lg:flex-row lg:justify-start justify-center lg:items-start items-center mt-8 lg:mt-12 lg:space-x-8 xl:space-x-14">
             <Card tokenId={tokenId} price={price} />
@@ -102,16 +104,12 @@ function Product() {
               <h2 className="text-xl text-secondary-content font-bold">
                 {ticketName(tokenId)}
               </h2>
-
               <div className="divider"></div>
               <p className="text-xl text-primary font-semibold tracking-wide">
-                {price != null ? price : "---"}
-                {" "}
-                {currency}
+                {price != null ? price : "---"} {currency}
               </p>
-             
               <div className="pt-4 pb-4 flex flex-row justify-start space-x-4 items-center">
-                <div className="flex text-xl h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[100px] text-secondary-content px-3">
+                {/* <div className="flex text-xl h-full flex-row justify-between p-2 border rounded-lg border-primary items-center w-[100px] text-secondary-content px-3">
                   <button
                     onClick={() =>
                       setQuantity((prev) => (prev === 1 ? 1 : prev - 1))
@@ -129,7 +127,7 @@ function Product() {
                   >
                     <AiOutlinePlus />
                   </button>
-                </div>
+                </div> */}
                 <button
                   className={
                     supply <= 0 || waitTrx == true
@@ -137,15 +135,21 @@ function Product() {
                       : "btn btn-primary w-full max-w-[250px] flex items-center justify-center space-x-4"
                   }
                   onClick={() => {
-                    if(address != null) handleMint()
-                    else handleWalletConnect()
+                    if (address != null) handleMint();
+                    else handleWalletConnect();
                   }}
                 >
-                  <p>{address != null ? waitTrx == false ? "Mint" : "Minting..." : "Connect Wallet"}</p>
+                  <p>
+                    {address != null
+                      ? waitTrx == false
+                        ? "Mint"
+                        : "Minting..."
+                      : "Connect Wallet"}
+                  </p>
                   <MdAddShoppingCart className="w-5 h-5 font-extralight" />
                 </button>
               </div>
-               {/*
+              {/*
               <div className="divider"></div>
               <div className="flex flex-row space-x-4 items-center pt-4">
                 <CiLock className="w-10 h-10 text-secondary-content text-sm" />
@@ -183,7 +187,12 @@ function Product() {
               className="prose text-secondary-content lg:text-lg tracking-wide min-w-full"
               remarkPlugins={[remarkGfm]}
             >
-              Rolling Loud, an electrifying music festival, pulsates with the heartbeats of passionate fans amid an expansive sea of energy. Embracing hip-hop's finest, the event unites stars and emerging talents alike, delivering powerhouse performances and unforgettable memories. With colossal stages, booming bass, and ecstatic crowds, Rolling Loud sets the stage for euphoric euphony.
+              Rolling Loud, an electrifying music festival, pulsates with the
+              heartbeats of passionate fans amid an expansive sea of energy.
+              Embracing hip-hop's finest, the event unites stars and emerging
+              talents alike, delivering powerhouse performances and
+              unforgettable memories. With colossal stages, booming bass, and
+              ecstatic crowds, Rolling Loud sets the stage for euphoric euphony.
             </ReactMarkdown>
           </div>
         </div>

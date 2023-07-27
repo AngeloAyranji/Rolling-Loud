@@ -80,12 +80,12 @@ function Products() {
   const handleSortBy = (prod) => {
     if (prod) {
       let tmpProducts = prod.slice();
-      if (sortBy === '1') {
+      if (sortBy === "1") {
         tmpProducts = tmpProducts.sort(
           (a, b) =>
             b.attributes.options[0].price - a.attributes.options[0].price
         );
-      } else if (sortBy === '2') {
+      } else if (sortBy === "2") {
         tmpProducts = tmpProducts.sort(
           (a, b) =>
             a.attributes.options[0].price - b.attributes.options[0].price
@@ -93,7 +93,8 @@ function Products() {
       } else {
         tmpProducts = tmpProducts.sort(
           (a, b) =>
-            new Date(a.attributes.publishedAt).getTime() - new Date(b.attributes.publishedAt).getTime()
+            new Date(a.attributes.publishedAt).getTime() -
+            new Date(b.attributes.publishedAt).getTime()
         );
       }
 
@@ -134,9 +135,7 @@ function Products() {
   return (
     <>
       <Helmet>
-        <title>
-          Rolling Loud - Tickets
-        </title>
+        <title>Rolling Loud - Tickets</title>
       </Helmet>
       <div className="w-full md:mb-[200px] mb-20">
         <div className="flex flex-col justify-center items-start p-4 md:p-6 lg:p-8 2xl:pl-14">
@@ -154,7 +153,7 @@ function Products() {
           <h2 className="text-xl xl:text-3xl font-bold text-white uppercase mb-4">
             All Tickets
           </h2>
-          
+
           <div className="flex flex-row justify-between md:justify-start items-center w-full border-t-2 border-t-base-100 pt-6 space-x-8 md:space-x-0 mb-4">
             <BsSliders
               className="w-6 h-6 font-thin text-[#A6ADBB] md:hidden"
@@ -163,7 +162,7 @@ function Products() {
           </div>
         </div>
         <div className="flex flex-row w-full relative mb-8">
-          <Sidebar
+          {/* <Sidebar
             open={isSidebar}
             handleSidebar={() => setIsSidebar(!isSidebar)}
             setIsNew={setIsNew}
@@ -177,7 +176,7 @@ function Products() {
             setIsInStock={setIsInStock}
             setPrice={setPrice}
             productQuantity={metadata ? metadata.pagination.total : 0}
-          />
+          /> */}
           <div className="w-full mx-auto flex items-center justify-center">
             <ListProduct products={products} loading={loading} />
           </div>

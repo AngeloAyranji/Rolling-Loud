@@ -2,6 +2,7 @@ import React from "react";
 import { Fragment } from "react";
 import { FaEthereum } from "react-icons/fa";
 import { motion, useMotionValue, useTransform } from "framer-motion";
+import logo from "../assets/Images/rollingloudlogo.png";
 
 function HomeCard() {
   const x = useMotionValue(0);
@@ -12,7 +13,7 @@ function HomeCard() {
     <Fragment>
       {/* card */}
       <motion.div
-        className="flex flex-col rounded-xl w-[150px] md:w-[190px] shadow-xl h-full lg:w-[300px] md:h-[320px] lg:h-[500px] cursor-grap group relative bg-gradient-to-br from-[#2c2c2c] to-[#171717] p-3 border-[2px] border-[#5c5c5c] overflow-hidden z-10"
+        className="flex flex-col rounded-xl w-[150px] md:w-[190px] shadow-xl h-full lg:w-[300px] md:h-[320px] lg:h-[500px] cursor-grap group relative bg-gradient-to-br from-[#2c2c2c] to-[#171717] p-3 border-[2px] border-[#5c5c5c]  z-10"
         style={{ x, y, rotateX, rotateY, z: 100 }}
         drag
         dragElastic={0.26}
@@ -21,7 +22,24 @@ function HomeCard() {
       >
         <div className="absolute right-6 bottom-6 w-[50%] aspect-square rounded-full bg-cyan-400 brightness-90 blur-[80px] "></div>
         <div className="w-full h-full border-4 border-white rounded-xl flex flex-col z-10">
-          <div className="w-full h-[75%] aspect-square"></div>
+          <div className="w-full h-[75%] flex justify-center items-center p-4">
+            <motion.div
+              style={{
+                x,
+                y,
+                rotateX,
+                rotateY,
+                rotate: "-25deg",
+                z: 100000,
+              }}
+              drag
+              dragElastic={0.12}
+              whileTap={{ cursor: "grabbing" }}
+              className="w-full h-full"
+            >
+              <img src={logo} alt="" className="w-full h-full object-contain" />
+            </motion.div>
+          </div>
           <div className="w-full h-[25%] border-t-4 border-white p-4 flex flex-col justify-center space-y-4">
             <h3 className="text-white text-2xl font-bold uppercase tracking-widest">
               RL#01353

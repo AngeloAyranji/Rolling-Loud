@@ -77,7 +77,6 @@ const Layout = ({ children }) => {
             location.pathname !== "/register" &&
             location.pathname !== "/soon" && (
               <>
-                <SocialsMenu />
                 <Footerlogo />
                 <Footer navigation={navigation} />
               </>
